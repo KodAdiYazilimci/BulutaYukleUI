@@ -1,0 +1,51 @@
+<div ngClass="folderside">
+    <div id="diskTree" ngClass="directory tj_container">
+        <ul>
+            <li><span class="tj_description"><span class="tj_mod_icon"><span>◢</span></span><span class="tj_icon"><img
+                            src="/img/hdd.png" width="15px/"></span>Diskler</span>
+                <ul>
+                    <li>
+                        <span onclick="openDisk(40);" class="tj_description selected tj_leaf">
+                            <span class="tj_icon">
+                                <img src="/img/hdd.png" width="15px/">
+                            </span>
+                        <span>Sanal HDD (959,1 KB)</span>
+                        </span>
+                    </li>
+                    <li>
+                        <span onclick="openDisk(42);" class="tj_description tj_leaf">
+                            <span class="tj_icon">
+                                <img src="/img/hdd.png" width="15px/">
+                            </span>
+                        <span>SQL Disk (0 Byte)</span>
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div id="privateFieldTree" class="directory tj_container">
+        <ul>
+            <li>
+                <span class="tj_description">
+                    <span class="tj_mod_icon">
+                        <span>◢</span>
+                </span>
+                <span class="tj_icon">
+                        <img src="/img/hdd.png" width="15px/">
+                    </span>Kişisel Alanım</span>
+                <ul>
+                    <li>
+                        <span onclick="openVirtualDisk(-1);" class="tj_description selected tj_leaf">
+                            <span class="tj_icon">
+                                <img src="/img/hdd.png" width="15px/">
+                            </span>
+                        <span>Internet Paylasimlarim (416,2 KB)</span>
+                        </span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="dragSide"></div>
