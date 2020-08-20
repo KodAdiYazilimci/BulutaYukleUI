@@ -11,6 +11,12 @@ import { FolderPathComponent } from "../app/components/folderpath/component.fold
 import { GridComponent } from "../app/components/grid/component.grid";
 import { HistoryComponent } from "../app/components/history/component.history";
 import { PermissionComponent } from "../app/components/permission/component.permission";
+import { ContextMenuComponent } from "../app/components/contextmenu/component.contextmenu";
+import { FormComponent } from "../app/components/form/component.form";
+import { DialogComponent } from "../app/components/dialog/component.dialog";
+import { CommentComponent } from "../app/components/comment/component.comment";
+import { PropertyComponent } from "../app/components/properties/component.property";
+import { ProgressComponent } from "../app/components/progress/component.progress";
 
 import { from } from 'rxjs';
 
@@ -18,7 +24,8 @@ import { from } from 'rxjs';
   declarations: [
     AppComponent,
     IndexComponent, FolderSideComponent, ContentSideComponent, FolderPathComponent,
-    GridComponent, HistoryComponent, PermissionComponent
+    GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
+    FormComponent, DialogComponent, CommentComponent, PropertyComponent, ProgressComponent
   ],
   imports: [
     BrowserModule,

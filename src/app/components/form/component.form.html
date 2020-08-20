@@ -1,0 +1,59 @@
+<div class="form" name="sendMailForm">
+    <div class="formTitle">
+        <div class="formTitleText">
+            <span name="formTitle">Başlık</span>
+        </div>
+        <div class="formTitleClose">
+            <img src="/img/close.png" onclick="form.hide();">
+        </div>
+    </div>
+    <div class="formContent">
+        <div class="formLine">
+            <div class="formLineLeft">
+                <span>Alıcı:</span>
+            </div>
+            <div class="formLineRight">
+                <input type="text" name="formSendMailReceiver">
+            </div>
+        </div>
+        <div class="formLine">
+            <div class="formLineLeft">
+                <span>Açıklama:</span>
+            </div>
+            <div class="formLineRight">
+                <textarea name="formSendMailComment" rows="5" cols="40"></textarea>
+            </div>
+        </div>
+        <div class="formLine">
+            <div class="formLineLeft">
+                <span>Dosyalar:</span>
+            </div>
+            <div class="formLineRight formScollable" name="formFiles">
+                <p>
+                    Klasör/Deneme Dosya.txt
+                    <br> Klasör/Alt Klasör/Deneme Dosyası.img
+                    <br> Klasör/Alt Klasör/Alt 2 Klasör/Deneme.png
+                    <br> Klasör/Alt Klasör/Alt 2 Klasör/Deneme/deneme_yeni.png
+                    <br> Klasör/Alt Klasör/Alt 3 Klasör/Alt 4 Klasör/Alt Klasör/Uzun_metinli_dosya_adi.txt
+                    <br> Klasör/Alt Klasör/Alt 3 Klasör/Alt 4 Klasör/Alt Klasör/Uzun_metinli_dosya_adi_denmeesi_2_deneme_3_deneme.txt
+                </p>
+            </div>
+        </div>
+        <div class="formLine">
+            <div class="formLineLeft">
+                <span>Boyut:</span>
+            </div>
+            <div class="formLineRight">
+                <span name="fileSizes">12.345 MB (Kilitli, gizli ve erişime kapalılar hariç)</span>
+            </div>
+        </div>
+        <div class="formLine">
+            <div class="formLineLeft">
+                <span>&nbsp;</span>
+            </div>
+            <div class="formLineRight">
+                <button class="formAlignCenter" name="formButton" onclick="form.hide();">Gönder</button>
+            </div>
+        </div>
+    </div>
+</div>

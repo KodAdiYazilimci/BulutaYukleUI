@@ -74,7 +74,7 @@
 .tj_container li span.tj_icon {
     margin-right: 0.5em;
     display: inline-block;
-    float: left;
+    /* float: left; */
 }
 
 .tj_container li span.tj_mod_icon,
