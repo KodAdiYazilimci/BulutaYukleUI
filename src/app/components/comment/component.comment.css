@@ -1,0 +1,171 @@
+.commentsWindow {
+    float: none;
+    width: 40%;
+    height: 460px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 30%;
+    margin-top: 2%;
+    background-color: lightgray;
+    border: 3px solid darkgray;
+    display: none;
+}
+
+.commentsWindowTitle {
+    float: none;
+    height: 20px;
+    width: 100%;
+    background-color: dimgray;
+}
+
+.commentsWindowTitleText {
+    float: left;
+    width: 95%;
+    height: 100%;
+    line-height: 20px;
+    cursor: move;
+}
+
+.commentsWindowTitleText span {
+    font-size: 12px;
+    color: lightgray;
+    margin-left: 3%;
+}
+
+.commentsWindowTitleClose {
+    float: left;
+    width: 5%;
+    height: 100%;
+}
+
+.commentsWindowTitleClose img {
+    height: 100%;
+}
+
+.commentsWindowContent {
+    float: none;
+    height: 75%;
+    width: 100%;
+    overflow: auto;
+    border-bottom: 1px solid darkgray;
+}
+
+.commentsWindowUserContent {
+    float: none;
+    height: 100%;
+    width: 100%;
+}
+
+.commentsWindowLine {
+    float: none;
+    height: auto;
+    width: 95%;
+    display: inline-block;
+    border: 1px solid gray;
+    margin-left: 3%;
+    margin-top: 10px;
+}
+
+.commentsWindowLineUser {
+    float: none;
+    height: auto;
+    width: 95%;
+    display: inline-block;
+    margin-left: 3%;
+    margin-top: 10px;
+}
+
+.commentsWindowLineLeft {
+    float: left;
+    width: 20%;
+    height: 100%;
+    text-align: center;
+}
+
+.commentsWindowImageField {
+    float: none;
+    height: 30px;
+    width: 100%;
+}
+
+.commentsWindowImageField img {
+    height: 100%;
+}
+
+.commentsWindowNameField {
+    float: none;
+    height: 15px;
+    width: 100%;
+}
+
+.commentsWindowNameField span {
+    font-size: 12px;
+    color: gray;
+}
+
+.commentsWindowDateField {
+    float: none;
+    height: 15px;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.commentsWindowDateField p {
+    margin: 0;
+    font-size: 10px;
+    color: gray;
+}
+
+.commentsWindowHourField {
+    float: none;
+    height: 15px;
+    width: 100%;
+}
+
+.commentsWindowHourField p {
+    margin: 0;
+    font-size: 10px;
+    color: gray;
+}
+
+.commentsWindowLineRight {
+    float: left;
+    width: 80%;
+    height: 100%;
+}
+
+.commentsWindowLineRight textarea {
+    resize: vertical;
+    width: 98.5%;
+    height: 100%;
+    background-color: lightgray;
+    border: none;
+    color: maroon;
+    font-size: 12px;
+    cursor: default;
+}
+
+.commentsWindowLineRightUser {
+    float: left;
+    width: 79%;
+    height: 100%;
+}
+
+.commentsWindowLineRightUser textarea {
+    resize: vertical;
+    width: 98.5%;
+    height: 100%;
+    margin-top: 5px;
+    background-color: ghostwhite;
+    border: none;
+    color: black;
+    font-size: 12px;
+}
+
+.commentsWindowLineRightUser button {
+    float: right;
+    height: 22px;
+    background-color: none;
+    border: 1px solid gray;
+}

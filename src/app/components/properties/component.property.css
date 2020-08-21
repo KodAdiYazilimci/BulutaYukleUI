@@ -1,0 +1,103 @@
+.properties {
+    float: none;
+    height: auto;
+    width: 25%;
+    background-color: lightgray;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 33%;
+    margin-top: 5%;
+    border: 3px solid gray;
+    display: none;
+}
+
+.propertiesTitle {
+    float: none;
+    height: 20px;
+    width: 100%;
+    background-color: gray;
+    cursor: move;
+}
+
+.propertiesTitleText {
+    float: left;
+    width: 95%;
+    height: 100%;
+    line-height: 20px;
+}
+
+.propertiesTitleText span {
+    margin-left: 3%;
+    font-size: 13px;
+    color: lightgray;
+}
+
+.propertiesTitleClose {
+    float: left;
+    width: 5%;
+    height: 100%;
+}
+
+.propertiesTitleClose img {
+    height: 100%;
+}
+
+.propertiesContent {
+    float: none;
+    height: auto;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.propertiesLine {
+    float: none;
+    height: 25px;
+    display: inline-block;
+    width: 100%;
+}
+
+.propertiesLineLeft {
+    float: left;
+    width: 25%;
+    height: 100%;
+    line-height: 20px;
+}
+
+.propertiesLineLeft img {
+    height: 100%;
+    width: 25%;
+    margin-left: 15%;
+}
+
+.propertiesLineLeft span {
+    margin-left: 15%;
+    font-size: 12px;
+    color: gray;
+}
+
+.propertiesLineRight {
+    float: left;
+    width: 75%;
+    height: 100%;
+    line-height: 20px;
+}
+
+.propertiesLineRight input {
+    width: 75%;
+    background-color: linen;
+    margin-top: 2px;
+}
+
+.propertiesLineRight span {
+    font-size: 12px;
+    color: gray;
+}
+
+.propertiesLineRight button {
+    background-color: lightgray;
+}
+
+.propertiesLineRightAlignedRightButton {
+    margin-left: 55%;
+}

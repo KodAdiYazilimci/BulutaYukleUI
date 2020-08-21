@@ -1,25 +1,25 @@
-<div class="commentsWindow">
-    <div class="commentsWindowTitle">
-        <div class="commentsWindowTitleText">
+<div ngClass="commentsWindow">
+    <div ngClass="commentsWindowTitle">
+        <div ngClass="commentsWindowTitleText">
             <span name="commentTitle">Klasör Yorumları</span>
         </div>
-        <div class="commentsWindowTitleClose" onclick="commentWindow.hide();">
-            <img src="/img/close.png">
+        <div ngClass="commentsWindowTitleClose" onclick="commentWindow.hide();">
+            <img src="/assets/images/close.png">
         </div>
     </div>
-    <div class="commentsWindowContent" name="itemComments">
+    <div ngClass="commentsWindowContent" name="itemComments">
     </div>
-    <div class="commentsWindowUserContent">
-        <div class="commentsWindowLineUser">
-            <div class="commentsWindowLineLeft">
-                <div class="commentsWindowImageField">
-                    <img src="/img/person.png">
+    <div ngClass="commentsWindowUserContent">
+        <div ngClass="commentsWindowLineUser">
+            <div ngClass="commentsWindowLineLeft">
+                <div ngClass="commentsWindowImageField">
+                    <img src="/assets/images/person.png">
                 </div>
-                <div class="commentsWindowNameField">
+                <div ngClass="commentsWindowNameField">
                     <span>Siz</span>
                 </div>
             </div>
-            <div class="commentsWindowLineRightUser">
+            <div ngClass="commentsWindowLineRightUser">
                 <textarea rows="3" cols="32" id="txtNewCommentText"></textarea>
                 <button name="btnSendComment" onclick="commentWindow.send();">Gönder</button>
             </div>

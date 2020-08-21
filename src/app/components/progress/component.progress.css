@@ -1,0 +1,90 @@
+.progress {
+    float: none;
+    width: 300px;
+    height: auto;
+    margin: auto;
+    text-align: center;
+}
+
+.progress-bar {
+    width: 300px;
+    height: 20px;
+    background-color: #57be65;
+}
+
+.progressValue {
+    margin-top: -19px;
+}
+
+#selectFile {
+    visibility: hidden;
+}
+
+#status {
+    width: 100%;
+    font-size: 14px;
+    color: gray;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.dialogProgress {
+    width: 450px;
+    height: 100px;
+    background-color: lightgray;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 30%;
+    margin-top: 5%;
+    border: 3px solid gray;
+    z-index: 3;
+    display: none;
+}
+
+.dialogProgressTop {
+    float: none;
+    height: 18px;
+    width: 100%;
+    line-height: 18px;
+    background-color: lightslategray;
+}
+
+.dialogProgressTitle {
+    float: left;
+    width: 95%;
+    height: 100%;
+    cursor: move;
+}
+
+.dialogProgressTitle span {
+    color: white;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.dialogProgressFrame {
+    float: none;
+    height: auto;
+    width: 100%;
+}
+
+.dialogProgressIcon {
+    float: left;
+    height: 60px;
+    margin-left: 5%;
+    width: 10%;
+    margin-top: 5%;
+}
+
+.dialogProgressIcon img {
+    width: 100%;
+}
+
+.dialogProgressContent {
+    float: left;
+    height: auto;
+    display: inline-block;
+    width: 85%;
+    background-color: lightgray;
+}

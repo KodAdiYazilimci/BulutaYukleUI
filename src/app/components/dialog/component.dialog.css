@@ -1,0 +1,245 @@
+.dialog {
+    width: 30%;
+    height: auto;
+    background-color: lightgray;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    margin-left: 30%;
+    margin-top: 5%;
+    display: none;
+    border: 3px solid gray;
+}
+
+.dialogFixRight {
+    width: 15%;
+    height: auto;
+    background-color: lightgray;
+    position: fixed;
+    z-index: 2;
+    right: 0;
+    top: 0;
+    margin-top: 20px;
+    margin-left: -5px;
+    display: none;
+    border: 1px solid gray;
+}
+
+.dialogTop {
+    float: none;
+    height: 18px;
+    width: 100%;
+    line-height: 18px;
+    background-color: lightslategray;
+}
+
+.dialogTitle {
+    float: left;
+    width: 95%;
+    height: 100%;
+    cursor: move;
+}
+
+.dialogTitle span {
+    color: white;
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.dialogFrame {
+    float: none;
+    height: auto;
+    width: 100%;
+}
+
+.dialogClose {
+    float: right;
+    width: 5%;
+    height: 100%;
+}
+
+.dialogClose img {
+    height: 100%;
+    float: right;
+}
+
+.dialogIcon {
+    float: left;
+    height: 60px;
+    margin-left: 5%;
+    width: 10%;
+    margin-top: 5%;
+}
+
+.dialogIcon img {
+    width: 100%;
+}
+
+.dialogContent {
+    float: left;
+    height: auto;
+    display: inline-block;
+    width: 85%;
+    background-color: lightgray;
+}
+
+.dialogFullContent {
+    float: left;
+    height: auto;
+    display: inline-block;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.dialogText {
+    float: none;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 12px;
+    color: darkslategray;
+}
+
+.dialogText p {
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.dialogInput {
+    float: none;
+    height: 25px;
+    width: 100%;
+    display: inline-block;
+}
+
+.dialogInput input {
+    width: 50%;
+    margin-left: 20%;
+    border: 1px solid gray;
+    text-align: center;
+    background-color: gainsboro;
+}
+
+.dialogInput textarea {
+    width: 92%;
+    margin-left: 3%;
+    border: 1px solid gray;
+    text-align: center;
+    background-color: gainsboro;
+}
+
+.dialogInput select {
+    width: 50%;
+    margin-left: 20%;
+    border: 1px solid gray;
+    background-color: lightgray;
+    color: darkslategray;
+}
+
+.dialogInputFull {
+    float: none;
+    height: 25px;
+    width: 100%;
+    display: inline-block;
+}
+
+.dialogInputFull input {
+    width: 80%;
+    margin-left: 10%;
+    border: 1px solid gray;
+    text-align: center;
+    background-color: gainsboro;
+}
+
+.dialogInputLeftAligned {
+    float: none;
+    height: 25px;
+    /*width: 100%;*/
+    margin-left: 10%;
+    font-size: 12px;
+    color: darkslategray;
+}
+
+.dialogInputLeftAligned input {
+    /*width: 100%;*/
+}
+
+.dialogInputGroup {
+    float: none;
+    height: 50px;
+    width: 100%;
+}
+
+.dialogControls {
+    float: none;
+    height: 25px;
+    width: 100%;
+}
+
+.dialogSingleControl {
+    float: none;
+    height: 100%;
+    width: 100%;
+}
+
+.dialogSingleControl button {
+    width: 30%;
+    border: 1px thick gray;
+    margin-left: 30%;
+}
+
+.dialogYesNo {
+    float: none;
+    width: 70%;
+    height: 100%;
+    margin-left: 10.5%;
+}
+
+.dialogYes {
+    float: left;
+    width: 48%;
+    height: 100%;
+}
+
+.dialogYes button {
+    width: 55%;
+    border: 1px thick gray;
+    float: right;
+}
+
+.dialogNo {
+    float: right;
+    width: 48%;
+    height: 100%;
+}
+
+.dialogNo button {
+    width: 55%;
+    border: 1px thick gray;
+    float: left;
+}
+
+.flatLine {
+    float: none;
+    /*width: 200px;*/
+    height: 20px;
+    background-color: dimgray;
+    border: 1px solid gray;
+    position: absolute;
+    color: white;
+    font-size: 12px;
+    line-height: 20px;
+    left: 0;
+    top: 0;
+    display: none;
+}
+
+.flatLine p {
+    margin: 0;
+    margin-left: 10px;
+}
+
+.flatBlank {
+    width: 10px;
+}

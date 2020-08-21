@@ -19,14 +19,6 @@
                                   supported by Chrome and Opera */
 }
 
-.dragSide {
-    float: left;
-    width: 0.5%;
-    height: 100%;
-    cursor: e-resize;
-    background-color: #cde2f3;
-}
-
 .tj_container * {
     position: relative;
     box-sizing: border-box;
@@ -102,4 +94,22 @@
 
 .tj_container span.tj_description.selected:hover {
     background-color: #606060;
+}
+
+.dragSide {
+    float: left;
+    width: 0.5%;
+    height: 100%;
+    cursor: e-resize;
+    background-color: #cde2f3;
+}
+
+.directory {
+    float: none;
+    height: auto;
+    display: inline-block;
+    font-size: 12px;
+    color: darkslategray;
+    white-space: nowrap;
+    margin-top: -10px;
 }

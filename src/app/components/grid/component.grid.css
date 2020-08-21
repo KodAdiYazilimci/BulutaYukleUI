@@ -1,0 +1,180 @@
+.grid {
+    float: none;
+    height: 85%;
+    width: 100%;
+    display: inline-block;
+    /*margin-top: 10px;*/
+    /*background-color: cornflowerblue;*/
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.gridHeader {
+    float: none;
+    height: 25px;
+    width: 95%;
+    display: table;
+    /*margin-left: 1%;*/
+    font-size: 12px;
+    color: darkslategray;
+}
+
+.checkboxField {
+    float: left;
+    height: 100%;
+    width: 20px;
+}
+
+.checkboxField input[type="checkbox"] {
+    margin-top: 7px;
+}
+
+.gridLogo {
+    float: left;
+    width: 30px;
+    height: 100%;
+}
+
+.gridLogo img {
+    height: 90%;
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+.wrappable {
+    overflow: hidden;
+}
+
+.itemName {
+    float: left;
+    height: 100%;
+    line-height: 25px;
+}
+
+.sizeCol {
+    float: left;
+    width: 50px;
+    height: 100%;
+    line-height: 25px;
+}
+
+.dateColumn {
+    float: left;
+    width: 100px;
+    height: 100%;
+    line-height: 25px;
+}
+
+.permissionColumn {
+    float: left;
+    width: 150px;
+    height: 100%;
+    line-height: 25px;
+}
+
+.gridContent {
+    float: none;
+    height: 100%;
+    width: 95%;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.gridLine {
+    float: none;
+    height: 25px;
+    width: 100%;
+    margin-left: 1%;
+    margin-top: 4px;
+    font-size: 12px;
+    color: black;
+    cursor: default;
+    overflow: hidden;
+}
+
+.gridHeaderLine {
+    float: none;
+    height: 25px;
+    width: 100%;
+    margin-left: 1%;
+    margin-top: 4px;
+    font-size: 12px;
+    color: gray;
+    overflow: hidden;
+}
+
+.gridLineSelected {
+    background-color: gainsboro;
+}
+
+.moveTo {
+    float: none;
+    height: 15px;
+    width: auto;
+    background-color: gray;
+    color: white;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 12px;
+    display: none;
+}
+
+.splitter {
+    float: left;
+    height: 100%;
+    background-color: lightgray;
+    width: 1px;
+}
+
+.draggableSplitter {
+    width: 3px;
+    margin-left: -1.5px;
+    cursor: e-resize;
+}
+
+::-webkit-scrollbar {
+    width: 3px;
+    height: 10px;
+}
+
+
+/* Track */
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+
+/* Handle on hover */
+
+ ::-webkit-scrollbar-thumb:hover {
+    width: 10px;
+    background: #555;
+}
+
+.splitterBottom {
+    border-bottom: 1px solid lightgray;
+}
+
+.bottomBorder {
+    border-bottom: 1px solid gray;
+}

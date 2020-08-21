@@ -1,0 +1,183 @@
+.history {
+    float: none;
+    height: 400px;
+    width: 400px;
+    background-color: lightgray;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 33%;
+    margin-top: 5%;
+    border: 3px solid gray;
+    display: none;
+}
+
+.historyTitle {
+    float: none;
+    height: 20px;
+    width: 100%;
+    background-color: gray;
+}
+
+.historyTitleText {
+    float: left;
+    width: 95%;
+    height: 100%;
+    cursor: move;
+}
+
+.historyTitleText span {
+    font-size: 12px;
+    color: lightgray;
+    margin-left: 3%;
+}
+
+.historyTitleClose {
+    float: left;
+    width: 5%;
+    height: 100%;
+}
+
+.historyTitleClose img {
+    height: 100%;
+    cursor: pointer;
+}
+
+.historyContent {
+    float: none;
+    width: 90%;
+    margin-left: 5%;
+    height: auto;
+}
+
+.historyFrame {
+    float: none;
+    height: 170px;
+    width: 100%;
+    margin-top: 10px;
+    border: 1px solid gray;
+    overflow: auto;
+}
+
+.historyFrameContent {
+    float: none;
+    width: 100%;
+    height: auto;
+}
+
+.historyLine {
+    float: none;
+    height: 20px;
+    width: 100%;
+    line-height: 20px;
+    margin-top: 3px;
+}
+
+.historyLineLogo {
+    float: left;
+    width: 5%;
+    height: 100%;
+}
+
+.historyLineLogo img {
+    height: 100%;
+}
+
+.historyLineText {
+    float: left;
+    width: 92%;
+    margin-left: 3%;
+}
+
+.historyLineText span {
+    font-size: 12px;
+}
+
+.historyGroup {
+    float: none;
+    height: 150px;
+    width: 250px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin-left: 50%;
+    margin-top: 15%;
+    border: 3px solid gray;
+    background-color: lightgray;
+    display: none;
+}
+
+.historyGroupTitle {
+    float: none;
+    height: 20px;
+    width: 100%;
+    background-color: gray;
+}
+
+.historyGroupTitleText {
+    float: left;
+    height: 100%;
+    width: 92%;
+    line-height: 20px;
+    cursor: move;
+}
+
+.historyGroupTitleText span {
+    font-size: 12px;
+    color: lightgray;
+    margin-left: 3%;
+}
+
+.historyGroupTitleClose {
+    float: left;
+    width: 5%;
+    height: 100%;
+}
+
+.historyGroupTitleClose img {
+    height: 100%;
+}
+
+.historyGroupLine {
+    float: none;
+    height: 20px;
+    width: 100%;
+    line-height: 20px;
+    font-size: 14px;
+    color: gray;
+    margin-top: 10px;
+}
+
+.historyGroupLineLeft {
+    float: left;
+    width: 20%;
+    height: 100%;
+    margin-left: 5%;
+}
+
+.historyGroupLineRight {
+    float: left;
+    width: 75%;
+    height: 100%;
+}
+
+.historyGroupLineRight select {
+    width: 70%;
+    height: 100%;
+    margin-left: 5%;
+    background-color: lightgray;
+    color: darkslategray;
+    cursor: pointer;
+}
+
+.historyGroupLineMiddle {
+    float: left;
+    height: 100%;
+    font-size: 14px;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.historyGroupLineMiddle button {
+    background-color: lightgray;
+}

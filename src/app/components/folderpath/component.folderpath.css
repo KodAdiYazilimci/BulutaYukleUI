@@ -1,0 +1,123 @@
+.folderPath {
+    float: none;
+    height: 5%;
+    width: 101%;
+    font-size: 12px;
+    color: gray;
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+.folderLine {
+    float: left;
+    height: auto;
+    display: inline-block;
+    width: 100%;
+    background-color: #ebe6e6;
+}
+
+.folderItem {
+    float: left;
+    margin-top: 0.3%;
+    margin-left: 5px;
+    cursor: pointer;
+}
+
+.folderItem img {
+    width: 12px;
+}
+
+.searchBar {
+    float: right;
+    /*width: 35px;*/
+    height: 18px;
+    background-color: #ebe6e6;
+    cursor: pointer;
+}
+
+.searchBar img {
+    height: 100%;
+}
+
+#searchButton {
+    float: left;
+}
+
+#notify {
+    float: right;
+}
+
+.notifications {
+    float: none;
+    height: auto;
+    max-height: 500px;
+    overflow-y: scroll;
+    width: 300px;
+    background-color: lightgray;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 19px;
+    border-radius: 5px;
+    display: none;
+}
+
+.notifyItem {
+    float: none;
+    /*height: 30px;*/
+    width: 98%;
+    margin-left: 2%;
+    margin-top: 2px;
+    height: auto;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.notifyItem :hover {
+    background-color: gainsboro;
+}
+
+.notifyIcon {
+    float: left;
+    /*height: 30px;*/
+    width: 10%;
+}
+
+.notifyIcon img {
+    margin-top: 5px;
+    width: 20px;
+    height: 20px;
+}
+
+.notifyText {
+    float: left;
+    /*height: 30px;*/
+    width: 80%;
+    /*line-height: 24px;*/
+}
+
+.notifyText span {
+    font-size: 12px;
+    word-break: break-word;
+}
+
+.notifyRemove {
+    float: left;
+    width: 10%;
+}
+
+.notifyRemove img {
+    margin-top: 5px;
+    margin-left: 5px;
+}
