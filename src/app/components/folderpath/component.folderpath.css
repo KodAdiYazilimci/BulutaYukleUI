@@ -38,6 +38,10 @@
     width: 12px;
 }
 
+.bottomBorder {
+    border-bottom: 1px solid gray;
+}
+
 .searchBar {
     float: right;
     /*width: 35px;*/
