@@ -1,0 +1,28 @@
+<div class="dialog" name="readOnlyInputDialog" *ngIf="visible">
+    <div class="dialogTop">
+        <div class="dialogTitle">
+            <span name="dialogTitle">{{title}}</span>
+        </div>
+        <div class="dialogClose" (click)="hide();">
+            <img src="/assets/images/close.png">
+        </div>
+    </div>
+    <div class="dialogFrame">
+        <div class="dialogIcon">
+            <img src="/assets/images/warning.ico">
+        </div>
+        <div class="dialogContent">
+            <div>
+                <p class="dialogText">{{message}}</p>
+            </div>
+            <div class="dialogInput" name="dialogInput">
+                <textarea allowcontextmenu="true" readonly="readonly" cols="45" rows="5">{{content}}</textarea>
+            </div>
+            <div class="dialogControls" name="controls">
+                <div class="dialogSingleControl">
+                    <button name="dialogOk" (click)="hide();">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

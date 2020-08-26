@@ -12,4 +12,7 @@ export class ContextMenuTypes {
     public static Properties(): number {
         return 3;
     }
+    public static Share(): number {
+        return 4;
+    }
 }

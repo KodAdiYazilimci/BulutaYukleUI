@@ -13,7 +13,8 @@ import { HistoryComponent } from "../app/components/history/component.history";
 import { PermissionComponent } from "../app/components/permission/component.permission";
 import { ContextMenuComponent } from "../app/components/contextmenu/component.contextmenu";
 import { FormComponent } from "../app/components/form/component.form";
-import { DialogComponent } from "../app/components/dialog/component.dialog";
+import { DialogYesNoComponent } from "../app/components/dialog/component.dialogyesno";
+import { DialogReadOnlyInputComponent } from "../app/components/dialog/component.dialogreadonlyinput";
 import { CommentComponent } from "../app/components/comment/component.comment";
 import { PropertyComponent } from "../app/components/properties/component.property";
 import { ProgressComponent } from "../app/components/progress/component.progress";
@@ -28,7 +29,7 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     IndexComponent, FolderSideComponent, ContentSideComponent, FolderPathComponent,
     GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
-    FormComponent, DialogComponent, CommentComponent, PropertyComponent, ProgressComponent,
+    FormComponent, DialogYesNoComponent, DialogReadOnlyInputComponent, CommentComponent, PropertyComponent, ProgressComponent,
     PermissionGroupComponent, PermissionUserComponent
   ],
   imports: [

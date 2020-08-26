@@ -1,0 +1,30 @@
+<div class="dialog" name="yesNoDialog" *ngIf="visible">
+    <div class="dialogTop">
+        <div class="dialogTitle">
+            <span name="dialogTitle">{{title}}</span>
+        </div>
+        <div class="dialogClose" (click)="hide();">
+            <img src="/assets/images/close.png">
+        </div>
+    </div>
+    <div class="dialogFrame">
+        <div class="dialogIcon">
+            <img src="/assets/images/warning.ico">
+        </div>
+        <div class="dialogContent">
+            <div>
+                <p class="dialogText">{{message}}</p>
+            </div>
+            <div class="dialogControls" name="controls">
+                <div class="dialogYesNo">
+                    <div class="dialogYes">
+                        <button name="dialogYes" (click)="onYes();">Evet</button>
+                    </div>
+                    <div class="dialogNo">
+                        <button name="dialogNo" (click)="onNo();">Hayir</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -12,6 +12,8 @@ import { HistoryComponent } from '../history/component.history';
 import { HistoryItemModel } from 'src/app/models/model.historyitem';
 import { PermissionComponent } from '../permission/component.permission';
 import { PropertyComponent } from '../properties/component.property';
+import { DialogYesNoComponent } from '../dialog/component.dialogyesno';
+import { DialogReadOnlyInputComponent } from '../dialog/component.dialogreadonlyinput';
 
 @Component({
     selector: "grid",
@@ -39,6 +41,12 @@ export class GridComponent implements OnInit {
 
     @ViewChild(PropertyComponent, { static: true })
     private propertiesWindow: PropertyComponent;
+
+    @ViewChild(DialogYesNoComponent, { static: true })
+    private yesNoDialog: DialogYesNoComponent;
+
+    @ViewChild(DialogReadOnlyInputComponent, { static: true })
+    private readonlyDialog: DialogReadOnlyInputComponent;
 
     constructor() { }
 
@@ -112,13 +120,19 @@ export class GridComponent implements OnInit {
         permissionItem.logo = "/assets/images/group.png";
         contextMenuItems.push(permissionItem);
 
-
         let propertiesItem: ContextMenuItemModel = new ContextMenuItemModel();
         propertiesItem.index = ContextMenuTypes.Properties();
         propertiesItem.splitted = true;
         propertiesItem.text = "Özellikler";
         propertiesItem.logo = "/assets/images/info.png";
         contextMenuItems.push(propertiesItem);
+
+        let shareItem: ContextMenuItemModel = new ContextMenuItemModel();
+        shareItem.index = ContextMenuTypes.Share();
+        shareItem.splitted = true;
+        shareItem.text = "Paylaş";
+        shareItem.logo = "/assets/images/share.png";
+        contextMenuItems.push(shareItem);
 
         let contextMenuTitle: string = ""
         if (itemType == ItemTypes.folder()) {
@@ -218,7 +232,13 @@ export class GridComponent implements OnInit {
             this.propertiesWindow.permissions = "Full";
             this.propertiesWindow.size = "347.54 KB";
             this.propertiesWindow.show(title, logo, "Test");
+        } else if (item.index == ContextMenuTypes.Share()) {
+            this.yesNoDialog.onYesClicked.subscribe(event => this.onAcceptInternetSharing());
+            this.yesNoDialog.show("Uyarı", "Seçtiginiz ögeyi/ögeleri internete açik halde paylasmak istediginize emin misiniz?");
         }
         this.contextMenu.visible = false;
+    }
+    public onAcceptInternetSharing(): void {
+        this.readonlyDialog.show("Paylaşım Bağlantısı","Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.","http://www...")
     }
 }
