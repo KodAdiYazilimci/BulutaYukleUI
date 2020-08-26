@@ -89,6 +89,8 @@
     width: 95%;
     overflow-x: hidden;
     overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
 }
 
 .gridLine {

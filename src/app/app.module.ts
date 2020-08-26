@@ -19,6 +19,7 @@ import { PropertyComponent } from "../app/components/properties/component.proper
 import { ProgressComponent } from "../app/components/progress/component.progress";
 
 import { from } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { from } from 'rxjs';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

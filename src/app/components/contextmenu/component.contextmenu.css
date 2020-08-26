@@ -7,7 +7,6 @@
     left: 0;
     top: 0;
     border: 1px solid gray;
-    display: none;
     color: #7d7676;
     background-color: ghostwhite;
     -webkit-touch-callout: none;
@@ -69,4 +68,8 @@
 
 .contextMenuItemText span {
     margin-top: 5px;
+}
+
+.splitterBottom {
+    border-bottom: 1px solid lightgray;
 }

@@ -1,33 +1,9 @@
-<div ngClass="contextMenu" itemid="40" itemtype="2" shareurl="http://localhost:8709/DownloadSharing?Id=8ee4037a03ce4098a709019a2a6c28da" style="display: none; margin-left: 397px; margin-top: 347px;">
+<div ngClass="contextMenu" *ngIf="visible" [ngStyle]="{'margin-left': marginLeft, 'margin-top': marginTop}">
     <div ngClass="contextMenuTitle">
-        <span>Disk Seçenekleri</span>
+        <span>{{title}}</span>
     </div>
-    <div ngClass="contextMenuLine " onclick="refresh();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/refresh.png"></div>
-        <div ngClass="contextMenuItemText"><span>Yenile</span></div>
-    </div>
-    <div ngClass="contextMenuLine " onclick="upload();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/upload.png"></div>
-        <div ngClass="contextMenuItemText"><span>Yükle</span></div>
-    </div>
-    <div ngClass="contextMenuLine " onclick="newFolder();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/folder.png"></div>
-        <div ngClass="contextMenuItemText"><span>Yeni Klasör</span></div>
-    </div>
-    <div ngClass="contextMenuLine " onclick="paste();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/filepaste.png"></div>
-        <div ngClass="contextMenuItemText"><span>Yapistir</span></div>
-    </div>
-    <div ngClass="contextMenuLine " onclick="permissions();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/group.png"></div>
-        <div ngClass="contextMenuItemText"><span>Yetkiler</span></div>
-    </div>
-    <div ngClass="contextMenuLine splitterBottom" onclick="sendItems();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/sendmail.png"></div>
-        <div ngClass="contextMenuItemText"><span>E-Posta Olarak Gönder</span></div>
-    </div>
-    <div ngClass="contextMenuLine splitterBottom" onclick="share();">
-        <div ngClass="contextMenuItemLogo"><img src="/assets/images/share.png"></div>
-        <div ngClass="contextMenuItemText"><span>Paylas</span></div>
+    <div ngClass="{{item.getStyleClass()}}" *ngFor="let item of items" (click)="onItemClicked(item);">
+        <div ngClass="contextMenuItemLogo"><img src="{{item.logo}}"></div>
+        <div ngClass="contextMenuItemText"><span>{{item.text}}</span></div>
     </div>
 </div>

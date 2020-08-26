@@ -1,4 +1,4 @@
-<div ngClass="grid" folderid="1">
+<div ngClass="grid" (contextmenu)="$event.preventDefault();">
     <div ngClass="gridHeader bottomBorder">
         <div ngClass="gridHeaderLine">
             <div ngClass="checkboxField">
@@ -42,125 +42,45 @@
             </div>
         </div>
     </div>
-    <div ngClass="gridContent">
-        <div ngClass="gridLine splitterBottom" gridlinechecked="0" itemtype="1" itemid="393" shareurl="null">
-            <div ngClass="checkboxField" column="checkbox" griditemtype="1" itemid="393" shareurl="null" style="width: 20px;"><input type="checkbox" name="select" value="0" griditemtype="1" itemid="393" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="393" virtualpath="null" shareurl="null" style="width: 30px;"><img src="/assets/images/folder.png" griditemtype="1" virtualpath="null" shareurl="null">
+    <div ngClass="gridContent" (click)="hideContextMenu();">
+        <div ngClass="gridLine splitterBottom" *ngFor="let item of gridItems" gridlinechecked="0" (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+            <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
+                <input type="checkbox" name="select"></div>
+            <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
+                <img src="{{item.logo}}">
             </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" griditemtype="1" itemid="393" virtualpath="null" shareurl="null" style="width: 424.219px;"><span griditemtype="1" itemid="393" virtualpath="null" shareurl="null">test</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol" griditemtype="1" itemid="393" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="393" shareurl="null" style="width: 30px;">
+            <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;">
+                <span grid>{{item.name}}</span>
             </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" griditemtype="1" itemid="393" shareurl="null" style="width: 50px;"><span griditemtype="1" itemid="393" shareurl="null">246,7 KB</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="sizeCol" griditemtype="1" itemid="393" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="393" shareurl="null" style="width: 30px;">
+            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol"></div>
+            <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" griditemtype="1" itemid="393" shareurl="null" style="width: 100px;"><span griditemtype="1" itemid="393" shareurl="null">18.08.2020 18:56:14</span>
+            <div ngClass="sizeCol wrappable" column="sizeCol" style="width: 50px;">
+                <span>{{item.size}}</span>
             </div>
-            <div ngClass="splitter" draggable="true" targetdrag="createDateCol" griditemtype="1" itemid="393" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="393" shareurl="null" style="width: 30px;">
+            <div ngClass="splitter" draggable="true" targetdrag="sizeCol">
             </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" griditemtype="1" itemid="393" shareurl="null" style="width: 150px;"><span griditemtype="1" itemid="393" shareurl="null">18.08.2020 18:56:14</span>
+            <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol" griditemtype="1" itemid="393" shareurl="null"></div>
-            <div ngClass="permissionColumn" column="permission" griditemtype="1" itemid="393" shareurl="null"><img src="/assets/images/person.png" title="Full" width="20" height="20" griditemtype="1" itemid="393" shareurl="null"><img src="/assets/images/search.png" title="Read" width="20" height="20" griditemtype="1" itemid="393" shareurl="null">
-                <img src="/assets/images/upload.png" title="Create" width="20" height="20" griditemtype="1" itemid="393" shareurl="null"><img src="/assets/images/delete.png" title="Delete" width="20" height="20" griditemtype="1" itemid="393" shareurl="null"></div>
+            <div ngClass="dateColumn wrappable" column="createDateCol" style="width: 100px;">
+                <span>{{item.createDate}}</span>
+            </div>
+            <div ngClass="splitter" draggable="true" targetdrag="createDateCol"></div>
+            <div ngClass="gridLogo" column="logo" style="width: 30px;">
+            </div>
+            <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;">
+                <span>{{item.updateDate}}</span>
+            </div>
+            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
+            <div ngClass="permissionColumn" column="permission">
+                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20" *ngFor="let permission of item.permissions; let i = index;">
+            </div>
         </div>
-        <div ngClass="gridLine splitterBottom" gridlinechecked="0" itemtype="1" itemid="394" shareurl="null">
-            <div ngClass="checkboxField" column="checkbox" griditemtype="1" itemid="394" shareurl="null" style="width: 20px;"><input type="checkbox" name="select" value="0" griditemtype="1" itemid="394" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="394" virtualpath="null" shareurl="null" style="width: 30px;"><img src="/assets/images/folder.png" griditemtype="1" virtualpath="null" shareurl="null">
-            </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" griditemtype="1" itemid="394" virtualpath="null" shareurl="null" style="width: 424.219px;"><span griditemtype="1" itemid="394" virtualpath="null" shareurl="null">test2</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol" griditemtype="1" itemid="394" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="394" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" griditemtype="1" itemid="394" shareurl="null" style="width: 50px;"><span griditemtype="1" itemid="394" shareurl="null">0 Byte</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="sizeCol" griditemtype="1" itemid="394" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="394" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" griditemtype="1" itemid="394" shareurl="null" style="width: 100px;"><span griditemtype="1" itemid="394" shareurl="null">18.08.2020 19:05:32</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="createDateCol" griditemtype="1" itemid="394" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="1" itemid="394" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" griditemtype="1" itemid="394" shareurl="null" style="width: 150px;"><span griditemtype="1" itemid="394" shareurl="null">18.08.2020 19:05:32</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol" griditemtype="1" itemid="394" shareurl="null"></div>
-            <div ngClass="permissionColumn" column="permission" griditemtype="1" itemid="394" shareurl="null"><img src="/assets/images/person.png" title="Full" width="20" height="20" griditemtype="1" itemid="394" shareurl="null"><img src="/assets/images/search.png" title="Read" width="20" height="20" griditemtype="1" itemid="394" shareurl="null">
-                <img src="/assets/images/upload.png" title="Create" width="20" height="20" griditemtype="1" itemid="394" shareurl="null"><img src="/assets/images/delete.png" title="Delete" width="20" height="20" griditemtype="1" itemid="394" shareurl="null"></div>
+        <div ngClass="gridLine" [ngStyle]="{'flex':1, 'height':'100%'}" (contextmenu)="showContextMenu($event,2,diskId);">
         </div>
-        <div ngClass="gridLine splitterBottom" gridlinechecked="0" itemtype="0" itemid="456" shareurl="null">
-            <div ngClass="checkboxField" column="checkbox" griditemtype="0" itemid="456" shareurl="null" style="width: 20px;"><input type="checkbox" name="select" value="0" griditemtype="0" itemid="456" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="456" virtualpath="null" shareurl="null" style="width: 30px;"><img src="/assets/images/file.png" griditemtype="0" virtualpath="null" shareurl="null">
-            </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" griditemtype="0" itemid="456" virtualpath="null" shareurl="null" style="width: 424.219px;"><span griditemtype="0" itemid="456" virtualpath="null" shareurl="null">Battlefield 4 [Oyunindir.vip].torrent</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol" griditemtype="0" itemid="456" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="456" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" griditemtype="0" itemid="456" shareurl="null" style="width: 50px;"><span griditemtype="0" itemid="456" shareurl="null">48,8 KB</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="sizeCol" griditemtype="0" itemid="456" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="456" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" griditemtype="0" itemid="456" shareurl="null" style="width: 100px;"><span griditemtype="0" itemid="456" shareurl="null">18.08.2020 19:32:32</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="createDateCol" griditemtype="0" itemid="456" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="456" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" griditemtype="0" itemid="456" shareurl="null" style="width: 150px;"><span griditemtype="0" itemid="456" shareurl="null">18.08.2020 19:32:32</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol" griditemtype="0" itemid="456" shareurl="null"></div>
-            <div ngClass="permissionColumn" column="permission" griditemtype="0" itemid="456" shareurl="null"><img src="/assets/images/person.png" title="Full" width="20" height="20" griditemtype="0" itemid="456" shareurl="null"><img src="/assets/images/search.png" title="Read" width="20" height="20" griditemtype="0" itemid="456" shareurl="null">
-                <img src="/assets/images/upload.png" title="Create" width="20" height="20" griditemtype="0" itemid="456" shareurl="null"><img src="/assets/images/delete.png" title="Delete" width="20" height="20" griditemtype="0" itemid="456" shareurl="null"></div>
-        </div>
-        <div ngClass="gridLine splitterBottom" gridlinechecked="0" itemtype="0" itemid="450" shareurl="null">
-            <div ngClass="checkboxField" column="checkbox" griditemtype="0" itemid="450" shareurl="null" style="width: 20px;"><input type="checkbox" name="select" value="0" griditemtype="0" itemid="450" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="450" virtualpath="null" shareurl="null" style="width: 30px;"><img src="/assets/images/file.png" griditemtype="0" virtualpath="null" shareurl="null">
-            </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" griditemtype="0" itemid="450" virtualpath="null" shareurl="null" style="width: 424.219px;"><span griditemtype="0" itemid="450" virtualpath="null" shareurl="null">kissclipart-mars-without-background-clipart-mars-science-labor-4e198c0bf420d0cb.png</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol" griditemtype="0" itemid="450" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="450" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" griditemtype="0" itemid="450" shareurl="null" style="width: 50px;"><span griditemtype="0" itemid="450" shareurl="null">416,2 KB</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="sizeCol" griditemtype="0" itemid="450" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="450" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" griditemtype="0" itemid="450" shareurl="null" style="width: 100px;"><span griditemtype="0" itemid="450" shareurl="null">18.08.2020 18:47:43</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="createDateCol" griditemtype="0" itemid="450" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="450" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" griditemtype="0" itemid="450" shareurl="null" style="width: 150px;"><span griditemtype="0" itemid="450" shareurl="null">18.08.2020 18:47:43</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol" griditemtype="0" itemid="450" shareurl="null"></div>
-            <div ngClass="permissionColumn" column="permission" griditemtype="0" itemid="450" shareurl="null"><img src="/assets/images/person.png" title="Full" width="20" height="20" griditemtype="0" itemid="450" shareurl="null"><img src="/assets/images/search.png" title="Read" width="20" height="20" griditemtype="0" itemid="450" shareurl="null">
-                <img src="/assets/images/upload.png" title="Create" width="20" height="20" griditemtype="0" itemid="450" shareurl="null"><img src="/assets/images/delete.png" title="Delete" width="20" height="20" griditemtype="0" itemid="450" shareurl="null"></div>
-        </div>
-        <div ngClass="gridLine splitterBottom" gridlinechecked="0" itemtype="0" itemid="457" shareurl="null">
-            <div ngClass="checkboxField" column="checkbox" griditemtype="0" itemid="457" shareurl="null" style="width: 20px;"><input type="checkbox" name="select" value="0" griditemtype="0" itemid="457" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="457" virtualpath="null" shareurl="null" style="width: 30px;"><img src="/assets/images/file.png" griditemtype="0" virtualpath="null" shareurl="null">
-            </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" griditemtype="0" itemid="457" virtualpath="null" shareurl="null" style="width: 424.219px;"><span griditemtype="0" itemid="457" virtualpath="null" shareurl="null">test.zip</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol" griditemtype="0" itemid="457" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="457" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" griditemtype="0" itemid="457" shareurl="null" style="width: 50px;"><span griditemtype="0" itemid="457" shareurl="null">247,4 KB</span></div>
-            <div ngClass="splitter" draggable="true" targetdrag="sizeCol" griditemtype="0" itemid="457" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="457" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" griditemtype="0" itemid="457" shareurl="null" style="width: 100px;"><span griditemtype="0" itemid="457" shareurl="null">18.08.2020 19:33:26</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="createDateCol" griditemtype="0" itemid="457" shareurl="null"></div>
-            <div ngClass="gridLogo" column="logo" griditemtype="0" itemid="457" shareurl="null" style="width: 30px;">
-            </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" griditemtype="0" itemid="457" shareurl="null" style="width: 150px;"><span griditemtype="0" itemid="457" shareurl="null">18.08.2020 19:33:26</span>
-            </div>
-            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol" griditemtype="0" itemid="457" shareurl="null"></div>
-            <div ngClass="permissionColumn" column="permission" griditemtype="0" itemid="457" shareurl="null"><img src="/assets/images/person.png" title="Full" width="20" height="20" griditemtype="0" itemid="457" shareurl="null"><img src="/assets/images/search.png" title="Read" width="20" height="20" griditemtype="0" itemid="457" shareurl="null">
-                <img src="/assets/images/upload.png" title="Create" width="20" height="20" griditemtype="0" itemid="457" shareurl="null"><img src="/assets/images/delete.png" title="Delete" width="20" height="20" griditemtype="0" itemid="457" shareurl="null"></div>
+        <div name="moveTo" ngClass="moveTo" style="display: none;">
+            <span>Buraya Taşı</span>
         </div>
     </div>
-    <div name="moveTo" ngClass="moveTo" style="display: none;">
-        <span>Buraya Tasi</span>
-    </div>
-</div>
+    <contextmenu></contextmenu>
+    <comment></comment>

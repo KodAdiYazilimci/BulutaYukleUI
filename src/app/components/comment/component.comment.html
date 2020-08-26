@@ -1,13 +1,27 @@
-<div ngClass="commentsWindow">
+<div ngClass="commentsWindow" *ngIf="visible">
     <div ngClass="commentsWindowTitle">
         <div ngClass="commentsWindowTitleText">
-            <span name="commentTitle">Klasör Yorumları</span>
+            <span name="commentTitle">{{title}}</span>
         </div>
-        <div ngClass="commentsWindowTitleClose" onclick="commentWindow.hide();">
+        <div ngClass="commentsWindowTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
     <div ngClass="commentsWindowContent" name="itemComments">
+        <div class="commentsWindowLine" *ngFor="let comment of comments">
+            <div class="commentsWindowLineLeft">
+                <div class="commentsWindowImageField"><img src="{{comment.logo}}"></div>
+                <div class="commentsWindowNameField"><span>{{comment.name}}</span></div>
+                <div class="commentsWindowDateField">
+                    <p>{{comment.date}}</p>
+                </div>
+                <div class="commentsWindowHourField">
+                    <p>{{comment.time}}</p>
+                </div>
+            </div>
+            <div class="commentsWindowLineRight"><textarea readonly="" rows="5" cols="30">{{comment.comment}}</textarea>
+            </div>
+        </div>
     </div>
     <div ngClass="commentsWindowUserContent">
         <div ngClass="commentsWindowLineUser">
@@ -20,8 +34,8 @@
                 </div>
             </div>
             <div ngClass="commentsWindowLineRightUser">
-                <textarea rows="3" cols="32" id="txtNewCommentText"></textarea>
-                <button name="btnSendComment" onclick="commentWindow.send();">Gönder</button>
+                <textarea rows="3" cols="32" [(ngModel)]="formText"></textarea>
+                <button name="btnSendComment" (click)="send();">Gönder</button>
             </div>
         </div>
     </div>
