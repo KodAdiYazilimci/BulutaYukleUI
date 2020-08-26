@@ -11,6 +11,7 @@ import { CommentItemModel } from "../../models/model.commentitem";
 import { HistoryComponent } from '../history/component.history';
 import { HistoryItemModel } from 'src/app/models/model.historyitem';
 import { PermissionComponent } from '../permission/component.permission';
+import { PropertyComponent } from '../properties/component.property';
 
 @Component({
     selector: "grid",
@@ -35,6 +36,9 @@ export class GridComponent implements OnInit {
 
     @ViewChild(PermissionComponent, { static: true })
     private permissionsWindow: PermissionComponent;
+
+    @ViewChild(PropertyComponent, { static: true })
+    private propertiesWindow: PropertyComponent;
 
     constructor() { }
 
@@ -107,6 +111,14 @@ export class GridComponent implements OnInit {
         permissionItem.text = "Yetkiler";
         permissionItem.logo = "/assets/images/group.png";
         contextMenuItems.push(permissionItem);
+
+
+        let propertiesItem: ContextMenuItemModel = new ContextMenuItemModel();
+        propertiesItem.index = ContextMenuTypes.Properties();
+        propertiesItem.splitted = true;
+        propertiesItem.text = "Özellikler";
+        propertiesItem.logo = "/assets/images/info.png";
+        contextMenuItems.push(propertiesItem);
 
         let contextMenuTitle: string = ""
         if (itemType == ItemTypes.folder()) {
@@ -182,6 +194,30 @@ export class GridComponent implements OnInit {
             let solidPermissions: Array<PermissionModel> = new Array<PermissionModel>();
 
             this.permissionsWindow.show(title, groupPermissions, userPermissions, solidPermissions);
+        } else if (item.index == ContextMenuTypes.Properties()) {
+            let title: string = "";
+            let logo: string = "";
+            if (this.selectedItemType == ItemTypes.folder()) {
+                title = "Klasör Özellikleri";
+                logo = "/assets/images/folder.png";
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                title = "Dosya Özellikleri";
+                logo = "/assets/images/file.png";
+            } else if (this.selectedItemType == ItemTypes.disk()) {
+                title = "Disk Özellikleri";
+                logo = "/assets/images/disk.png";
+            }
+            this.propertiesWindow.content = "3 Klasör 2 Dosya";
+            this.propertiesWindow.createDate = new Date().toDateString();
+            this.propertiesWindow.creatorUser = "serkancamur@gmail.com";
+            this.propertiesWindow.crypted = "Hayır";
+            this.propertiesWindow.itemType = "Klasör";
+            this.propertiesWindow.location = "Sanal Disk HDD/Klasör";
+            this.propertiesWindow.modifierUser = "serkancamur@gmail.com";
+            this.propertiesWindow.modifyDate = new Date().toDateString();
+            this.propertiesWindow.permissions = "Full";
+            this.propertiesWindow.size = "347.54 KB";
+            this.propertiesWindow.show(title, logo, "Test");
         }
         this.contextMenu.visible = false;
     }

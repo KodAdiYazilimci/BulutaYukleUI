@@ -1,19 +1,19 @@
-<div ngClass="properties">
+<div ngClass="properties" *ngIf="visible">
     <div ngClass="propertiesTitle">
         <div ngClass="propertiesTitleText">
-            <span name="propertiesTitle"></span>
+            <span name="propertiesTitle">{{title}}</span>
         </div>
-        <div ngClass="propertiesTitleClose" onclick="propertiesWindow.hide();">
+        <div ngClass="propertiesTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
     <div ngClass="propertiesContent">
         <div ngClass="propertiesLine bottomBorder">
             <div ngClass="propertiesLineLeft">
-                <img src="/assets/images/folder.png" name="propertiesImage">
+                <img src="{{logo}}" name="propertiesImage">
             </div>
             <div ngClass="propertiesLineRight">
-                <input type="text" name="propertiesName">
+                <input type="text" name="propertiesName" [(ngModel)]="name" value="{{name}}">
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -21,7 +21,7 @@
                 <span>Tip:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesType"></span>
+                <span name="propertiesType">{{itemType}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -29,7 +29,7 @@
                 <span>Konum:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <input readonly="" name="propertiesLocation" type="text">
+                <input readonly="" name="propertiesLocation" type="text" value="{{location}}">
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -37,7 +37,7 @@
                 <span>Boyut:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesSize"></span>
+                <span name="propertiesSize">{{size}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine bottomBorder">
@@ -45,7 +45,7 @@
                 <span>Içerik:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesContent"></span>
+                <span name="propertiesContent">{{content}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -53,7 +53,7 @@
                 <span>Sifreli mi?:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesCrypted">Hayır</span>
+                <span name="propertiesCrypted">{{crypted}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine bottomBorder">
@@ -61,7 +61,7 @@
                 <span>Erisim:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesAccess"></span>
+                <span name="propertiesAccess">{{permissions}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -69,7 +69,7 @@
                 <span>Oluşturulma Tarihi:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesCreatedAt"></span>
+                <span name="propertiesCreatedAt">{{createDate}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -77,7 +77,7 @@
                 <span>Olusturan:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesCreator"></span>
+                <span name="propertiesCreator">{{creatorUser}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -85,7 +85,7 @@
                 <span>Değiştirilme Tarihi:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesEditedAt"></span>
+                <span name="propertiesEditedAt">{{modifyDate}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine bottomBorder">
@@ -93,7 +93,7 @@
                 <span>Degistiren:</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <span name="propertiesEditor"></span>
+                <span name="propertiesEditor">{{modifierUser}}</span>
             </div>
         </div>
         <div ngClass="propertiesLine">
@@ -101,8 +101,8 @@
                 <span>&nbsp;</span>
             </div>
             <div ngClass="propertiesLineRight">
-                <button ngClass="propertiesLineRightAlignedRightButton" name="propertiesOk">Tamam</button>
-                <button name="propertiesCancel">Iptal</button>
+                <button ngClass="propertiesLineRightAlignedRightButton" name="propertiesOk" (click)="Ok();">Tamam</button>
+                <button name="propertiesCancel" (click)="hide();">Iptal</button>
             </div>
         </div>
     </div>

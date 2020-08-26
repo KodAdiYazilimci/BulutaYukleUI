@@ -9,4 +9,7 @@ export class ContextMenuTypes {
     public static Permissions(): number {
         return 2;
     }
+    public static Properties(): number {
+        return 3;
+    }
 }
