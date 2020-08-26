@@ -5,4 +5,8 @@ export class ContextMenuTypes {
     public static Histories(): number {
         return 1;
     }
+
+    public static Permissions(): number {
+        return 2;
+    }
 }

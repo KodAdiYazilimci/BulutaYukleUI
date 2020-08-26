@@ -17,6 +17,8 @@ import { DialogComponent } from "../app/components/dialog/component.dialog";
 import { CommentComponent } from "../app/components/comment/component.comment";
 import { PropertyComponent } from "../app/components/properties/component.property";
 import { ProgressComponent } from "../app/components/progress/component.progress";
+import { PermissionGroupComponent } from "../app/components/permission/component.permissiongroup";
+import { PermissionUserComponent } from "../app/components/permission/component.permissionuser";
 
 import { from } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -26,7 +28,8 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     IndexComponent, FolderSideComponent, ContentSideComponent, FolderPathComponent,
     GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
-    FormComponent, DialogComponent, CommentComponent, PropertyComponent, ProgressComponent
+    FormComponent, DialogComponent, CommentComponent, PropertyComponent, ProgressComponent,
+    PermissionGroupComponent, PermissionUserComponent
   ],
   imports: [
     BrowserModule,

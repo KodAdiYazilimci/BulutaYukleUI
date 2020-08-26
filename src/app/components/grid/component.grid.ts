@@ -10,6 +10,7 @@ import { CommentComponent } from '../comment/component.comment';
 import { CommentItemModel } from "../../models/model.commentitem";
 import { HistoryComponent } from '../history/component.history';
 import { HistoryItemModel } from 'src/app/models/model.historyitem';
+import { PermissionComponent } from '../permission/component.permission';
 
 @Component({
     selector: "grid",
@@ -31,6 +32,9 @@ export class GridComponent implements OnInit {
 
     @ViewChild(HistoryComponent, { static: true })
     private historiesWindow: HistoryComponent;
+
+    @ViewChild(PermissionComponent, { static: true })
+    private permissionsWindow: PermissionComponent;
 
     constructor() { }
 
@@ -97,6 +101,13 @@ export class GridComponent implements OnInit {
         historyItem.logo = "/assets/images/date.png";
         contextMenuItems.push(historyItem);
 
+        let permissionItem: ContextMenuItemModel = new ContextMenuItemModel();
+        permissionItem.index = ContextMenuTypes.Permissions();
+        permissionItem.splitted = true;
+        permissionItem.text = "Yetkiler";
+        permissionItem.logo = "/assets/images/group.png";
+        contextMenuItems.push(permissionItem);
+
         let contextMenuTitle: string = ""
         if (itemType == ItemTypes.folder()) {
             contextMenuTitle = "Klasör Seçenekleri";
@@ -156,6 +167,21 @@ export class GridComponent implements OnInit {
             histories.push(historyItem);
 
             this.historiesWindow.show(title, histories);
+        } else if (item.index == ContextMenuTypes.Permissions()) {
+            let title: string = "";
+            if (this.selectedItemType == ItemTypes.folder()) {
+                title = "Klasör Yetkileri";
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                title = "Dosya Yetkileri";
+            } else if (this.selectedItemType == ItemTypes.disk()) {
+                title = "Disk Yetkileri";
+            }
+
+            let groupPermissions: Array<PermissionModel> = new Array<PermissionModel>();
+            let userPermissions: Array<PermissionModel> = new Array<PermissionModel>();
+            let solidPermissions: Array<PermissionModel> = new Array<PermissionModel>();
+
+            this.permissionsWindow.show(title, groupPermissions, userPermissions, solidPermissions);
         }
         this.contextMenu.visible = false;
     }

@@ -9,7 +9,6 @@
     margin-left: 33%;
     margin-top: 5%;
     border: 3px solid gray;
-    display: none;
 }
 
 .permissionTitle {
@@ -105,93 +104,4 @@
     height: 70%;
     margin-top: 3px;
     cursor: pointer;
-}
-
-.permissionGroup {
-    float: none;
-    height: 150px;
-    width: 250px;
-    position: fixed;
-    left: 0;
-    top: 0;
-    margin-left: 50%;
-    margin-top: 15%;
-    border: 3px solid gray;
-    background-color: lightgray;
-    display: none;
-}
-
-.permissionGroupTitle {
-    float: none;
-    height: 20px;
-    width: 100%;
-    background-color: gray;
-}
-
-.permissionGroupTitleText {
-    float: left;
-    height: 100%;
-    width: 92%;
-    line-height: 20px;
-    cursor: move;
-}
-
-.permissionGroupTitleText span {
-    font-size: 12px;
-    color: lightgray;
-    margin-left: 3%;
-}
-
-.permissionGroupTitleClose {
-    float: left;
-    width: 5%;
-    height: 100%;
-}
-
-.permissionGroupTitleClose img {
-    height: 100%;
-}
-
-.permissionGroupLine {
-    float: none;
-    height: 20px;
-    width: 100%;
-    line-height: 20px;
-    font-size: 14px;
-    color: gray;
-    margin-top: 10px;
-}
-
-.permissionGroupLineLeft {
-    float: left;
-    width: 20%;
-    height: 100%;
-    margin-left: 5%;
-}
-
-.permissionGroupLineRight {
-    float: left;
-    width: 75%;
-    height: 100%;
-}
-
-.permissionGroupLineRight select {
-    width: 70%;
-    height: 100%;
-    margin-left: 5%;
-    background-color: lightgray;
-    color: darkslategray;
-    cursor: pointer;
-}
-
-.permissionGroupLineMiddle {
-    float: left;
-    height: 100%;
-    font-size: 14px;
-    margin-left: 5px;
-    cursor: pointer;
-}
-
-.permissionGroupLineMiddle button {
-    background-color: lightgray;
 }

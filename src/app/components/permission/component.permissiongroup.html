@@ -1,0 +1,63 @@
+<div class="permissionGroup" name="addPermissionGroup" *ngIf="visible">
+    <div class="permissionGroupTitle">
+        <div class="permissionGroupTitle">
+            <div class="permissionGroupTitleText">
+                <span name="permissionGroupTitle">Grup Yetkilendir</span>
+            </div>
+            <div class="permissionGroupTitleClose" (click)="hide();">
+                <img src="/assets/images/close.png">
+            </div>
+        </div>
+    </div>
+    <div class="permissionGroupLine">
+        <div class="permissionGroupLineLeft">
+            <span>Grup:</span>
+        </div>
+        <div class="permissionGroupLineRight">
+            <select name="addPermissionSelectedUser" [(ngModel)]="selectedGroupId">
+                <option [ngValue]="group.id" *ngFor="let group of userGroups; let i =index;">{{group.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="permissionGroupLine">
+        <div class="permissionGroupLineLeft">
+            <span>Yetkiler:</span>
+        </div>
+        <div class="permissionGroupLineRight">
+            <div class="permissionGroupLineRight">
+                <div class="permissionGroupLineMiddle">
+                    <input type="checkbox" [(ngModel)]="checkedRead" checked={{checkedRead}}><span>Okuma</span>
+                </div>
+                <div class="permissionGroupLineMiddle">
+                    <input type="checkbox" [(ngModel)]="checkedWrite" checked={{checkedWrite}}><span>Yazma</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="permissionGroupLine">
+        <div class="permissionGroupLineLeft">
+            <span>&nbsp;</span>
+        </div>
+        <div class="permissionGroupLineRight">
+            <div class="permissionGroupLineMiddle">
+                <input type="checkbox" [(ngModel)]="checkedDelete" checked={{checkedDelete}}><span>Silme &nbsp;</span>
+            </div>
+            <div class="permissionGroupLineMiddle">
+                <input type="checkbox" [(ngModel)]="checkedFull" checked={{checkedFull}}><span>Tam Yetki</span>
+            </div>
+        </div>
+    </div>
+    <div class="permissionGroupLine">
+        <div class="permissionGroupLineLeft">
+            <span>&nbsp;</span>
+        </div>
+        <div class="permissionGroupLineRight">
+            <div class="permissionGroupLineMiddle">
+                <button name="addPermissionGroupOk">Tamam</button>
+            </div>
+            <div class="permissionGroupLineMiddle">
+                <button (click)="hide();">Vazgeç</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,175 +1,64 @@
-<div ngClass="permissionsScreen" itemid="0" itemtype="0">
-    <div ngClass="permissionTitle">
-        <div ngClass="permissionTitleText">
-            <span name="permissionTitle">Klasör Yetkileri</span>
+<div class="permissionsScreen" *ngIf="visible">
+    <div class="permissionTitle">
+        <div class="permissionTitleText">
+            <span name="permissionTitle">{{title}}</span>
         </div>
-        <div ngClass="permissionTitleClose" onclick="permissionWindow.hide();">
+        <div class="permissionTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
-    <div ngClass="permissionContent">
-        <div ngClass="permissionFrame">
-            <div ngClass="permissionTitle">
-                <div ngClass="permissionTitleText">
+    <div class="permissionContent">
+        <div class="permissionFrame">
+            <div class="permissionTitle">
+                <div class="permissionTitleText">
                     <span>Gruplar</span>
                 </div>
-                <div ngClass="permissionTitleClose" onclick="permissionWindow.showAddPermissionGroup();">
+                <div class="permissionTitleClose" (click)="showAddPermissionGroup();">
                     <img src="/assets/images/plus.png">
                 </div>
             </div>
-            <div ngClass="permissionFrameContent" name="permissionGroup">
+            <div class="permissionFrameContent" name="permissionGroup">
+                <div class="permissionLine" *ngFor="let group of groups">
+                    <div class="permissionLineLogo"><img src="{{group.logo}}"></div>
+                    <div class="permissionLineText"><span>{{group.text}}</span></div>
+                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil" (click)="deletePermissionUserItem();"></div>
+                </div>
             </div>
         </div>
-        <div ngClass="permissionFrame">
-            <div ngClass="permissionTitle">
-                <div ngClass="permissionTitleText">
+        <div class="permissionFrame">
+            <div class="permissionTitle">
+                <div class="permissionTitleText">
                     <span>Kullanicilar</span>
                 </div>
-                <div ngClass="permissionTitleClose" onclick="permissionWindow.showAddPermissionUser();">
+                <div class="permissionTitleClose" (click)="showAddPermissionUser();">
                     <img src="/assets/images/plus.png">
                 </div>
             </div>
-            <div ngClass="permissionFrameContent" name="permissionUser">
+            <div class="permissionFrameContent" name="permissionUser">
+                <div class="permissionLine" *ngFor="let user of users">
+                    <div class="permissionLineLogo"><img src="{{user.logo}}"></div>
+                    <div class="permissionLineText"><span>{{user.text}}</span></div>
+                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil" (click)="deletePermissionUserItem();"></div>
+                </div>
             </div>
         </div>
-        <div ngClass="permissionFrame">
-            <div ngClass="permissionTitle">
-                <div ngClass="permissionTitleText">
+        <div class="permissionFrame">
+            <div class="permissionTitle">
+                <div class="permissionTitleText">
                     <span>Sabit Erisim Yetkililer</span>
                 </div>
-                <div ngClass="permissionTitleClose">
+                <div class="permissionTitleClose">
                 </div>
             </div>
-            <div ngClass="permissionFrameContent" name="solidPermissionUserAndGroups">
+            <div class="permissionFrameContent" name="solidPermissionUserAndGroups">
+                <div class="permissionLine" *ngFor="let solid of solidPermissions">
+                    <div class="permissionLineLogo"><img src="{{solid.logo}}"></div>
+                    <div class="permissionLineText"><span>{{solid.text}}</span></div>
+                    <div class="permissionLineFunctions"></div>
+                </div>
             </div>
         </div>
     </div>
 </div>
-<div ngClass="permissionGroup" name="addPermissionGroup">
-    <div ngClass="permissionGroupTitle">
-        <div ngClass="permissionGroupTitle">
-            <div ngClass="permissionGroupTitleText">
-                <span name="permissionGroupTitle">Grup Yetkilendir</span>
-            </div>
-            <div ngClass="permissionGroupTitleClose" onclick="permissionWindow.hideAddPermissionGroup();">
-                <img src="/assets/images/close.png">
-            </div>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>Grup:</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <select name="addPermissionSelectedGroup">
-                <option>Test Grubu</option>
-                <option>Yönetici Grubu</option>
-            </select>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>Yetkiler:</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <div ngClass="permissionGroupLineRight">
-                <div ngClass="permissionGroupLineMiddle">
-                    <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionGroup" permissiontype="2"><span>Okuma</span>
-                </div>
-                <div ngClass="permissionGroupLineMiddle">
-                    <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionGroup" permissiontype="3"><span>Yazma</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>&nbsp;</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <div ngClass="permissionGroupLineMiddle">
-                <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionGroup" permissiontype="4"><span>Silme &nbsp;</span>
-            </div>
-            <div ngClass="permissionGroupLineMiddle">
-                <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionGroup" permissiontype="1"><span>Tam Yetki</span>
-            </div>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>&nbsp;</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <div ngClass="permissionGroupLineMiddle">
-                <button name="addPermissionGroupOk">Tamam</button>
-            </div>
-            <div ngClass="permissionGroupLineMiddle">
-                <button onclick="permissionWindow.hideAddPermissionGroup();">Vazgeç</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div ngClass="permissionGroup" name="addPermissionUser">
-    <div ngClass="permissionGroupTitle">
-        <div ngClass="permissionGroupTitle">
-            <div ngClass="permissionGroupTitleText">
-                <span name="permissionGroupTitle">Kullanici Yetkilendir</span>
-            </div>
-            <div ngClass="permissionGroupTitleClose" onclick="permissionWindow.hideAddPermissionUser();">
-                <img src="/assets/images/close.png">
-            </div>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>Kullanici:</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <select name="addPermissionSelectedUser">
-                <option>Test Kullanıcısı</option>
-                <option>Yönetici Kullanıcısı</option>
-            </select>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>Yetkiler:</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <div ngClass="permissionGroupLineRight">
-                <div ngClass="permissionGroupLineMiddle">
-                    <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionUser" permissiontype="2"><span>Okuma</span>
-                </div>
-                <div ngClass="permissionGroupLineMiddle">
-                    <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionUser" permissiontype="3"><span>Yazma</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>&nbsp;</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <div ngClass="permissionGroupLineMiddle">
-                <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionUser" permissiontype="4"><span>Silme &nbsp;</span>
-            </div>
-            <div ngClass="permissionGroupLineMiddle">
-                <input type="checkbox" value="0" name="permissionCheckbox" itemgroup="addPermissionUser" permissiontype="1"><span>Tam Yetki</span>
-            </div>
-        </div>
-    </div>
-    <div ngClass="permissionGroupLine">
-        <div ngClass="permissionGroupLineLeft">
-            <span>&nbsp;</span>
-        </div>
-        <div ngClass="permissionGroupLineRight">
-            <div ngClass="permissionGroupLineMiddle">
-                <button name="addPermissionUserOk">Tamam</button>
-            </div>
-            <div ngClass="permissionGroupLineMiddle">
-                <button onclick="permissionWindow.hideAddPermissionUser();">Vazgeç</button>
-            </div>
-        </div>
-    </div>
-</div>
+<permissiongroup></permissiongroup>
+<permissionuser></permissionuser>
