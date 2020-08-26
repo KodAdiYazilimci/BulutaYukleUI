@@ -1,47 +1,23 @@
-<div ngClass="history">
+<div ngClass="history" *ngIf="visible">
     <div ngClass="historyTitle">
         <div ngClass="historyTitleText">
             <span name="historyTitle">
-                Klasör Geçmişi
+                {{title}}
             </span>
         </div>
-        <div ngClass="historyTitleClose" onclick="historyWindow.hide();">
+        <div ngClass="historyTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
     <div ngClass="historyContent">
-        <div ngClass="historyLine">
+        <div ngClass="historyLine" *ngFor="let item of items">
             <div ngClass="historyLineLogo">
-                <img src="/assets/images/folder.png">
+                <img src="{{item.logo}}">
             </div>
             <div ngClass="historyLineText bottomBorder">
-                <span>01.01.2010 23:44</span>
+                <span>{{item.date}}</span>
                 <span>|</span>
-                <span>Klasör Oluşturuldu</span>
-            </div>
-            <div ngClass="historyLineFunctions">
-            </div>
-        </div>
-        <div ngClass="historyLine">
-            <div ngClass="historyLineLogo">
-                <img src="/assets/images/file.png">
-            </div>
-            <div ngClass="historyLineText bottomBorder">
-                <span>01.01.2010 23:44</span>
-                <span>|</span>
-                <span>Dosya Oluşturuldu</span>
-            </div>
-            <div ngClass="historyLineFunctions">
-            </div>
-        </div>
-        <div ngClass="historyLine">
-            <div ngClass="historyLineLogo">
-                <img src="/assets/images/file.png">
-            </div>
-            <div ngClass="historyLineText bottomBorder">
-                <span>01.01.2010 23:44</span>
-                <span>|</span>
-                <span>Dosya Silindi</span>
+                <span>{{item.text}}</span>
             </div>
             <div ngClass="historyLineFunctions">
             </div>

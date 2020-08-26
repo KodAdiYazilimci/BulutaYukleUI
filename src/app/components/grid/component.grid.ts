@@ -5,8 +5,11 @@ import { GridItemModel } from "../../models/model.gridItem";
 import { PermissionModel } from 'src/app/models/model.permission';
 import { ContextMenuItemModel } from 'src/app/models/model.contextmenuitem';
 import { ItemTypes } from "../../util/util.itemtypes";
+import { ContextMenuTypes } from "../../util/util.contextmenutypes";
 import { CommentComponent } from '../comment/component.comment';
 import { CommentItemModel } from "../../models/model.commentitem";
+import { HistoryComponent } from '../history/component.history';
+import { HistoryItemModel } from 'src/app/models/model.historyitem';
 
 @Component({
     selector: "grid",
@@ -14,23 +17,22 @@ import { CommentItemModel } from "../../models/model.commentitem";
     styleUrls: ["./component.grid.css"]
 })
 export class GridComponent implements OnInit {
-
-    @ViewChild(ContextMenuComponent, { static: true })
-    private contextMenu: ContextMenuComponent;
-
     private selectedItemType: number;
     private selectedItemId: number;
-
-    @ViewChild(CommentComponent, { static: true })
-    private commentsWindow: CommentComponent;
 
     public diskId = 99;
     public gridItems: Array<GridItemModel>;
 
-    constructor() {
+    @ViewChild(ContextMenuComponent, { static: true })
+    private contextMenu: ContextMenuComponent;
 
+    @ViewChild(CommentComponent, { static: true })
+    private commentsWindow: CommentComponent;
 
-    }
+    @ViewChild(HistoryComponent, { static: true })
+    private historiesWindow: HistoryComponent;
+
+    constructor() { }
 
     ngOnInit(): void {
         this.gridItems = new Array<GridItemModel>();
@@ -81,12 +83,19 @@ export class GridComponent implements OnInit {
         this.contextMenu.marginTop = event.y + "px";
 
         let contextMenuItems: Array<ContextMenuItemModel> = new Array<ContextMenuItemModel>();
-        let item: ContextMenuItemModel = new ContextMenuItemModel();
-        item.index = 0;
-        item.splitted = true;
-        item.text = "Test";
-        item.logo = "/assets/images/upload.png";
-        contextMenuItems.push(item);
+        let commentsItem: ContextMenuItemModel = new ContextMenuItemModel();
+        commentsItem.index = ContextMenuTypes.Comments();
+        commentsItem.splitted = true;
+        commentsItem.text = "Yorumlar";
+        commentsItem.logo = "/assets/images/comment.png";
+        contextMenuItems.push(commentsItem);
+
+        let historyItem: ContextMenuItemModel = new ContextMenuItemModel();
+        historyItem.index = ContextMenuTypes.Histories();
+        historyItem.splitted = true;
+        historyItem.text = "İşlem Geçmişi";
+        historyItem.logo = "/assets/images/date.png";
+        contextMenuItems.push(historyItem);
 
         let contextMenuTitle: string = ""
         if (itemType == ItemTypes.folder()) {
@@ -109,7 +118,7 @@ export class GridComponent implements OnInit {
     }
 
     public onContextMenuItemClicked(item: ContextMenuItemModel): void {
-        if (item.index == 0) {
+        if (item.index == ContextMenuTypes.Comments()) {
             let title: string = "";
             if (this.selectedItemType == ItemTypes.folder()) {
                 title = "Klasör Yorumları";
@@ -129,6 +138,24 @@ export class GridComponent implements OnInit {
             comments.push(comment);
 
             this.commentsWindow.show(title, this.selectedItemType, this.selectedItemId, comments);
+        } else if (item.index == ContextMenuTypes.Histories()) {
+            let title: string = "";
+            if (this.selectedItemType == ItemTypes.folder()) {
+                title = "Klasör Geçmişi";
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                title = "Dosya Geçmişi";
+            } else if (this.selectedItemType == ItemTypes.disk()) {
+                title = "Disk Geçmişi";
+            }
+
+            let histories: Array<HistoryItemModel> = new Array<HistoryItemModel>();
+            let historyItem: HistoryItemModel = new HistoryItemModel();
+            historyItem.date = new Date().getDate().toLocaleString();
+            historyItem.text = "Sanal HDD/Battlefield 4 [Oyunindir.vip].torrent dosyasi olusturuldu.";
+            historyItem.logo = "/assets/images/folder.png";
+            histories.push(historyItem);
+
+            this.historiesWindow.show(title, histories);
         }
         this.contextMenu.visible = false;
     }
