@@ -16,6 +16,8 @@ import { DialogYesNoComponent } from '../dialog/component.dialogyesno';
 import { DialogReadOnlyInputComponent } from '../dialog/component.dialogreadonlyinput';
 import { DialogInputComponent } from '../dialog/component.dialoginput';
 import { DialogInfoComponent } from '../dialog/component.dialoginfo';
+import { DialogPasswordConfirmComponent } from '../dialog/component.dialogpasswordconfirm';
+import { PasswordConfirmModel } from 'src/app/models/model.passwordconfirm';
 
 @Component({
     selector: "grid",
@@ -55,6 +57,9 @@ export class GridComponent implements OnInit {
 
     @ViewChild(DialogInfoComponent, { static: true })
     private infoDialog: DialogInfoComponent;
+
+    @ViewChild(DialogPasswordConfirmComponent, { static: true })
+    private passwordConfirmDialog: DialogPasswordConfirmComponent;
 
     constructor() { }
 
@@ -148,6 +153,13 @@ export class GridComponent implements OnInit {
         renameItem.text = "Yeniden Adlandır";
         renameItem.logo = "/assets/images/share.png";
         contextMenuItems.push(renameItem);
+
+        let lockItem: ContextMenuItemModel = new ContextMenuItemModel();
+        lockItem.index = ContextMenuTypes.Lock();
+        lockItem.splitted = true;
+        lockItem.text = "Kilitle";
+        lockItem.logo = "/assets/images/lockfile.png";
+        contextMenuItems.push(lockItem);
 
         let contextMenuTitle: string = ""
         if (itemType == ItemTypes.folder()) {
@@ -266,14 +278,49 @@ export class GridComponent implements OnInit {
 
             this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
             this.inputDialog.show(title, message, "İsim giriniz..");
+        } else if (item.index == ContextMenuTypes.Lock()) {
+            let title: string = "";
+            let message: string = "";
+            if (this.selectedItemType == ItemTypes.folder()) {
+                title = "Klasörü Kilitle";
+                message = "Klasörü kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                title = "Dosyayı Kilitle";
+                message = "Dosyayı kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
+            } else if (this.selectedItemType == ItemTypes.disk()) {
+                title = "Diski Kilitle";
+                message = "Diski kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
+            }
+            this.passwordConfirmDialog.onOkClicked.subscribe(event => this.onLockedItem(event));
+            this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
         }
         this.contextMenu.visible = false;
+    }
+    private onLockedItem(model: PasswordConfirmModel): void {
+        if (model.passwordFirst.length == 0 || model.passwordSecond.length == 0 || model.passwordFirst != model.passwordSecond) {
+            this.infoDialog.onClickedOk.subscribe(event => {
+                let title: string = "";
+                let message: string = "";
+                if (this.selectedItemType == ItemTypes.folder()) {
+                    title = "Klasörü Kilitle";
+                    message = "Klasörü kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
+                } else if (this.selectedItemType == ItemTypes.file()) {
+                    title = "Dosyayı Kilitle";
+                    message = "Dosyayı kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
+                } else if (this.selectedItemType == ItemTypes.disk()) {
+                    title = "Diski Kilitle";
+                    message = "Diski kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
+                }
+                this.passwordConfirmDialog.onOkClicked.subscribe(event => this.onLockedItem(event));
+                this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
+            });
+            this.infoDialog.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
+        }
     }
     public onAcceptInternetSharing(): void {
         this.readonlyDialog.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", "http://www...")
     }
     public onRenamed(value: string) {
-        console.log(value);
         if (value.length == 0) {
             this.infoDialog.onClickedOk.subscribe(event => {
                 let title: string = "";

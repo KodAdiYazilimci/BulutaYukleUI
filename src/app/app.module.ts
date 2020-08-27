@@ -22,6 +22,7 @@ import { PermissionGroupComponent } from "../app/components/permission/component
 import { PermissionUserComponent } from "../app/components/permission/component.permissionuser";
 import { DialogInputComponent } from "../app/components/dialog/component.dialoginput";
 import { DialogInfoComponent } from "../app/components/dialog/component.dialoginfo";
+import { DialogPasswordConfirmComponent } from "../app/components/dialog/component.dialogpasswordconfirm";
 
 import { from } from 'rxjs';
 import { FormsModule } from '@angular/forms';
@@ -32,7 +33,7 @@ import { FormsModule } from '@angular/forms';
     IndexComponent, FolderSideComponent, ContentSideComponent, FolderPathComponent,
     GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
     FormComponent,
-    DialogYesNoComponent, DialogReadOnlyInputComponent, DialogInputComponent, DialogInfoComponent,
+    DialogYesNoComponent, DialogReadOnlyInputComponent, DialogInputComponent, DialogInfoComponent, DialogPasswordConfirmComponent,
     CommentComponent, PropertyComponent, ProgressComponent,
     PermissionGroupComponent, PermissionUserComponent
   ],

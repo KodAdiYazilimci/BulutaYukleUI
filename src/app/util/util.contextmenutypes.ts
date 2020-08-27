@@ -18,4 +18,7 @@ export class ContextMenuTypes {
     public static Rename(): number {
         return 5;
     }
+    public static Lock(): number {
+        return 6;
+    }
 }
