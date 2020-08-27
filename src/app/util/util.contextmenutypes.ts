@@ -15,4 +15,7 @@ export class ContextMenuTypes {
     public static Share(): number {
         return 4;
     }
+    public static Rename(): number {
+        return 5;
+    }
 }

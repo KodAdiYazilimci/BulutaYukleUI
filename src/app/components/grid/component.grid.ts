@@ -14,6 +14,8 @@ import { PermissionComponent } from '../permission/component.permission';
 import { PropertyComponent } from '../properties/component.property';
 import { DialogYesNoComponent } from '../dialog/component.dialogyesno';
 import { DialogReadOnlyInputComponent } from '../dialog/component.dialogreadonlyinput';
+import { DialogInputComponent } from '../dialog/component.dialoginput';
+import { DialogInfoComponent } from '../dialog/component.dialoginfo';
 
 @Component({
     selector: "grid",
@@ -47,6 +49,12 @@ export class GridComponent implements OnInit {
 
     @ViewChild(DialogReadOnlyInputComponent, { static: true })
     private readonlyDialog: DialogReadOnlyInputComponent;
+
+    @ViewChild(DialogInputComponent, { static: true })
+    private inputDialog: DialogInputComponent;
+
+    @ViewChild(DialogInfoComponent, { static: true })
+    private infoDialog: DialogInfoComponent;
 
     constructor() { }
 
@@ -133,6 +141,13 @@ export class GridComponent implements OnInit {
         shareItem.text = "Paylaş";
         shareItem.logo = "/assets/images/share.png";
         contextMenuItems.push(shareItem);
+
+        let renameItem: ContextMenuItemModel = new ContextMenuItemModel();
+        renameItem.index = ContextMenuTypes.Rename();
+        renameItem.splitted = true;
+        renameItem.text = "Yeniden Adlandır";
+        renameItem.logo = "/assets/images/share.png";
+        contextMenuItems.push(renameItem);
 
         let contextMenuTitle: string = ""
         if (itemType == ItemTypes.folder()) {
@@ -235,10 +250,50 @@ export class GridComponent implements OnInit {
         } else if (item.index == ContextMenuTypes.Share()) {
             this.yesNoDialog.onYesClicked.subscribe(event => this.onAcceptInternetSharing());
             this.yesNoDialog.show("Uyarı", "Seçtiginiz ögeyi/ögeleri internete açik halde paylasmak istediginize emin misiniz?");
+        } else if (item.index == ContextMenuTypes.Rename()) {
+            let title: string = "";
+            let message: string = "";
+            if (this.selectedItemType == ItemTypes.folder()) {
+                title = "Klasörü Yeniden Adlandır";
+                message = "Klasörün yeni adini giriniz:";
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                title = "Dosyayı Yeniden Adlandır";
+                message = "Dosyanin yeni adini giriniz:";
+            } else if (this.selectedItemType == ItemTypes.disk()) {
+                title = "Diski Yeniden Adlandır";
+                message = "Diskin yeni adini giriniz:";
+            }
+
+            this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
+            this.inputDialog.show(title, message, "İsim giriniz..");
         }
         this.contextMenu.visible = false;
     }
     public onAcceptInternetSharing(): void {
-        this.readonlyDialog.show("Paylaşım Bağlantısı","Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.","http://www...")
+        this.readonlyDialog.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", "http://www...")
+    }
+    public onRenamed(value: string) {
+        console.log(value);
+        if (value.length == 0) {
+            this.infoDialog.onClickedOk.subscribe(event => {
+                let title: string = "";
+                let message: string = "";
+                if (this.selectedItemType == ItemTypes.folder()) {
+                    title = "Klasörü Yeniden Adlandır";
+                    message = "Klasörün yeni adini giriniz:";
+                } else if (this.selectedItemType == ItemTypes.file()) {
+                    title = "Dosyayı Yeniden Adlandır";
+                    message = "Dosyanin yeni adini giriniz:";
+                } else if (this.selectedItemType == ItemTypes.disk()) {
+                    title = "Diski Yeniden Adlandır";
+                    message = "Diskin yeni adini giriniz:";
+                }
+
+                this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
+                this.inputDialog.show(title, message, "İsim giriniz..");
+
+            });
+            this.infoDialog.show("Uyarı!", "Bir isim belirtiniz.");
+        }
     }
 }
