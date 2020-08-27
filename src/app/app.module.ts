@@ -1,8 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+
+import { DiskRepository } from "../app/repositories/repositories.disk";
+
+import { DiskService } from "../app/services/services.disk";
 
 import { IndexComponent } from "../app/components/index/component.index";
 import { FolderSideComponent } from "../app/components/folderside/component.folderside";
@@ -23,26 +28,28 @@ import { PermissionUserComponent } from "../app/components/permission/component.
 import { DialogInputComponent } from "../app/components/dialog/component.dialoginput";
 import { DialogInfoComponent } from "../app/components/dialog/component.dialoginfo";
 import { DialogPasswordConfirmComponent } from "../app/components/dialog/component.dialogpasswordconfirm";
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
-import { from } from 'rxjs';
-import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    IndexComponent, FolderSideComponent, ContentSideComponent, FolderPathComponent,
-    GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
-    FormComponent,
     DialogYesNoComponent, DialogReadOnlyInputComponent, DialogInputComponent, DialogInfoComponent, DialogPasswordConfirmComponent,
+    FormComponent,
+    AppComponent,
+    IndexComponent,
+    FolderSideComponent, ContentSideComponent, FolderPathComponent,
+    GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
     CommentComponent, PropertyComponent, ProgressComponent,
     PermissionGroupComponent, PermissionUserComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [DiskRepository,
+    { provide: HTTP_INTERCEPTORS, useClass: DiskService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

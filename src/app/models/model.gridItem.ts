@@ -10,7 +10,7 @@ export class GridItemModel {
     name: string;
     size: string;
     createDate: string;
-    updateDate: string;
+    modifyDate: string;
 
     permissions: Array<PermissionModel>;
 }

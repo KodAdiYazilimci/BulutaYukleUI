@@ -4,18 +4,15 @@
             <div ngClass="folderItem" name="pathTitle" currentlocation="2" locationid="40" diskid="40">
                 <span>Konum</span>
             </div>
-
-
-
-
+            <div ngClass="folderItem" *ngFor="let item of paths">
+                <img src="{{item.logo}}" /><span> {{item.name}}</span>
+            </div>
             <div ngClass="searchBar">
                 <img id="searchButton" src="/assets/images/search.png">
                 <img id="notify" src="/assets/images/bell.png">
 
             </div>
             <div name="notifications" ngClass="notifications"></div>
-            <div ngClass="folderItem" type="2" itemid="40"><img src="/assets/images/hdd.png"></div>
-            <div ngClass="folderItem" type="2" itemid="40"><span>Sanal HDD</span></div>
         </div>
     </div>
 

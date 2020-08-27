@@ -43,7 +43,7 @@
         </div>
     </div>
     <div ngClass="gridContent" (click)="hideContextMenu();">
-        <div ngClass="gridLine splitterBottom" *ngFor="let item of gridItems" gridlinechecked="0" (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+        <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0" (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
@@ -69,7 +69,40 @@
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
             <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;">
-                <span>{{item.updateDate}}</span>
+                <span>{{item.modifyDate}}</span>
+            </div>
+            <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
+            <div ngClass="permissionColumn" column="permission">
+                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20" *ngFor="let permission of item.permissions; let i = index;">
+            </div>
+        </div>
+        <div ngClass="gridLine splitterBottom" *ngFor="let item of content.files" gridlinechecked="0" (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+            <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
+                <input type="checkbox" name="select"></div>
+            <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
+                <img src="{{item.logo}}">
+            </div>
+            <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;">
+                <span grid>{{item.name}}</span>
+            </div>
+            <div ngClass="splitter" draggable="true" targetdrag="itemNameCol"></div>
+            <div ngClass="gridLogo" column="logo" style="width: 30px;">
+            </div>
+            <div ngClass="sizeCol wrappable" column="sizeCol" style="width: 50px;">
+                <span>{{item.size}}</span>
+            </div>
+            <div ngClass="splitter" draggable="true" targetdrag="sizeCol">
+            </div>
+            <div ngClass="gridLogo" column="logo" style="width: 30px;">
+            </div>
+            <div ngClass="dateColumn wrappable" column="createDateCol" style="width: 100px;">
+                <span>{{item.createDate}}</span>
+            </div>
+            <div ngClass="splitter" draggable="true" targetdrag="createDateCol"></div>
+            <div ngClass="gridLogo" column="logo" style="width: 30px;">
+            </div>
+            <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;">
+                <span>{{item.modifyDate}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
             <div ngClass="permissionColumn" column="permission">
