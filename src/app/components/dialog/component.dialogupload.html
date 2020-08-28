@@ -1,4 +1,4 @@
-<div ngClass="dialogProgress">
+<div ngClass="dialogProgress" *ngIf="visible">
     <div ngClass="dialogProgressTop">
         <div ngClass="dialogProgressTitle">
             <span>Yükle</span>
@@ -9,10 +9,11 @@
             <img src="/assets/images/upload.png">
         </div>
         <div ngClass="dialogProgressContent">
-            <input type="file" id="selectFile" name="file" multiple="multiple">
-            <div ngClass="progress">
-                <div ngClass="progress-bar"></div>
-                <div ngClass="progressValue">0%</div>
+            <input type="file" id="selectFile" name="file" multiple="multiple" (change)="upload($event);"
+                *ngIf="visibleSelectFile" />
+            <div ngClass="progress" *ngIf="visibleUploading">
+                <div ngClass="progress-bar" [ngStyle]="{'width':percentage+'%'}"></div>
+                <div ngClass="progressValue">% {{percentage}}</div>
                 <div id="status">Yükleniyor...</div>
             </div>
         </div>

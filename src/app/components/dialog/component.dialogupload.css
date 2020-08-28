@@ -9,6 +9,7 @@
 .progress-bar {
     width: 300px;
     height: 20px;
+    margin-top: 10px;
     background-color: #57be65;
 }
 
@@ -17,7 +18,7 @@
 }
 
 #selectFile {
-    visibility: hidden;
+    margin-top: 10px;
 }
 
 #status {
@@ -30,7 +31,7 @@
 
 .dialogProgress {
     width: 450px;
-    height: 100px;
+    height: 110px;
     background-color: lightgray;
     position: fixed;
     left: 0;
@@ -39,7 +40,6 @@
     margin-top: 5%;
     border: 3px solid gray;
     z-index: 3;
-    display: none;
 }
 
 .dialogProgressTop {
@@ -87,4 +87,5 @@
     display: inline-block;
     width: 85%;
     background-color: lightgray;
+    text-align: center;
 }

@@ -1,10 +1,7 @@
 export class ContextMenuItemModel {
     index: number;
-    text: string;
+    name: string;
     logo: string;
-    splitted: boolean;
-
-    public getStyleClass(): string {
-        return this.splitted ? "contextMenuLine splitterBottom" : "contextMenuLine";
-    }
+    enable:boolean;
+    splitBottom: boolean;
 }

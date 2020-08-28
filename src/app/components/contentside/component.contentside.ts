@@ -25,6 +25,6 @@ export class ContentSideComponent {
         let content: ContentModel = await this._diskService.getDiskContent(diskId);
 
         this.pathBar.loadPathBar(content.location);
-        this.grid.loadGridData(content);
+        this.grid.loadGridData(diskId, content);
     }
 }

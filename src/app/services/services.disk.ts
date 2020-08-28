@@ -6,14 +6,19 @@ import { catchError } from "rxjs/operators";
 import { DiskRepository } from "../repositories/repositories.disk";
 import { DiskModel } from '../models/model.disk';
 import { ContentModel } from '../models/model.content';
+import { ContextMenuItemModel } from '../models/model.contextmenuitem';
+import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
 
 @Injectable()
 export class DiskService implements OnInit, HttpInterceptor {
 
     private diskData: DiskModel = new DiskModel();
     private diskContent: ContentModel = new ContentModel();
+    private contextMenu: Array<ContextMenuItemModel>;
 
-    constructor(private _diskRepository: DiskRepository) {
+    constructor(
+        private _contextMenuRepository: ContextMenuRepository,
+        private _diskRepository: DiskRepository) {
 
     }
 
@@ -33,5 +38,10 @@ export class DiskService implements OnInit, HttpInterceptor {
     public async getDiskContent(diskId: number): Promise<ContentModel> {
         this.diskContent = (await this._diskRepository.getDiskContent(diskId)).resultObject;
         return this.diskContent;
+    }
+
+    public async getContextMenu(diskId: number): Promise<Array<ContextMenuItemModel>> {
+        this.contextMenu = (await this._contextMenuRepository.getContextMenuOfDisk(diskId)).resultObject;
+        return this.contextMenu;
     }
 }

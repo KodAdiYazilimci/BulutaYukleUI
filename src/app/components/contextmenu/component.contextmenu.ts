@@ -21,10 +21,14 @@ export class ContextMenuComponent implements OnInit {
     constructor() { }
 
     ngOnInit(): void {
-        
+
     }
 
-    public fillContextMenu(title: string, items: Array<ContextMenuItemModel>): void {
+    public hide(): void {
+        this.visible = false; 
+    }
+
+    public show(title: string, items: Array<ContextMenuItemModel>): void {
         this.items = items;
         this.title = title;
     }

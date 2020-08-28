@@ -7,7 +7,8 @@
             <div ngClass="gridLogo">
                 &nbsp;
             </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" orderway="true" ordername="Name" orderable="true" style="width: 424.219px;">
+            <div ngClass="itemName wrappable" column="itemNameCol" orderway="true" ordername="Name" orderable="true"
+                style="width: 424.219px;">
                 <span>İsim</span>
             </div>
             <div ngClass="splitter draggableSplitter" draggable="true" name="isimSplitter" targetdrag="itemNameCol">
@@ -15,7 +16,8 @@
             <div ngClass="gridLogo">
                 <img src="/assets/images/disksize.png">
             </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" orderway="true" ordername="Size" orderable="true" style="width: 50px;">
+            <div ngClass="sizeCol wrappable" column="sizeCol" orderway="true" ordername="Size" orderable="true"
+                style="width: 50px;">
                 <span>Boyut</span>
             </div>
             <div ngClass="splitter draggableSplitter" draggable="true" name="boyutSplitter" targetdrag="sizeCol">
@@ -23,17 +25,21 @@
             <div ngClass="gridLogo">
                 <img src="/assets/images/date.png">
             </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" orderway="true" ordername="CreateDate" orderable="true" style="width: 100px;">
+            <div ngClass="dateColumn wrappable" column="createDateCol" orderway="true" ordername="CreateDate"
+                orderable="true" style="width: 100px;">
                 <span>Oluşturulma Tarihi</span>
             </div>
-            <div ngClass="splitter draggableSplitter" draggable="true" name="olusturulmaSplitter" targetdrag="createDateCol"></div>
+            <div ngClass="splitter draggableSplitter" draggable="true" name="olusturulmaSplitter"
+                targetdrag="createDateCol"></div>
             <div ngClass="gridLogo">
                 <img src="/assets/images/date.png">
             </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" orderway="true" ordername="ModifyDate" orderable="true" style="width: 150px;">
+            <div ngClass="dateColumn wrappable" column="changeDateCol" orderway="true" ordername="ModifyDate"
+                orderable="true" style="width: 150px;">
                 <span>Değiştirilme Tarihi</span>
             </div>
-            <div ngClass="splitter draggableSplitter" draggable="true" name="degistirilmeSplitter" targetdrag="changeDateCol"></div>
+            <div ngClass="splitter draggableSplitter" draggable="true" name="degistirilmeSplitter"
+                targetdrag="changeDateCol"></div>
             <div ngClass="gridLogo">
                 <img src="/assets/images/person.png">
             </div>
@@ -43,7 +49,8 @@
         </div>
     </div>
     <div ngClass="gridContent" (click)="hideContextMenu();">
-        <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0" (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+        <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0"
+            (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
@@ -73,10 +80,12 @@
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
             <div ngClass="permissionColumn" column="permission">
-                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20" *ngFor="let permission of item.permissions; let i = index;">
+                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20"
+                    *ngFor="let permission of item.permissions; let i = index;">
             </div>
         </div>
-        <div ngClass="gridLine splitterBottom" *ngFor="let item of content.files" gridlinechecked="0" (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+        <div ngClass="gridLine splitterBottom" *ngFor="let item of content.files" gridlinechecked="0"
+            (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
@@ -106,10 +115,12 @@
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
             <div ngClass="permissionColumn" column="permission">
-                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20" *ngFor="let permission of item.permissions; let i = index;">
+                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20"
+                    *ngFor="let permission of item.permissions; let i = index;">
             </div>
         </div>
-        <div ngClass="gridLine" [ngStyle]="{'flex':1, 'height':'100%'}" (contextmenu)="showContextMenu($event,2,diskId);">
+        <div ngClass="gridLine" [ngStyle]="{'flex':1, 'height':'100%'}"
+            (contextmenu)="showContextMenu($event,2,currentDiskId);">
         </div>
         <div name="moveTo" ngClass="moveTo" style="display: none;">
             <span>Buraya Taşı</span>
@@ -125,3 +136,4 @@
     <dialoginput></dialoginput>
     <dialoginfo></dialoginfo>
     <dialogpasswordconfirm></dialogpasswordconfirm>
+    <dialogupload></dialogupload>
