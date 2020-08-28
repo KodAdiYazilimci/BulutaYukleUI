@@ -27,7 +27,15 @@ export class FolderRepository extends BaseRepository implements OnInit {
             this.baseUrl + "File/GetContentsByFolder", { headers: headers, params: params }).toPromise();
     }
 
-    public async createFolderInsideDisk(diskId: number, name: string) {
-        
+    public async createFolderOnDisk(diskId: number, name: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Content-Type", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/CreateFolder", {
+            "diskId": diskId,
+            "name": name
+        }, { headers: headers }).toPromise();
     }
 }

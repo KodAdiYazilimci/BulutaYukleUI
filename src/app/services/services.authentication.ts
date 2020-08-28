@@ -27,8 +27,8 @@ export class AuthenticationService implements OnInit, HttpInterceptor {
         if (serviceResult.isSuccess && serviceResult.resultObject.token.length > 0) {
             localStorage.setItem("token", serviceResult.resultObject.token);
             return true;
+        } else {
+            throw new Error(serviceResult.errorMessage);
         }
-
-        return false;
     }
 }

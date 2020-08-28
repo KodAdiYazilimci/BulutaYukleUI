@@ -9,15 +9,13 @@ import { ContentModel } from '../models/model.content';
 import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
 import { FolderRepository } from '../repositories/repositories.folder';
+import { ServiceResultData, ServiceResult } from '../models/model.serviceresult';
 
 @Injectable()
 export class FolderService implements OnInit, HttpInterceptor {
-    private folderContent: ContentModel = new ContentModel();
-    private contextMenu: Array<ContextMenuItemModel>;
 
     constructor(
         private _contextMenuRepository: ContextMenuRepository,
-        private _diskRepository: DiskRepository,
         private _folderRepository: FolderRepository) {
     }
 
@@ -30,12 +28,30 @@ export class FolderService implements OnInit, HttpInterceptor {
     ngOnInit(): void { }
 
     public async getFolderContent(folderId: number): Promise<ContentModel> {
-        this.folderContent = (await this._folderRepository.getFolderContent(folderId)).resultObject;
-        return this.folderContent;
+        let result: ServiceResultData<ContentModel> = await this._folderRepository.getFolderContent(folderId);
+
+        if (result.isSuccess == false) {
+            throw new Error(result.errorMessage);
+        }
+
+        return result.resultObject;
     }
 
     public async getContextMenu(folderId: number): Promise<Array<ContextMenuItemModel>> {
-        this.contextMenu = (await this._contextMenuRepository.getContextMenuOfFolder(folderId)).resultObject;
-        return this.contextMenu;
+        let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfFolder(folderId);
+
+        if (result.isSuccess == false) {
+            throw new Error(result.errorMessage);
+        }
+
+        return result.resultObject;
+    }
+
+    public async createFolderOnDisk(diskId: number, folderName: string) {
+        let serviceResult: ServiceResult = await this._folderRepository.createFolderOnDisk(diskId, folderName);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
     }
 }

@@ -49,7 +49,6 @@ export class FileRepository extends BaseRepository implements OnInit {
             }
             this.onUploadingEventHandler.emit(uploadModel);
         }, errorObj => {
-            // console.log(JSON.stringify(errorObj));
             let uploadModel: FileUploadModel = new FileUploadModel();
             uploadModel.complete = true;
             uploadModel.status = errorObj.status;

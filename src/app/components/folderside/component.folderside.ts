@@ -20,13 +20,12 @@ export class FolderSideComponent implements OnInit {
     }
 
     async ngOnInit() {
-        try {
-            this.data = (await this._diskService.getDisks()).disks;
+        try {            
+            this.data = await this._diskService.getDisks();
         } catch (ex) {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
             }
-            console.log(JSON.stringify(ex));
         }
     }
 

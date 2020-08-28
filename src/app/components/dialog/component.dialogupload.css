@@ -63,6 +63,17 @@
     margin-left: 5px;
 }
 
+.dialogProgressClose {
+    float: right;
+    width: 5%;
+    height: 100%;
+}
+
+.dialogProgressClose img {
+    width: 100%;
+    height: 100%;
+}
+
 .dialogProgressFrame {
     float: none;
     height: auto;

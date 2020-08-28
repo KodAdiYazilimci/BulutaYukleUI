@@ -31,7 +31,6 @@ export class ContentSideComponent {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
             }
-            console.log(JSON.stringify(ex));
         }
     }
 }

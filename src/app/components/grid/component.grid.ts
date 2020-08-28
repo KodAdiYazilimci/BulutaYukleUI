@@ -24,12 +24,13 @@ import { async } from 'rxjs/internal/scheduler/async';
 import { FileUploadModel } from 'src/app/models/model.fileupload';
 import { ServiceResult } from 'src/app/models/model.serviceresult';
 import { Router } from '@angular/router';
+import { FolderService } from 'src/app/services/services.folder';
 
 @Component({
     selector: "grid",
     templateUrl: "./component.grid.html",
     styleUrls: ["./component.grid.css"],
-    providers: [DiskService]
+    providers: [DiskService, FolderService]
 })
 export class GridComponent implements OnInit {
     private selectedItemType: number;
@@ -73,14 +74,14 @@ export class GridComponent implements OnInit {
     private uploadDialog: DialogUploadComponent;
 
     constructor(private _router: Router,
-        private _diskService: DiskService) { }
+        private _diskService: DiskService,
+        private _folderService: FolderService) { }
 
     ngOnInit(): void {
         this.content = new ContentModel();
     }
 
     public loadGridData(diskId: number, content: ContentModel) {
-        console.log("4:Grid loaded");
         this.currentDiskId = diskId;
         this.content = content;
     }
@@ -143,7 +144,6 @@ export class GridComponent implements OnInit {
                     }
                 });
                 this.uploadDialog.onFailed.subscribe(event => {
-                    // console.log(JSON.parse(event));
                     this.infoDialog.show("Hata", event);
                 });
                 this.uploadDialog.uploadToDisk(this.currentDiskId);
@@ -266,7 +266,14 @@ export class GridComponent implements OnInit {
                 this.passwordConfirmDialog.onOkClicked.subscribe(event => this.onLockedItem(event));
                 this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
             } else if (item.index == ContextMenuTypes.NewFolder()) {
-                this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
+                this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
+                    if (event.length > 0) {
+                        await this._folderService.createFolderOnDisk(this.currentDiskId, event);
+                        await this.refreshGrid();
+                    } else {
+                        this.infoDialog.show("Uyarı", "Klasör adı boş geçilemez!");
+                    }
+                });
                 this.inputDialog.show("Yeni Klasör", "Oluşturulacak Klasörün Adını Giriniz:", "İsim giriniz..");
             }
             this.contextMenu.visible = false;
@@ -274,7 +281,6 @@ export class GridComponent implements OnInit {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
             }
-            console.log(JSON.stringify(ex));
         }
     }
     private onLockedItem(model: PasswordConfirmModel): void {

@@ -8,41 +8,49 @@ import { DiskModel } from '../models/model.disk';
 import { ContentModel } from '../models/model.content';
 import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
+import { ServiceResultData } from '../models/model.serviceresult';
 
 @Injectable()
 export class DiskService implements OnInit, HttpInterceptor {
-
-    private diskData: DiskModel = new DiskModel();
-    private diskContent: ContentModel = new ContentModel();
-    private contextMenu: Array<ContextMenuItemModel>;
-
     constructor(
         private _contextMenuRepository: ContextMenuRepository,
-        private _diskRepository: DiskRepository) {
-
-    }
+        private _diskRepository: DiskRepository) { }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(catchError((error: HttpErrorResponse) => {
-            console.log(JSON.stringify(error));
             return throwError(error);
         }));
     }
 
     ngOnInit(): void { }
 
-    public async getDisks(): Promise<DiskModel> {
-        this.diskData.disks = (await this._diskRepository.getDisks()).resultObject;
-        return this.diskData;
+    public async getDisks(): Promise<Array<DiskModel>> {
+        let result: ServiceResultData<Array<DiskModel>> = await this._diskRepository.getDisks();
+
+        if (result.isSuccess == false) {
+            throw new Error(result.errorMessage);
+        }
+
+        return result.resultObject;
     }
 
     public async getDiskContent(diskId: number): Promise<ContentModel> {
-        this.diskContent = (await this._diskRepository.getDiskContent(diskId)).resultObject;
-        return this.diskContent;
+        let result: ServiceResultData<ContentModel> = await this._diskRepository.getDiskContent(diskId);
+
+        if (result.isSuccess == false) {
+            throw new Error(result.errorMessage);
+        }
+
+        return result.resultObject;
     }
 
     public async getContextMenu(diskId: number): Promise<Array<ContextMenuItemModel>> {
-        this.contextMenu = (await this._contextMenuRepository.getContextMenuOfDisk(diskId)).resultObject;
-        return this.contextMenu;
+        let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfDisk(diskId);
+
+        if (result.isSuccess == false) {
+            throw new Error(result.errorMessage);
+        }
+
+        return result.resultObject;
     }
 }

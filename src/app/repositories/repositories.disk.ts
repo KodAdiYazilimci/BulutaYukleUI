@@ -17,13 +17,16 @@ export class DiskRepository extends BaseRepository implements OnInit {
     ngOnInit(): void { }
 
     public async getDisks(): Promise<ServiceResultData<Array<DiskModel>>> {
+        
         let headers: HttpHeaders = new HttpHeaders();
         headers = headers.append("Content-Type", "application/json");
         headers = headers.append("token", this.getToken());
 
-        return await this._http.get<ServiceResultData<Array<DiskModel>>>(
+        let result = await this._http.get<ServiceResultData<Array<DiskModel>>>(
             this.baseUrl + "File/GetDisks", { headers: headers }
         ).toPromise();
+
+        return result;
     }
 
     public async getDiskContent(diskId: number): Promise<ServiceResultData<ContentModel>> {
