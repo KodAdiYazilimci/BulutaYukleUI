@@ -1,0 +1,49 @@
+.out {
+    background-image: url('../../../assets/images/digiglobe.png');
+    background-position: top center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.mainBox {
+    float: none;
+    width: 400px;
+    background-color: gray;
+    position: absolute;
+    left: 0;
+    margin-left: 33.3%;
+    top: 50%;
+    transform: translateX(50%);
+    transform: translateY(-50%);
+    opacity: 0.9;
+    border: 3px solid blue;
+}
+
+.row {
+    float: none;
+    height: 30px;
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 10px;
+    /*background-color: red;*/
+}
+
+.row input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+.row input[type="submit"] {
+    width: 50%;
+    margin-left: 25%;
+}
+
+.row select {
+    width: 50%;
+    margin-left: 25%;
+    height: 100%;
+    text-align: center;
+}

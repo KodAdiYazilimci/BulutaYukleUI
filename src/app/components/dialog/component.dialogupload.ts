@@ -2,6 +2,7 @@ import { Component, EventEmitter, ViewChild, ElementRef } from "@angular/core";
 import { FileService } from 'src/app/services/services.file';
 import { FileUploadModel } from 'src/app/models/model.fileupload';
 import { GridItemModel } from 'src/app/models/model.gridItem';
+import { Router } from '@angular/router';
 
 @Component({
     selector: "dialogupload",
@@ -19,7 +20,8 @@ export class DialogUploadComponent {
     public onFileUploaded: EventEmitter<FileUploadModel> = new EventEmitter<FileUploadModel>();
     public onFailed: EventEmitter<{}> = new EventEmitter<{}>();
 
-    constructor(private _fileService: FileService) { }
+    constructor(private _router: Router,
+        private _fileService: FileService) { }
 
     public uploadToDisk(diskId: number): void {
         this.diskId = diskId;
@@ -47,6 +49,9 @@ export class DialogUploadComponent {
                 this._fileService.uploadFileToDisk(this.diskId, event.target.files);
             }
         } catch (ex) {
+            if (ex.status == 401) {
+                this._router.navigate(["/OturumAc"]);
+            }
             this.percentage = 100;
             this.onFailed.emit(ex);
         }

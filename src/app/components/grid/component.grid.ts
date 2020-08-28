@@ -23,6 +23,7 @@ import { DialogUploadComponent } from '../dialog/component.dialogupload';
 import { async } from 'rxjs/internal/scheduler/async';
 import { FileUploadModel } from 'src/app/models/model.fileupload';
 import { ServiceResult } from 'src/app/models/model.serviceresult';
+import { Router } from '@angular/router';
 
 @Component({
     selector: "grid",
@@ -35,6 +36,7 @@ export class GridComponent implements OnInit {
     private selectedItemId: number;
 
     public currentDiskId: number = 0;
+    public currentFolderId: number = 0;
     public content: ContentModel;
 
     @ViewChild(ContextMenuComponent, { static: true })
@@ -70,7 +72,8 @@ export class GridComponent implements OnInit {
     @ViewChild(DialogUploadComponent, { static: true })
     private uploadDialog: DialogUploadComponent;
 
-    constructor(private _diskService: DiskService) { }
+    constructor(private _router: Router,
+        private _diskService: DiskService) { }
 
     ngOnInit(): void {
         this.content = new ContentModel();
@@ -83,31 +86,43 @@ export class GridComponent implements OnInit {
     }
 
     private async refreshGrid() {
-        this.content = await this._diskService.getDiskContent(this.currentDiskId);
+        try {
+            this.content = await this._diskService.getDiskContent(this.currentDiskId);
+        } catch (ex) {
+            if (ex.status == 401) {
+                this._router.navigate(["/OturumAc"]);
+            }
+        }
     }
 
     public async showContextMenu(event: any, itemType: number, itemId: number) {
-        this.selectedItemType = itemType;
-        this.selectedItemId = itemId;
+        try {
+            this.selectedItemType = itemType;
+            this.selectedItemId = itemId;
 
-        this.contextMenu.visible = true;
-        this.contextMenu.marginLeft = event.x + "px";
-        this.contextMenu.marginTop = event.y + "px";
+            this.contextMenu.visible = true;
+            this.contextMenu.marginLeft = event.x + "px";
+            this.contextMenu.marginTop = event.y + "px";
 
-        let contextMenuTitle: string = ""
-        if (itemType == ItemTypes.folder()) {
-            contextMenuTitle = "Klasör Seçenekleri";
-        } else if (itemType == ItemTypes.disk()) {
-            contextMenuTitle = "Disk Seçenekleri";
-        } else if (itemType == ItemTypes.file()) {
-            contextMenuTitle = "Dosya Seçenekleri";
+            let contextMenuTitle: string = ""
+            if (itemType == ItemTypes.folder()) {
+                contextMenuTitle = "Klasör Seçenekleri";
+            } else if (itemType == ItemTypes.disk()) {
+                contextMenuTitle = "Disk Seçenekleri";
+            } else if (itemType == ItemTypes.file()) {
+                contextMenuTitle = "Dosya Seçenekleri";
+            }
+
+            let contextMenuItems: Array<ContextMenuItemModel> = await this._diskService.getContextMenu(this.currentDiskId);
+            this.contextMenu.show(contextMenuTitle, contextMenuItems);
+
+            this.contextMenu.onItemClickedEvent.subscribe(e => this.onContextMenuItemClicked(e));
+            event.preventDefault();
+        } catch (ex) {
+            if (ex.status == 401) {
+                this._router.navigate(["/OturumAc"]);
+            }
         }
-
-        let contextMenuItems: Array<ContextMenuItemModel> = await this._diskService.getContextMenu(this.currentDiskId);
-        this.contextMenu.show(contextMenuTitle, contextMenuItems);
-
-        this.contextMenu.onItemClickedEvent.subscribe(e => this.onContextMenuItemClicked(e));
-        event.preventDefault();
     }
 
     public hideContextMenu(): void {
@@ -129,7 +144,7 @@ export class GridComponent implements OnInit {
                 });
                 this.uploadDialog.onFailed.subscribe(event => {
                     // console.log(JSON.parse(event));
-                    this.infoDialog.show("Hata",event);
+                    this.infoDialog.show("Hata", event);
                 });
                 this.uploadDialog.uploadToDisk(this.currentDiskId);
             }
@@ -227,7 +242,13 @@ export class GridComponent implements OnInit {
                     message = "Diskin yeni adini giriniz:";
                 }
 
-                this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
+                this.inputDialog.onOkClickedEvent.subscribe((event: string) => {
+                    if (event.length > 0) {
+
+                    } else {
+                        this.infoDialog.show("Uyarı", "Lütfen bir isim belirtiniz!");
+                    }
+                });
                 this.inputDialog.show(title, message, "İsim giriniz..");
             } else if (item.index == ContextMenuTypes.Lock()) {
                 let title: string = "";
@@ -244,9 +265,15 @@ export class GridComponent implements OnInit {
                 }
                 this.passwordConfirmDialog.onOkClicked.subscribe(event => this.onLockedItem(event));
                 this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
+            } else if (item.index == ContextMenuTypes.NewFolder()) {
+                this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
+                this.inputDialog.show("Yeni Klasör", "Oluşturulacak Klasörün Adını Giriniz:", "İsim giriniz..");
             }
             this.contextMenu.visible = false;
         } catch (ex) {
+            if (ex.status == 401) {
+                this._router.navigate(["/OturumAc"]);
+            }
             console.log(JSON.stringify(ex));
         }
     }

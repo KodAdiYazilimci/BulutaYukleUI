@@ -5,13 +5,18 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { AuthenticationRepository } from "../app/repositories/repositories.authentication";
 import { DiskRepository } from "../app/repositories/repositories.disk";
 import { ContextMenuRepository } from "../app/repositories/repositories.contextmenu";
 import { FileRepository } from "../app/repositories/repositories.file";
+import { FolderRepository } from "../app/repositories/repositories.folder";
 
+import { AuthenticationService } from "../app/services/services.authentication";
 import { DiskService } from "../app/services/services.disk";
 import { FileService } from "../app/services/services.file";
+import { FolderService } from "../app/services/services.folder";
 
+import { LoginComponent } from "../app/components/login/component.login";
 import { IndexComponent } from "../app/components/index/component.index";
 import { FolderSideComponent } from "../app/components/folderside/component.folderside";
 import { ContentSideComponent } from "../app/components/contentside/component.contentside";
@@ -39,6 +44,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     DialogYesNoComponent, DialogReadOnlyInputComponent, DialogInputComponent, DialogInfoComponent, DialogPasswordConfirmComponent, DialogUploadComponent,
     FormComponent,
     AppComponent,
+    LoginComponent,
     IndexComponent,
     FolderSideComponent, ContentSideComponent, FolderPathComponent,
     GridComponent, HistoryComponent, PermissionComponent, ContextMenuComponent,
@@ -51,9 +57,11 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [DiskRepository, ContextMenuRepository, FileRepository,
+  providers: [DiskRepository, ContextMenuRepository, FileRepository, FolderRepository, AuthenticationRepository,
     { provide: HTTP_INTERCEPTORS, useClass: DiskService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: FileService, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: FileService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: FolderService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

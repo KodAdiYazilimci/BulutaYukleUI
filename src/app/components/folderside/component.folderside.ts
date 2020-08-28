@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter } from "@angular/core";
 import { DiskService } from 'src/app/services/services.disk';
 import { DiskModel } from 'src/app/models/model.disk';
+import { Router } from '@angular/router';
 
 @Component({
     selector: "folderside",
@@ -13,16 +14,23 @@ export class FolderSideComponent implements OnInit {
 
     public onDiskOpened: EventEmitter<number> = new EventEmitter<number>();
 
-    constructor(private _diskService: DiskService) {
-
+    constructor(
+        private _router: Router,
+        private _diskService: DiskService) {
     }
 
     async ngOnInit() {
-        this.data = (await this._diskService.getDisks()).disks;
+        try {
+            this.data = (await this._diskService.getDisks()).disks;
+        } catch (ex) {
+            if (ex.status == 401) {
+                this._router.navigate(["/OturumAc"]);
+            }
+            console.log(JSON.stringify(ex));
+        }
     }
 
     public openDisk(diskId: number): void {
-        console.log("1:FolderSide Emitted");
         this.onDiskOpened.emit(diskId);
     }
 }

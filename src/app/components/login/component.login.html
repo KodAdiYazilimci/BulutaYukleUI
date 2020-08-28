@@ -1,0 +1,30 @@
+<div ngClass="out">
+    <div ngClass="mainBox">
+        <div ngClass="row">
+            <input [(ngModel)]="email" placeholder="Username" style="background-color:red; color:white;" type="text"
+                value="">
+        </div>
+        <div ngClass="row" *ngIf="email==''">
+            <label>E-posta adresi gerekli!</label>
+        </div>
+        <div ngClass="row">
+            <input [(ngModel)]="password" data-val="true" data-val-required="!" id="Password" name="Password"
+                placeholder="Password" style="background-color:red; color:white;" type="password">
+        </div>
+        <div ngClass="row" *ngIf="password==''">
+            <label>Parola gerekli!</label>
+        </div>
+        <div ngClass="row">
+            <select id="SelectedRegion" name="SelectedRegion" [(ngModel)]="region">
+                <option selected="selected" value="tr-TR" [ngValue]="item.code" *ngFor="let item of regions">
+                    {{item.name}}</option>
+            </select>
+        </div>
+        <div ngClass=" row">
+            <input type="submit" value="Login!" (click)="Login();">
+        </div>
+        <div ngClass="row" *ngIf="wrongPassword">
+            <label>Geçersiz Bilgiler</label>
+        </div>
+    </div>
+</div>

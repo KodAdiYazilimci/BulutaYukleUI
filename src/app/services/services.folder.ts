@@ -8,41 +8,34 @@ import { DiskModel } from '../models/model.disk';
 import { ContentModel } from '../models/model.content';
 import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
+import { FolderRepository } from '../repositories/repositories.folder';
 
 @Injectable()
-export class DiskService implements OnInit, HttpInterceptor {
-
-    private diskData: DiskModel = new DiskModel();
-    private diskContent: ContentModel = new ContentModel();
+export class FolderService implements OnInit, HttpInterceptor {
+    private folderContent: ContentModel = new ContentModel();
     private contextMenu: Array<ContextMenuItemModel>;
 
     constructor(
         private _contextMenuRepository: ContextMenuRepository,
-        private _diskRepository: DiskRepository) {
-
+        private _diskRepository: DiskRepository,
+        private _folderRepository: FolderRepository) {
     }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(req).pipe(catchError((error: HttpErrorResponse) => {
-            console.log(JSON.stringify(error));
             return throwError(error);
         }));
     }
 
     ngOnInit(): void { }
 
-    public async getDisks(): Promise<DiskModel> {
-        this.diskData.disks = (await this._diskRepository.getDisks()).resultObject;
-        return this.diskData;
+    public async getFolderContent(folderId: number): Promise<ContentModel> {
+        this.folderContent = (await this._folderRepository.getFolderContent(folderId)).resultObject;
+        return this.folderContent;
     }
 
-    public async getDiskContent(diskId: number): Promise<ContentModel> {
-        this.diskContent = (await this._diskRepository.getDiskContent(diskId)).resultObject;
-        return this.diskContent;
-    }
-
-    public async getContextMenu(diskId: number): Promise<Array<ContextMenuItemModel>> {
-        this.contextMenu = (await this._contextMenuRepository.getContextMenuOfDisk(diskId)).resultObject;
+    public async getContextMenu(folderId: number): Promise<Array<ContextMenuItemModel>> {
+        this.contextMenu = (await this._contextMenuRepository.getContextMenuOfFolder(folderId)).resultObject;
         return this.contextMenu;
     }
 }
