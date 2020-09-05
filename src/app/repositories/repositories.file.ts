@@ -8,6 +8,7 @@ import { FileUploadModel } from "../models/model.fileupload";
 import { BaseRepository } from "../repositories/repositories._base";
 import { map } from 'rxjs/operators';
 import { GridItemModel } from '../models/model.gridItem';
+import { PropertyModel } from "../models/model.property";
 
 @Injectable()
 export class FileRepository extends BaseRepository implements OnInit {
@@ -56,5 +57,29 @@ export class FileRepository extends BaseRepository implements OnInit {
             uploadModel.percentage = 100;
             this.onUploadingEventHandler.emit(uploadModel);
         });
+    }
+
+    public async getFileProperties(fileId: number): Promise<ServiceResultData<PropertyModel>> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        let params = new HttpParams();
+        params = params.append("fileId", fileId.toString());
+
+        return await this._http.get<ServiceResultData<PropertyModel>>(
+            this.baseUrl + "File/GetFileProperty", { headers: headers, params: params }).toPromise();
+    }
+
+    public async renameFile(fileId: number, name: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/RenameFile", {
+            "id": fileId,
+            "name": name
+        }, { headers: headers }).toPromise();
     }
 }

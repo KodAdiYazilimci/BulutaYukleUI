@@ -1,8 +1,8 @@
 import { PermissionModel } from "../models/model.permission";
 
 export class GridItemModel {
-    itemType: number;
-    itemId: number;
+    type: number;
+    id: number;
     checked: boolean;
     shareUrl: string;
     virtualPath: string;

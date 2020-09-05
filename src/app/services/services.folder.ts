@@ -10,6 +10,7 @@ import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
 import { FolderRepository } from '../repositories/repositories.folder';
 import { ServiceResultData, ServiceResult } from '../models/model.serviceresult';
+import { PropertyModel } from '../models/model.property';
 
 @Injectable()
 export class FolderService implements OnInit, HttpInterceptor {
@@ -49,6 +50,24 @@ export class FolderService implements OnInit, HttpInterceptor {
 
     public async createFolderOnDisk(diskId: number, folderName: string) {
         let serviceResult: ServiceResult = await this._folderRepository.createFolderOnDisk(diskId, folderName);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async getFolderProperty(folderId: number): Promise<PropertyModel> {
+        let result: ServiceResultData<PropertyModel> = await this._folderRepository.getFolderProperties(folderId);
+
+        if (result.isSuccess == false) {
+            throw new Error(result.errorMessage);
+        }
+
+        return result.resultObject;
+    }
+
+    public async renameFolder(folderId: number, name: string) {
+        let serviceResult: ServiceResult = await this._folderRepository.renameFolder(folderId, name);
 
         if (serviceResult.isSuccess == false) {
             throw new Error(serviceResult.errorMessage);

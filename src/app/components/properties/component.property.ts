@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 
 @Component({
     selector: "property",
@@ -10,16 +10,19 @@ export class PropertyComponent {
     public title: string = "";
     public logo: string = "";
     public name: string = "";
-    public itemType: string = "";
-    public location: string = "";
+    public type: string = "";
+    public path: string = "";
     public size: string = "";
     public content: string = "";
     public crypted: string = "";
-    public permissions: string = "";
+    public access: string = "";
     public createDate: string = "";
     public creatorUser: string = "";
     public modifyDate: string = "";
     public modifierUser: string = "";
+
+    @Output()
+    public onClickedOk: EventEmitter<string> = new EventEmitter<string>();
 
     constructor() { }
 
@@ -35,6 +38,7 @@ export class PropertyComponent {
     }
 
     public Ok(): void {
+        this.onClickedOk.emit(this.name);
         this.visible = false;
     }
 }

@@ -50,14 +50,14 @@
     </div>
     <div ngClass="gridContent" (click)="hideContextMenu();">
         <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0"
-            (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+            (contextmenu)="showContextMenu($event,item.type,item.id);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
                 <img src="{{item.logo}}">
             </div>
             <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;">
-                <span grid>{{item.name}}</span>
+                <span>{{item.name}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="itemNameCol"></div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
@@ -85,7 +85,7 @@
             </div>
         </div>
         <div ngClass="gridLine splitterBottom" *ngFor="let item of content.files" gridlinechecked="0"
-            (contextmenu)="showContextMenu($event,item.itemType,item.itemId);">
+            (contextmenu)="showContextMenu($event,item.type,item.id);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">

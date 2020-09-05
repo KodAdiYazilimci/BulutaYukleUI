@@ -25,12 +25,14 @@ import { FileUploadModel } from 'src/app/models/model.fileupload';
 import { ServiceResult } from 'src/app/models/model.serviceresult';
 import { Router } from '@angular/router';
 import { FolderService } from 'src/app/services/services.folder';
+import { PropertyModel } from 'src/app/models/model.property';
+import { FileService } from 'src/app/services/services.file';
 
 @Component({
     selector: "grid",
     templateUrl: "./component.grid.html",
     styleUrls: ["./component.grid.css"],
-    providers: [DiskService, FolderService]
+    providers: [DiskService, FileService, FolderService]
 })
 export class GridComponent implements OnInit {
     private selectedItemType: number;
@@ -75,6 +77,7 @@ export class GridComponent implements OnInit {
 
     constructor(private _router: Router,
         private _diskService: DiskService,
+        private _fileService: FileService,
         private _folderService: FolderService) { }
 
     ngOnInit(): void {
@@ -86,7 +89,7 @@ export class GridComponent implements OnInit {
         this.content = content;
     }
 
-    private async refreshGrid() {
+    private async refreshGrid(): Promise<void> {
         try {
             this.content = await this._diskService.getDiskContent(this.currentDiskId);
         } catch (ex) {
@@ -96,27 +99,30 @@ export class GridComponent implements OnInit {
         }
     }
 
-    public async showContextMenu(event: any, itemType: number, itemId: number) {
+    public async showContextMenu(event: any, type: number, id: number) {
         try {
-            this.selectedItemType = itemType;
-            this.selectedItemId = itemId;
+            this.selectedItemType = type;
+            this.selectedItemId = id;
 
             this.contextMenu.visible = true;
             this.contextMenu.marginLeft = event.x + "px";
             this.contextMenu.marginTop = event.y + "px";
 
             let contextMenuTitle: string = ""
-            if (itemType == ItemTypes.folder()) {
+            let contextMenuItems: Array<ContextMenuItemModel> = null;
+
+            if (type == ItemTypes.folder()) {
                 contextMenuTitle = "Klasör Seçenekleri";
-            } else if (itemType == ItemTypes.disk()) {
+                contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId);
+            } else if (type == ItemTypes.disk()) {
                 contextMenuTitle = "Disk Seçenekleri";
-            } else if (itemType == ItemTypes.file()) {
+                contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId);
+            } else if (type == ItemTypes.file()) {
                 contextMenuTitle = "Dosya Seçenekleri";
+                contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
             }
 
-            let contextMenuItems: Array<ContextMenuItemModel> = await this._diskService.getContextMenu(this.currentDiskId);
             this.contextMenu.show(contextMenuTitle, contextMenuItems);
-
             this.contextMenu.onItemClickedEvent.subscribe(e => this.onContextMenuItemClicked(e));
             event.preventDefault();
         } catch (ex) {
@@ -202,29 +208,52 @@ export class GridComponent implements OnInit {
 
                 this.permissionsWindow.show(title, groupPermissions, userPermissions, solidPermissions);
             } else if (item.index == ContextMenuTypes.Properties()) {
+                let properties: PropertyModel = null;
                 let title: string = "";
                 let logo: string = "";
+
                 if (this.selectedItemType == ItemTypes.folder()) {
                     title = "Klasör Özellikleri";
                     logo = "/assets/images/folder.png";
+                    properties = await this._folderService.getFolderProperty(this.selectedItemId);
                 } else if (this.selectedItemType == ItemTypes.file()) {
                     title = "Dosya Özellikleri";
                     logo = "/assets/images/file.png";
+                    properties = await this._fileService.getFileProperty(this.selectedItemId);
                 } else if (this.selectedItemType == ItemTypes.disk()) {
                     title = "Disk Özellikleri";
                     logo = "/assets/images/disk.png";
                 }
-                this.propertiesWindow.content = "3 Klasör 2 Dosya";
-                this.propertiesWindow.createDate = new Date().toDateString();
-                this.propertiesWindow.creatorUser = "serkancamur@gmail.com";
-                this.propertiesWindow.crypted = "Hayır";
-                this.propertiesWindow.itemType = "Klasör";
-                this.propertiesWindow.location = "Sanal Disk HDD/Klasör";
-                this.propertiesWindow.modifierUser = "serkancamur@gmail.com";
-                this.propertiesWindow.modifyDate = new Date().toDateString();
-                this.propertiesWindow.permissions = "Full";
-                this.propertiesWindow.size = "347.54 KB";
-                this.propertiesWindow.show(title, logo, "Test");
+
+                this.propertiesWindow.content = properties.content;
+                this.propertiesWindow.createDate = properties.createDate;
+                this.propertiesWindow.creatorUser = properties.creatorUser;
+                this.propertiesWindow.crypted = properties.crypted;
+                this.propertiesWindow.type = properties.type;
+                this.propertiesWindow.path = properties.path;
+                this.propertiesWindow.modifierUser = properties.modifierUser;
+                this.propertiesWindow.modifyDate = properties.modifyDate;
+                this.propertiesWindow.access = properties.access;
+                this.propertiesWindow.size = properties.size;
+                this.propertiesWindow.onClickedOk.subscribe(async event => {
+                    if (event.length > 0 && event != properties.name) {
+                        if (this.selectedItemType == ItemTypes.folder()) {
+                            await this._folderService.renameFolder(this.selectedItemId, event);
+                        } else if (this.selectedItemType == ItemTypes.file()) {
+                            await this._fileService.renameFile(this.selectedItemId, event);
+                        }
+                        await this.refreshGrid();
+                    } else if (event.length == 0) {
+                        let errorMessage: string = "";
+                        if (this.selectedItemType == ItemTypes.folder()) {
+                            errorMessage = "Klasör adı boş geçilemez!";
+                        } else if (this.selectedItemType == ItemTypes.file()) {
+                            errorMessage = "Dosya adı boş geçilemez!";
+                        }
+                        this.infoDialog.show("Uyarı", errorMessage)
+                    }
+                });
+                this.propertiesWindow.show(title, logo, properties.name);
             } else if (item.index == ContextMenuTypes.Share()) {
                 this.yesNoDialog.onYesClicked.subscribe(event => this.onAcceptInternetSharing());
                 this.yesNoDialog.show("Uyarı", "Seçtiginiz ögeyi/ögeleri internete açik halde paylasmak istediginize emin misiniz?");

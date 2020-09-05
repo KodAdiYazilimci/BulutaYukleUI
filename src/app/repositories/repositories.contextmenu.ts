@@ -39,4 +39,16 @@ export class ContextMenuRepository extends BaseRepository implements OnInit {
             "folderId": folderId
         }, { headers: headers }).toPromise();
     }
+
+    public async getContextMenuOfFile(fileId: number): Promise<ServiceResultData<Array<ContextMenuItemModel>>> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Content-Type", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResultData<Array<ContextMenuItemModel>>>(
+            this.baseUrl + "File/GetContextMenu", {
+            "folderInside": false,
+            "fileId": fileId
+        }, { headers: headers }).toPromise();
+    }
 }
