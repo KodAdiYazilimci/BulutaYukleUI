@@ -156,23 +156,18 @@ export class GridComponent implements OnInit {
             }
             if (item.index == ContextMenuTypes.Comments()) {
                 let title: string = "";
+                let comments: Array<CommentItemModel> = new Array<CommentItemModel>();
+
                 if (this.selectedItemType == ItemTypes.folder()) {
                     title = "Klasör Yorumları";
+                    comments = await this._folderService.getFolderComments(this.selectedItemId);
                 } else if (this.selectedItemType == ItemTypes.file()) {
                     title = "Dosya Yorumları";
-                } else if (this.selectedItemType == ItemTypes.disk()) {
-                    title = "Disk Yorumları";
+                    comments = await this._fileService.getFileComments(this.selectedItemId);
                 }
-
-                let comments: Array<CommentItemModel> = new Array<CommentItemModel>();
-                let comment: CommentItemModel = new CommentItemModel();
-                comment.name = "serkancamur@gmal.com";
-                comment.logo = "/assets/images/person.png";
-                comment.date = "26.08.2020";
-                comment.time = "10:06";
-                comment.comment = "deneme";
-                comments.push(comment);
-
+                this.commentsWindow.onSendEmptyText.subscribe(event => {
+                    this.infoDialog.show("Uyarı", "Lütfen bir yorum yazınız!");
+                });
                 this.commentsWindow.show(title, this.selectedItemType, this.selectedItemId, comments);
             } else if (item.index == ContextMenuTypes.History()) {
                 let title: string = "";

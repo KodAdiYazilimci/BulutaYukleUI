@@ -3,5 +3,5 @@ export class CommentItemModel {
     name: string;
     date: string;
     time: string;
-    comment: string;
+    text: string;
 }

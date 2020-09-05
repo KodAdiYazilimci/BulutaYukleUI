@@ -7,6 +7,7 @@ import { ServiceResult, ServiceResultData } from "../models/model.serviceresult"
 import { BaseRepository } from "../repositories/repositories._base";
 import { ContentModel } from '../models/model.content';
 import { PropertyModel } from '../models/model.property';
+import { CommentItemModel } from '../models/model.commentitem';
 
 @Injectable()
 export class FolderRepository extends BaseRepository implements OnInit {
@@ -61,6 +62,30 @@ export class FolderRepository extends BaseRepository implements OnInit {
             this.baseUrl + "File/RenameFolder", {
             "id": folderId,
             "name": name
+        }, { headers: headers }).toPromise();
+    }
+
+    public async getFolderComments(folderId: number): Promise<ServiceResultData<Array<CommentItemModel>>> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        let params = new HttpParams();
+        params = params.append("folderId", folderId.toString());
+
+        return await this._http.get<ServiceResultData<Array<CommentItemModel>>>(
+            this.baseUrl + "File/GetFolderComments", { headers: headers, params: params }).toPromise();
+    }
+
+    public async createFolderComment(folderId: number, text: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/CreateComment", {
+            "folderId": folderId,
+            "text": text
         }, { headers: headers }).toPromise();
     }
 }

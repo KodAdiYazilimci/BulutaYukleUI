@@ -9,6 +9,7 @@ import { ServiceResultData, ServiceResult } from '../models/model.serviceresult'
 import { PropertyModel } from '../models/model.property';
 import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
+import { CommentItemModel } from '../models/model.commentitem';
 
 @Injectable()
 export class FileService implements OnInit, HttpInterceptor {
@@ -57,6 +58,24 @@ export class FileService implements OnInit, HttpInterceptor {
 
     public async renameFile(fileId: number, name: string) {
         let serviceResult: ServiceResult = await this._fileRepository.renameFile(fileId, name);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async getFileComments(fileId: number): Promise<Array<CommentItemModel>> {
+        let serviceResult: ServiceResultData<Array<CommentItemModel>> = await this._fileRepository.getFileComments(fileId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
+    }
+
+    public async createFileComment(fileId: number, text: string) {
+        let serviceResult: ServiceResult = await this._fileRepository.createFileComment(fileId, text);
 
         if (serviceResult.isSuccess == false) {
             throw new Error(serviceResult.errorMessage);

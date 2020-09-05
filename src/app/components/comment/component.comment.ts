@@ -1,10 +1,14 @@
-import { Component } from "@angular/core";
+import { Component, EventEmitter, Output } from "@angular/core";
 import { CommentItemModel } from "../../models/model.commentitem";
+import { FileService } from 'src/app/services/services.file';
+import { FolderService } from 'src/app/services/services.folder';
+import { ItemTypes } from 'src/app/util/util.itemtypes';
 
 @Component({
     selector: "comment",
     templateUrl: "./component.comment.html",
-    styleUrls: ["./component.comment.css"]
+    styleUrls: ["./component.comment.css"],
+    providers: [FileService, FolderService]
 })
 export class CommentComponent {
 
@@ -13,11 +17,16 @@ export class CommentComponent {
     public itemId: number;
     public visible: boolean;
 
-    public formText: string;
+    public formText: string = "";
 
     public comments: Array<CommentItemModel> = new Array<CommentItemModel>();
 
-    constructor() { }
+    @Output()
+    public onSendEmptyText: EventEmitter<{}> = new EventEmitter<{}>();
+
+    constructor(
+        private _fileService: FileService,
+        private _folderService: FolderService) { }
 
     public show(title: string, itemType: number, itemId: number, comments: Array<CommentItemModel>): void {
         this.title = title;
@@ -31,14 +40,18 @@ export class CommentComponent {
         this.visible = false;
     }
 
-    public send(): void {
-        let commentitem: CommentItemModel = new CommentItemModel();
-        commentitem.comment = this.formText;
-        commentitem.name = "serkancamur@gmail.com";
-        commentitem.logo = "/assets/images/person.png";
-        commentitem.date = new Date().getDate().toLocaleString();
-        commentitem.time = new Date().getTime().toLocaleString();
-        this.comments.push(commentitem);
+    public async send(): Promise<void> {
+        if (this.formText.length > 0) {
+            if (this.itemType == ItemTypes.folder()) {
+                await this._folderService.createFolderComment(this.itemId, this.formText);
+                this.comments = await this._folderService.getFolderComments(this.itemId);
+            } else if (this.itemType == ItemTypes.file()) {
+                await this._fileService.createFileComment(this.itemId, this.formText);
+                this.comments = await this._fileService.getFileComments(this.itemId);
+            }
+        } else {
+            this.onSendEmptyText.emit({});
+        }
 
         this.formText = "";
     }

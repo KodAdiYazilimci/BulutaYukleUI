@@ -11,6 +11,7 @@ import { ContextMenuRepository } from '../repositories/repositories.contextmenu'
 import { FolderRepository } from '../repositories/repositories.folder';
 import { ServiceResultData, ServiceResult } from '../models/model.serviceresult';
 import { PropertyModel } from '../models/model.property';
+import { CommentItemModel } from '../models/model.commentitem';
 
 @Injectable()
 export class FolderService implements OnInit, HttpInterceptor {
@@ -68,6 +69,24 @@ export class FolderService implements OnInit, HttpInterceptor {
 
     public async renameFolder(folderId: number, name: string) {
         let serviceResult: ServiceResult = await this._folderRepository.renameFolder(folderId, name);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async getFolderComments(folderId: number): Promise<Array<CommentItemModel>> {
+        let serviceResult: ServiceResultData<Array<CommentItemModel>> = await this._folderRepository.getFolderComments(folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
+    }
+
+    public async createFolderComment(folderId: number, text: string) {
+        let serviceResult: ServiceResult = await this._folderRepository.createFolderComment(folderId, text);
 
         if (serviceResult.isSuccess == false) {
             throw new Error(serviceResult.errorMessage);
