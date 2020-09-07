@@ -266,9 +266,14 @@ export class GridComponent implements OnInit {
                     message = "Diskin yeni adini giriniz:";
                 }
 
-                this.inputDialog.onOkClickedEvent.subscribe((event: string) => {
+                this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
-
+                        if (this.selectedItemType == ItemTypes.folder()) {
+                            this._folderService.renameFolder(this.selectedItemId, event);
+                        } else if (this.selectedItemType == ItemTypes.file()) {
+                            this._fileService.renameFile(this.selectedItemId, event);
+                        }
+                        await this.refreshGrid();
                     } else {
                         this.infoDialog.show("Uyarı", "Lütfen bir isim belirtiniz!");
                     }
@@ -299,6 +304,23 @@ export class GridComponent implements OnInit {
                     }
                 });
                 this.inputDialog.show("Yeni Klasör", "Oluşturulacak Klasörün Adını Giriniz:", "İsim giriniz..");
+            } else if (item.index == ContextMenuTypes.Hide()) {
+                let title: string = "";
+                let message: string = "";
+                if (this.selectedItemType == ItemTypes.folder()) {
+                    title = "Klasörü Gizle";
+                    message = "Klasörü diğer kullanıcılara gizlemek istediğinize emin misiniz?";
+                } else if (this.selectedItemType == ItemTypes.file()) {
+                    title = "Dosyayı Gizle";
+                    message = "Klasörü diğer kullanıcılara gizlemek istediğinize emin misiniz?";
+                }
+                this.yesNoDialog.onYesClicked.subscribe(async event => {
+
+                });
+                this.yesNoDialog.show(title, message);
+
+            } else if (item.index == ContextMenuTypes.Show()) {
+
             }
             this.contextMenu.visible = false;
         } catch (ex) {
