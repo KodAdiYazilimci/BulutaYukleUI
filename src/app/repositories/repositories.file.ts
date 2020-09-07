@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 import { GridItemModel } from '../models/model.gridItem';
 import { PropertyModel } from "../models/model.property";
 import { CommentItemModel } from '../models/model.commentitem';
+import { HistoryItemModel } from '../models/model.historyitem';
 
 @Injectable()
 export class FileRepository extends BaseRepository implements OnInit {
@@ -106,5 +107,17 @@ export class FileRepository extends BaseRepository implements OnInit {
             "fileId": fileId,
             "text": text
         }, { headers: headers }).toPromise();
+    }
+
+    public async getFileHistories(fileId: number): Promise<ServiceResultData<Array<HistoryItemModel>>> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        let params = new HttpParams();
+        params = params.append("fileId", fileId.toString());
+
+        return await this._http.get<ServiceResultData<Array<HistoryItemModel>>>(
+            this.baseUrl + "History/GetFileHistory", { headers: headers, params: params }).toPromise();
     }
 }

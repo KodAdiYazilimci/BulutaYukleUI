@@ -8,6 +8,7 @@ import { BaseRepository } from "../repositories/repositories._base";
 import { ContentModel } from '../models/model.content';
 import { PropertyModel } from '../models/model.property';
 import { CommentItemModel } from '../models/model.commentitem';
+import { HistoryItemModel } from '../models/model.historyitem';
 
 @Injectable()
 export class FolderRepository extends BaseRepository implements OnInit {
@@ -87,5 +88,17 @@ export class FolderRepository extends BaseRepository implements OnInit {
             "folderId": folderId,
             "text": text
         }, { headers: headers }).toPromise();
+    }
+
+    public async getFolderHistories(folderId: number): Promise<ServiceResultData<Array<HistoryItemModel>>> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        let params = new HttpParams();
+        params = params.append("folderId", folderId.toString());
+
+        return await this._http.get<ServiceResultData<Array<HistoryItemModel>>>(
+            this.baseUrl + "History/GetFolderHistory", { headers: headers, params: params }).toPromise();
     }
 }

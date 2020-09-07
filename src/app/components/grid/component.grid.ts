@@ -171,21 +171,14 @@ export class GridComponent implements OnInit {
                 this.commentsWindow.show(title, this.selectedItemType, this.selectedItemId, comments);
             } else if (item.index == ContextMenuTypes.History()) {
                 let title: string = "";
+                let histories: Array<HistoryItemModel> = null;
                 if (this.selectedItemType == ItemTypes.folder()) {
                     title = "Klasör Geçmişi";
+                    histories = await this._folderService.getFolderHistories(this.selectedItemId);
                 } else if (this.selectedItemType == ItemTypes.file()) {
                     title = "Dosya Geçmişi";
-                } else if (this.selectedItemType == ItemTypes.disk()) {
-                    title = "Disk Geçmişi";
+                    histories = await this._fileService.getFileHistories(this.selectedItemId);
                 }
-
-                let histories: Array<HistoryItemModel> = new Array<HistoryItemModel>();
-                let historyItem: HistoryItemModel = new HistoryItemModel();
-                historyItem.date = new Date().getDate().toLocaleString();
-                historyItem.text = "Sanal HDD/Battlefield 4 [Oyunindir.vip].torrent dosyasi olusturuldu.";
-                historyItem.logo = "/assets/images/folder.png";
-                histories.push(historyItem);
-
                 this.historiesWindow.show(title, histories);
             } else if (item.index == ContextMenuTypes.Permissions()) {
                 let title: string = "";

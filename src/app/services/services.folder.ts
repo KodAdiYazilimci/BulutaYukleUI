@@ -12,6 +12,7 @@ import { FolderRepository } from '../repositories/repositories.folder';
 import { ServiceResultData, ServiceResult } from '../models/model.serviceresult';
 import { PropertyModel } from '../models/model.property';
 import { CommentItemModel } from '../models/model.commentitem';
+import { HistoryItemModel } from '../models/model.historyitem';
 
 @Injectable()
 export class FolderService implements OnInit, HttpInterceptor {
@@ -91,5 +92,15 @@ export class FolderService implements OnInit, HttpInterceptor {
         if (serviceResult.isSuccess == false) {
             throw new Error(serviceResult.errorMessage);
         }
+    }
+
+    public async getFolderHistories(folderId: number): Promise<Array<HistoryItemModel>> {
+        let serviceResult: ServiceResultData<Array<HistoryItemModel>> = await this._folderRepository.getFolderHistories(folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
     }
 }

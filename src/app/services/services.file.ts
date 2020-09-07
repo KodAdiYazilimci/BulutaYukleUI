@@ -10,6 +10,7 @@ import { PropertyModel } from '../models/model.property';
 import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
 import { CommentItemModel } from '../models/model.commentitem';
+import { HistoryItemModel } from '../models/model.historyitem';
 
 @Injectable()
 export class FileService implements OnInit, HttpInterceptor {
@@ -80,5 +81,15 @@ export class FileService implements OnInit, HttpInterceptor {
         if (serviceResult.isSuccess == false) {
             throw new Error(serviceResult.errorMessage);
         }
+    }
+
+    public async getFileHistories(fileId: number): Promise<Array<HistoryItemModel>> {
+        let serviceResult: ServiceResultData<Array<HistoryItemModel>> = await this._fileRepository.getFileHistories(fileId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
     }
 }
