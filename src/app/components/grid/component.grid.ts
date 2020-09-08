@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 import { FolderService } from 'src/app/services/services.folder';
 import { PropertyModel } from 'src/app/models/model.property';
 import { FileService } from 'src/app/services/services.file';
+import { asLiteral } from '@angular/compiler/src/render3/view/util';
 
 @Component({
     selector: "grid",
@@ -99,7 +100,7 @@ export class GridComponent implements OnInit {
         }
     }
 
-    public async showContextMenu(event: any, type: number, id: number) {
+    public async showContextMenu(event: any, type: number, id: number, inside: boolean) {
         try {
             this.selectedItemType = type;
             this.selectedItemId = id;
@@ -113,10 +114,10 @@ export class GridComponent implements OnInit {
 
             if (type == ItemTypes.folder()) {
                 contextMenuTitle = "Klasör Seçenekleri";
-                contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId);
+                contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId, inside);
             } else if (type == ItemTypes.disk()) {
                 contextMenuTitle = "Disk Seçenekleri";
-                contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId);
+                contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId, inside);
             } else if (type == ItemTypes.file()) {
                 contextMenuTitle = "Dosya Seçenekleri";
                 contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
@@ -138,6 +139,15 @@ export class GridComponent implements OnInit {
 
     public async onContextMenuItemClicked(item: ContextMenuItemModel) {
         try {
+            if (item.index == ContextMenuTypes.Cut()) {
+
+            } else if (item.index == ContextMenuTypes.Copy()) {
+
+            } else if (item.index == ContextMenuTypes.Paste()) {
+
+            } else if (item.index == ContextMenuTypes.Delete()) {
+
+            }
             if (item.index == ContextMenuTypes.Refresh()) {
                 await this.refreshGrid();
             } else if (item.index == ContextMenuTypes.Upload()) {
@@ -153,8 +163,7 @@ export class GridComponent implements OnInit {
                     this.infoDialog.show("Hata", event);
                 });
                 this.uploadDialog.uploadToDisk(this.currentDiskId);
-            }
-            if (item.index == ContextMenuTypes.Comments()) {
+            } else if (item.index == ContextMenuTypes.Comments()) {
                 let title: string = "";
                 let comments: Array<CommentItemModel> = new Array<CommentItemModel>();
 
@@ -238,8 +247,13 @@ export class GridComponent implements OnInit {
                 });
                 this.propertiesWindow.show(title, logo, properties.name);
             } else if (item.index == ContextMenuTypes.Share()) {
-                this.yesNoDialog.onYesClicked.subscribe(event => this.onAcceptInternetSharing());
+                this.yesNoDialog.onYesClicked.subscribe(async event => await this.onAcceptInternetSharing());
                 this.yesNoDialog.show("Uyarı", "Seçtiginiz ögeyi/ögeleri internete açik halde paylasmak istediginize emin misiniz?");
+            } else if (item.index == ContextMenuTypes.UnShare()) {
+                this.yesNoDialog.onYesClicked.subscribe(async event => await this.onAcceptInternetSharingClosed());
+                this.yesNoDialog.show("Uyarı", "Seçtiginiz ögenin/ögelerin internete açık paylaşımını kapatmak istediginize emin misiniz?");
+            } else if (item.index == ContextMenuTypes.ShareUrl()) {
+                //Burada ne yapılacağı şimdilik belirsiz
             } else if (item.index == ContextMenuTypes.Rename()) {
                 let title: string = "";
                 let message: string = "";
@@ -257,9 +271,9 @@ export class GridComponent implements OnInit {
                 this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
                         if (this.selectedItemType == ItemTypes.folder()) {
-                            this._folderService.renameFolder(this.selectedItemId, event);
+                            await this._folderService.renameFolder(this.selectedItemId, event);
                         } else if (this.selectedItemType == ItemTypes.file()) {
-                            this._fileService.renameFile(this.selectedItemId, event);
+                            await this._fileService.renameFile(this.selectedItemId, event);
                         }
                         await this.refreshGrid();
                     } else {
@@ -276,12 +290,21 @@ export class GridComponent implements OnInit {
                 } else if (this.selectedItemType == ItemTypes.file()) {
                     title = "Dosyayı Kilitle";
                     message = "Dosyayı kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
-                } else if (this.selectedItemType == ItemTypes.disk()) {
-                    title = "Diski Kilitle";
-                    message = "Diski kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
                 }
-                this.passwordConfirmDialog.onOkClicked.subscribe(event => this.onLockedItem(event));
+                this.passwordConfirmDialog.onOkClicked.subscribe(async event => await this.onAcceptLockedItem(event));
                 this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
+            } else if (item.index == ContextMenuTypes.UnLock()) {
+                let title: string = "";
+                let message: string = "";
+                if (this.selectedItemType == ItemTypes.folder()) {
+                    title = "Klasör Kilidi Kaldır";
+                    message = "Klasör kilidini kaldırırsanız diger kullanicilar bu dosya üzerinde islem yapabilecek!";
+                } else if (this.selectedItemType == ItemTypes.file()) {
+                    title = "Dosyayı Kilidi Kaldır";
+                    message = "Dosya kilidini kaldırırsanız diger kullanicilar bu dosya üzerinde islem yapabilecek!";
+                }
+                this.inputDialog.onOkClickedEvent.subscribe(async event => await this.onAcceptUnLockedItem(event));
+                this.inputDialog.show(title, message, "Parolayı girin..");
             } else if (item.index == ContextMenuTypes.NewFolder()) {
                 this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
@@ -304,19 +327,35 @@ export class GridComponent implements OnInit {
                 }
                 this.yesNoDialog.onYesClicked.subscribe(async event => {
                     if (this.selectedItemType == ItemTypes.folder()) {
-                        this._folderService.hideFolder(this.selectedItemId);
+                        await this._folderService.hideFolder(this.selectedItemId);
                     } else if (this.selectedItemType == ItemTypes.file()) {
-                        this._fileService.hideFile(this.selectedItemId);
+                        await this._fileService.hideFile(this.selectedItemId);
                     }
                 });
                 this.yesNoDialog.show(title, message);
 
             } else if (item.index == ContextMenuTypes.Show()) {
+                let title: string = "";
+                let message: string = "";
                 if (this.selectedItemType == ItemTypes.folder()) {
-                    this._folderService.showFolder(this.selectedItemId);
+                    title = "Klasörü Gizle";
+                    message = "Klasörü diğer kullanıcılara göstermek istediğinize emin misiniz?";
                 } else if (this.selectedItemType == ItemTypes.file()) {
-                    this._fileService.showFile(this.selectedItemId);
+                    title = "Dosyayı Gizle";
+                    message = "Dosyayı diğer kullanıcılara göstermek istediğinize emin misiniz?";
                 }
+                this.yesNoDialog.onYesClicked.subscribe(async event => {
+                    if (this.selectedItemType == ItemTypes.folder()) {
+                        await this._folderService.showFolder(this.selectedItemId);
+                    } else if (this.selectedItemType == ItemTypes.file()) {
+                        await this._fileService.showFile(this.selectedItemId);
+                    }
+                });
+                this.yesNoDialog.show(title, message);
+            } else if (item.index == ContextMenuTypes.SendEmail()) {
+
+            } else if (item.index == ContextMenuTypes.Download()) {
+
             }
             this.contextMenu.visible = false;
         } catch (ex) {
@@ -325,51 +364,24 @@ export class GridComponent implements OnInit {
             }
         }
     }
-    private onLockedItem(model: PasswordConfirmModel): void {
+    private async onAcceptLockedItem(model: PasswordConfirmModel) {
         if (model.passwordFirst.length == 0 || model.passwordSecond.length == 0 || model.passwordFirst != model.passwordSecond) {
-            this.infoDialog.onClickedOk.subscribe(event => {
-                let title: string = "";
-                let message: string = "";
-                if (this.selectedItemType == ItemTypes.folder()) {
-                    title = "Klasörü Kilitle";
-                    message = "Klasörü kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
-                } else if (this.selectedItemType == ItemTypes.file()) {
-                    title = "Dosyayı Kilitle";
-                    message = "Dosyayı kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
-                } else if (this.selectedItemType == ItemTypes.disk()) {
-                    title = "Diski Kilitle";
-                    message = "Diski kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
-                }
-                this.passwordConfirmDialog.onOkClicked.subscribe(event => this.onLockedItem(event));
-                this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
-            });
             this.infoDialog.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
+        } else {
+
         }
     }
-    public onAcceptInternetSharing(): void {
+    private async onAcceptUnLockedItem(model: PasswordConfirmModel) {
+        if (model.passwordFirst.length == 0 || model.passwordSecond.length == 0 || model.passwordFirst != model.passwordSecond) {
+            this.infoDialog.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
+        } else {
+
+        }
+    }
+    public async onAcceptInternetSharing() {
         this.readonlyDialog.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", "http://www...")
     }
-    public onRenamed(value: string) {
-        if (value.length == 0) {
-            this.infoDialog.onClickedOk.subscribe(event => {
-                let title: string = "";
-                let message: string = "";
-                if (this.selectedItemType == ItemTypes.folder()) {
-                    title = "Klasörü Yeniden Adlandır";
-                    message = "Klasörün yeni adini giriniz:";
-                } else if (this.selectedItemType == ItemTypes.file()) {
-                    title = "Dosyayı Yeniden Adlandır";
-                    message = "Dosyanin yeni adini giriniz:";
-                } else if (this.selectedItemType == ItemTypes.disk()) {
-                    title = "Diski Yeniden Adlandır";
-                    message = "Diskin yeni adini giriniz:";
-                }
-
-                this.inputDialog.onOkClickedEvent.subscribe(event => this.onRenamed(event));
-                this.inputDialog.show(title, message, "İsim giriniz..");
-
-            });
-            this.infoDialog.show("Uyarı!", "Bir isim belirtiniz.");
-        }
+    public async onAcceptInternetSharingClosed() {
+        this.infoDialog.show("İşlem Sonucu", "Paylaşım internete kapatıldı");
     }
 }

@@ -42,8 +42,8 @@ export class FolderService implements OnInit, HttpInterceptor {
         return result.resultObject;
     }
 
-    public async getContextMenu(folderId: number): Promise<Array<ContextMenuItemModel>> {
-        let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfFolder(folderId);
+    public async getContextMenu(folderId: number, inside: boolean): Promise<Array<ContextMenuItemModel>> {
+        let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfFolder(folderId, inside);
 
         if (result.isSuccess == false) {
             throw new Error(result.errorMessage);

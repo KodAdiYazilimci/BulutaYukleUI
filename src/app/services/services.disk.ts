@@ -46,8 +46,8 @@ export class DiskService implements OnInit, HttpInterceptor {
         return result.resultObject;
     }
 
-    public async getContextMenu(diskId: number): Promise<Array<ContextMenuItemModel>> {
-        let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfDisk(diskId);
+    public async getContextMenu(diskId: number, inside: boolean): Promise<Array<ContextMenuItemModel>> {
+        let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfDisk(diskId, inside);
 
         if (result.isSuccess == false) {
             throw new Error(result.errorMessage);

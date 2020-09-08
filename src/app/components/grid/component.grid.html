@@ -50,7 +50,7 @@
     </div>
     <div ngClass="gridContent" (click)="hideContextMenu();">
         <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0"
-            (contextmenu)="showContextMenu($event,item.type,item.id);">
+            (contextmenu)="showContextMenu($event,item.type,item.id,false);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
@@ -80,12 +80,12 @@
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
             <div ngClass="permissionColumn" column="permission">
-                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20"
+                <img src="{{permission.logo}}" title="{{permission.name}}" width="20" height="20"
                     *ngFor="let permission of item.permissions; let i = index;">
             </div>
         </div>
         <div ngClass="gridLine splitterBottom" *ngFor="let item of content.files" gridlinechecked="0"
-            (contextmenu)="showContextMenu($event,item.type,item.id);">
+            (contextmenu)="showContextMenu($event,item.type,item.id,false);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
@@ -115,12 +115,12 @@
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
             <div ngClass="permissionColumn" column="permission">
-                <img src="{{permission.logo}}" title="{{permission.title}}" width="20" height="20"
+                <img src="{{permission.logo}}" title="{{permission.name}}" width="20" height="20"
                     *ngFor="let permission of item.permissions; let i = index;">
             </div>
         </div>
         <div ngClass="gridLine" [ngStyle]="{'flex':1, 'height':'100%'}"
-            (contextmenu)="showContextMenu($event,2,currentDiskId);">
+            (contextmenu)="showContextMenu($event,2,currentDiskId,true);">
         </div>
         <div name="moveTo" ngClass="moveTo" style="display: none;">
             <span>Buraya Taşı</span>
