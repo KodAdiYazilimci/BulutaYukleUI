@@ -18,7 +18,7 @@ export class DialogUploadComponent {
     public visibleUploading: boolean;
     public percentage: number;
     public onFileUploaded: EventEmitter<FileUploadModel> = new EventEmitter<FileUploadModel>();
-    public onFailed: EventEmitter<{}> = new EventEmitter<{}>();
+    public onFailed: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private _router: Router,
         private _fileService: FileService) { }
