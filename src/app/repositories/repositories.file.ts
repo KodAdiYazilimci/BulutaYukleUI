@@ -26,6 +26,10 @@ export class FileRepository extends BaseRepository implements OnInit {
     ngOnInit(): void { }
 
     public uploadFileToDisk(diskId: number, files: any) {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
         let formData: FormData = new FormData();
 
         for (let i = 0; i < files.length; i++) {
@@ -33,7 +37,7 @@ export class FileRepository extends BaseRepository implements OnInit {
         }
         formData.append("diskId", diskId.toString());
 
-        this._http.post(this.baseUrl + "File/UploadFile", formData, { headers: this.getDefaultHeaders(), reportProgress: true, observe: "events" })
+        this._http.post(this.baseUrl + "File/UploadFile", formData, { headers: headers, reportProgress: true, observe: "events" })
         .subscribe(resp => {
             let uploadModel: FileUploadModel = new FileUploadModel();
             if (resp.type == HttpEventType.Response) {
