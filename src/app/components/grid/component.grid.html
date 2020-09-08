@@ -52,7 +52,7 @@
         <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0"
             (contextmenu)="showContextMenu($event,item.type,item.id,false);">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
-                <input type="checkbox" name="select"></div>
+                <input type="checkbox" (change)="setChecked(item)" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
                 <img src="{{item.logo}}">
             </div>

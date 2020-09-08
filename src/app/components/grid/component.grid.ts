@@ -29,12 +29,14 @@ import { PropertyModel } from 'src/app/models/model.property';
 import { FileService } from 'src/app/services/services.file';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
 import { DialogPasswordInputComponent } from '../dialog/component.dialogpasswordinput';
+import { GridItemModel } from 'src/app/models/model.gridItem';
+import { ContentService } from 'src/app/services/services.content';
 
 @Component({
     selector: "grid",
     templateUrl: "./component.grid.html",
     styleUrls: ["./component.grid.css"],
-    providers: [DiskService, FileService, FolderService]
+    providers: [ContentService, DiskService, FileService, FolderService]
 })
 export class GridComponent implements OnInit {
     private selectedItemType: number;
@@ -81,6 +83,7 @@ export class GridComponent implements OnInit {
     private uploadDialog: DialogUploadComponent;
 
     constructor(private _router: Router,
+        private _contentService: ContentService,
         private _diskService: DiskService,
         private _fileService: FileService,
         private _folderService: FolderService) { }
@@ -102,6 +105,11 @@ export class GridComponent implements OnInit {
                 this._router.navigate(["/OturumAc"]);
             }
         }
+    }
+
+    public async setChecked(item: GridItemModel) {
+        item.checked = !item.checked;
+        console.log(item.checked);
     }
 
     public async showContextMenu(event: any, type: number, id: number, inside: boolean) {
@@ -391,9 +399,43 @@ export class GridComponent implements OnInit {
         }
     }
     public async onAcceptInternetSharing() {
-        this.readonlyDialog.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", "http://www...")
+        let foldersToShare: Array<GridItemModel> = new Array<GridItemModel>();
+        let filesToShare: Array<GridItemModel> = new Array<GridItemModel>();
+
+        this.content.folders.forEach(folder => {
+            if (folder.checked) {
+                foldersToShare.push(folder);
+            }
+        });
+
+        this.content.files.forEach(file => {
+            if (file.checked) {
+                filesToShare.push(file);
+            }
+        });
+
+        let shareUrl: string = await this._contentService.shareItems(foldersToShare, filesToShare);
+
+        this.readonlyDialog.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", shareUrl)
     }
     public async onAcceptInternetSharingClosed() {
+        let foldersToUnShare: Array<GridItemModel> = new Array<GridItemModel>();
+        let filesToUnShare: Array<GridItemModel> = new Array<GridItemModel>();
+
+        this.content.folders.forEach(folder => {
+            if (folder.checked) {
+                foldersToUnShare.push(folder);
+            }
+        });
+
+        this.content.files.forEach(file => {
+            if (file.checked) {
+                filesToUnShare.push(file);
+            }
+        });
+
+        await this._contentService.unShareItems(foldersToUnShare, filesToUnShare);
+
         this.infoDialog.show("İşlem Sonucu", "Paylaşım internete kapatıldı");
     }
 }
