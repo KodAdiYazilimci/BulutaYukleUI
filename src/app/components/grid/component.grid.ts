@@ -189,12 +189,7 @@ export class GridComponent implements OnInit {
                 } else if (this.selectedItemType == ItemTypes.disk()) {
                     title = "Disk Yetkileri";
                 }
-
-                let groupPermissions: Array<PermissionModel> = new Array<PermissionModel>();
-                let userPermissions: Array<PermissionModel> = new Array<PermissionModel>();
-                let solidPermissions: Array<PermissionModel> = new Array<PermissionModel>();
-
-                this.permissionsWindow.show(title, groupPermissions, userPermissions, solidPermissions);
+                await this.permissionsWindow.show(this.selectedItemType, this.selectedItemId, title);
             } else if (item.index == ContextMenuTypes.Properties()) {
                 let properties: PropertyModel = null;
                 let title: string = "";
@@ -305,15 +300,23 @@ export class GridComponent implements OnInit {
                     message = "Klasörü diğer kullanıcılara gizlemek istediğinize emin misiniz?";
                 } else if (this.selectedItemType == ItemTypes.file()) {
                     title = "Dosyayı Gizle";
-                    message = "Klasörü diğer kullanıcılara gizlemek istediğinize emin misiniz?";
+                    message = "Dosyayı diğer kullanıcılara gizlemek istediğinize emin misiniz?";
                 }
                 this.yesNoDialog.onYesClicked.subscribe(async event => {
-
+                    if (this.selectedItemType == ItemTypes.folder()) {
+                        this._folderService.hideFolder(this.selectedItemId);
+                    } else if (this.selectedItemType == ItemTypes.file()) {
+                        this._fileService.hideFile(this.selectedItemId);
+                    }
                 });
                 this.yesNoDialog.show(title, message);
 
             } else if (item.index == ContextMenuTypes.Show()) {
-
+                if (this.selectedItemType == ItemTypes.folder()) {
+                    this._folderService.showFolder(this.selectedItemId);
+                } else if (this.selectedItemType == ItemTypes.file()) {
+                    this._fileService.showFile(this.selectedItemId);
+                }
             }
             this.contextMenu.visible = false;
         } catch (ex) {

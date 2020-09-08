@@ -1,6 +1,5 @@
-export class UserGroupModel {
+export class PermissionTypeModel {
     id: number;
     name: string;
     logo: string;
-    userCount: number;
 }

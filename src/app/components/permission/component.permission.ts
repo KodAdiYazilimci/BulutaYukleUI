@@ -4,11 +4,18 @@ import { PermissionUserComponent } from './component.permissionuser';
 import { PermissionModel } from "../../models/model.permission";
 import { UserGroupModel } from 'src/app/models/model.usergroup';
 import { UserModel } from 'src/app/models/model.user';
+import { ItemTypes } from 'src/app/util/util.itemtypes';
+import { DiskService } from 'src/app/services/services.disk';
+import { FileService } from 'src/app/services/services.file';
+import { FolderService } from 'src/app/services/services.folder';
+import { UserService } from 'src/app/services/services.user';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Component({
     selector: "permission",
     templateUrl: "./component.permission.html",
-    styleUrls: ["./component.permission.css"]
+    styleUrls: ["./component.permission.css"],
+    providers: [DiskService, FileService, FolderService, UserService]
 })
 export class PermissionComponent {
     public visible: boolean;
@@ -20,17 +27,27 @@ export class PermissionComponent {
     @ViewChild(PermissionUserComponent, { static: true })
     private permissionUserWindow: PermissionUserComponent;
 
+    public itemType: number;
+    public itemId: number;
+
     public groups: Array<PermissionModel> = new Array<PermissionModel>();
     public users: Array<PermissionModel> = new Array<PermissionModel>();
-    public solidPermissions: Array<PermissionModel> = new Array<PermissionModel>();
+    public solidPermissions: PermissionModel = new PermissionModel();
 
-    constructor() { }
+    constructor(
+        private _diskService: DiskService,
+        private _fileService: FileService,
+        private _folderService: FolderService,
+        private _userService: UserService) {
+    }
 
-    public show(title: string, groups: Array<PermissionModel>, users: Array<PermissionModel>, solidPermissions: Array<PermissionModel>): void {
+    public async show(itemType: number, itemId: number, title: string) {
+        this.itemType = itemType;
+        this.itemId = itemId;
         this.title = title;
-        this.groups = groups;
-        this.users = users;
-        this.solidPermissions = solidPermissions;
+
+        await this.loadPermissions();
+
         this.visible = true;
     }
 
@@ -38,39 +55,70 @@ export class PermissionComponent {
         this.visible = false;
     }
 
-    public deletePermissionUserItem(): void {
+    private async loadPermissions() {
+        let permissions: PermissionModel;
+        if (this.itemType == ItemTypes.folder()) {
+            permissions = await this._folderService.getFolderPermissions(this.itemId);
+        } else if (this.itemType == ItemTypes.file()) {
+            permissions = await this._fileService.getFilePermissions(this.itemId);
+        } else if (this.itemType == ItemTypes.disk()) {
+            permissions = await this._diskService.getDiskPermissions(this.itemId);
+        }
 
+        this.groups = permissions.groups;
+        this.users = permissions.users;
+        this.solidPermissions = permissions.solidPermissions;
     }
 
-    public showAddPermissionGroup(): void {
+    public async deletePermissionUserItem(userId: number) {
+        if (this.itemType == ItemTypes.folder()) {
+            await this._folderService.removeFolderPermissionForUser(this.itemId, userId);
+        } else if (this.itemType == ItemTypes.file()) {
+            await this._fileService.removeFilePermissionForUser(this.itemId, userId);
+        } else if (this.itemType == ItemTypes.disk()) {
+            await this._diskService.removeDiskPermissionForUser(this.itemId, userId);
+        }
 
-        let groups: Array<UserGroupModel> = new Array<UserGroupModel>();
-        let group: UserGroupModel = new UserGroupModel();
-        group.id = 1;
-        group.name = "Admins (Full,Read,Write,Delete)";
-        groups.push(group);
-
-        this.permissionGroupWindow.onClosedEvent.subscribe(event => this.onClosedPermissionGroupWindow(event));
-        this.permissionGroupWindow.show(groups);
+        await this.loadPermissions();
     }
 
-    private onClosedPermissionGroupWindow(clickedOk: boolean) {
+    public async deletePermissionGroupItem(groupId: number) {
+        if (this.itemType == ItemTypes.folder()) {
+            await this._folderService.removeFolderPermissionForGroup(this.itemId, groupId);
+        } else if (this.itemType == ItemTypes.file()) {
+            await this._fileService.removeFilePermissionForGroup(this.itemId, groupId);
+        } else if (this.itemType == ItemTypes.disk()) {
+            await this._diskService.removeDiskPermissionForGroup(this.itemId, groupId);
+        }
 
+        await this.loadPermissions();
     }
 
-    public showAddPermissionUser(): void {
+    public async showAddPermissionGroup() {
 
-        let users: Array<UserModel> = new Array<UserModel>();
-        let user: UserModel = new UserModel();
-        user.id = 1;
-        user.name = "serkancamur@gmail.com (Full,Read,Write,Delete)";
-        users.push(user);
+        let groups: Array<UserGroupModel> = await this._userService.getGroups();
 
-        this.permissionUserWindow.onClosedEvent.subscribe(event => this.onClosedPermissionUserWindow(event));
-        this.permissionUserWindow.show(users);
+        this.permissionGroupWindow.onClosedEvent.subscribe(async event => await this.onClosedPermissionGroupWindow(event));
+        this.permissionGroupWindow.show(this.itemType, this.itemId, groups);
     }
 
-    private onClosedPermissionUserWindow(clickedOk: boolean) {
+    private async onClosedPermissionGroupWindow(clickedOk: boolean) {
+        if (clickedOk) {
+            await this.loadPermissions();
+        }
+    }
 
+    public async showAddPermissionUser() {
+
+        let users: Array<UserModel> = await this._userService.getUsers();
+
+        this.permissionUserWindow.onClosedEvent.subscribe(async event => await this.onClosedPermissionUserWindow(event));
+        this.permissionUserWindow.show(this.itemType, this.itemId, users);
+    }
+
+    private async onClosedPermissionUserWindow(clickedOk: boolean) {
+        if (clickedOk) {
+            await this.loadPermissions();
+        }
     }
 }

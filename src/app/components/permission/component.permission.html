@@ -20,8 +20,9 @@
             <div class="permissionFrameContent" name="permissionGroup">
                 <div class="permissionLine" *ngFor="let group of groups">
                     <div class="permissionLineLogo"><img src="{{group.logo}}"></div>
-                    <div class="permissionLineText"><span>{{group.text}}</span></div>
-                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil" (click)="deletePermissionUserItem();"></div>
+                    <div class="permissionLineText"><span>{{group.name}}</span></div>
+                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil"
+                            (click)="deletePermissionGroupItem(group.id);"></div>
                 </div>
             </div>
         </div>
@@ -37,8 +38,9 @@
             <div class="permissionFrameContent" name="permissionUser">
                 <div class="permissionLine" *ngFor="let user of users">
                     <div class="permissionLineLogo"><img src="{{user.logo}}"></div>
-                    <div class="permissionLineText"><span>{{user.text}}</span></div>
-                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil" (click)="deletePermissionUserItem();"></div>
+                    <div class="permissionLineText"><span>{{user.name}}</span></div>
+                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil"
+                            (click)="deletePermissionUserItem(user.userId);"></div>
                 </div>
             </div>
         </div>

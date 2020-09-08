@@ -13,6 +13,8 @@ import { ServiceResultData, ServiceResult } from '../models/model.serviceresult'
 import { PropertyModel } from '../models/model.property';
 import { CommentItemModel } from '../models/model.commentitem';
 import { HistoryItemModel } from '../models/model.historyitem';
+import { PermissionModel } from '../models/model.permission';
+import { PermissionTypeModel } from '../models/model.permissiontype';
 
 @Injectable()
 export class FolderService implements OnInit, HttpInterceptor {
@@ -102,5 +104,63 @@ export class FolderService implements OnInit, HttpInterceptor {
         }
 
         return serviceResult.resultObject;
+    }
+
+    public async hideFolder(folderId: number) {
+        let serviceResult: ServiceResult = await this._folderRepository.hideFolder(folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async showFolder(folderId: number) {
+        let serviceResult: ServiceResult = await this._folderRepository.showFolder(folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async getFolderPermissions(folderId: number): Promise<PermissionModel> {
+        let serviceResult: ServiceResultData<PermissionModel> = await this._folderRepository.getFolderPermissions(folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
+    }
+
+    public async removeFolderPermissionForUser(folderId: number, userId: number) {
+        let serviceResult: ServiceResult = await this._folderRepository.removeFolderPermissionForUser(folderId, userId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async removeFolderPermissionForGroup(folderId: number, groupId: number) {
+        let serviceResult: ServiceResult = await this._folderRepository.removeFolderPermissionForGroup(folderId, groupId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async appendFolderPermissionForGroup(folderId: number, groupId: number, permissions: Array<PermissionTypeModel>) {
+        let serviceResult: ServiceResult = await this._folderRepository.appendFolderPermissionForGroup(folderId, groupId, permissions);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async appendFolderPermissionForUser(folderId: number, userId: number, permissions: Array<PermissionTypeModel>) {
+        let serviceResult: ServiceResult = await this._folderRepository.appendFolderPermissionForUser(folderId, userId, permissions);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
     }
 }

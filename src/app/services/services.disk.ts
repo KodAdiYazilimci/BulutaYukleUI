@@ -8,7 +8,9 @@ import { DiskModel } from '../models/model.disk';
 import { ContentModel } from '../models/model.content';
 import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
-import { ServiceResultData } from '../models/model.serviceresult';
+import { ServiceResultData, ServiceResult } from '../models/model.serviceresult';
+import { PermissionModel } from '../models/model.permission';
+import { PermissionTypeModel } from '../models/model.permissiontype';
 
 @Injectable()
 export class DiskService implements OnInit, HttpInterceptor {
@@ -52,5 +54,47 @@ export class DiskService implements OnInit, HttpInterceptor {
         }
 
         return result.resultObject;
+    }
+
+    public async getDiskPermissions(diskId: number): Promise<PermissionModel> {
+        let serviceResult: ServiceResultData<PermissionModel> = await this._diskRepository.getDiskPermissions(diskId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
+    }
+
+    public async removeDiskPermissionForUser(diskId: number, userId: number) {
+        let serviceResult: ServiceResult = await this._diskRepository.removeDiskPermissionForUser(diskId, userId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async removeDiskPermissionForGroup(diskId: number, groupId: number) {
+        let serviceResult: ServiceResult = await this._diskRepository.removeDiskPermissionForGroup(diskId, groupId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async appendDiskPermissionForUser(diskId: number, userId: number, permissions: Array<PermissionTypeModel>) {
+        let serviceResult: ServiceResult = await this._diskRepository.appendDiskPermissionForUser(diskId, userId, permissions);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async appendDiskPermissionForGroup(diskId: number, groupId: number, permissions: Array<PermissionTypeModel>) {
+        let serviceResult: ServiceResult = await this._diskRepository.appendDiskPermissionForGroup(diskId, groupId, permissions);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
     }
 }

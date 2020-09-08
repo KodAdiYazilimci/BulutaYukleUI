@@ -11,6 +11,8 @@ import { GridItemModel } from '../models/model.gridItem';
 import { PropertyModel } from "../models/model.property";
 import { CommentItemModel } from '../models/model.commentitem';
 import { HistoryItemModel } from '../models/model.historyitem';
+import { PermissionModel } from '../models/model.permission';
+import { PermissionTypeModel } from '../models/model.permissiontype';
 
 @Injectable()
 export class FileRepository extends BaseRepository implements OnInit {
@@ -119,5 +121,89 @@ export class FileRepository extends BaseRepository implements OnInit {
 
         return await this._http.get<ServiceResultData<Array<HistoryItemModel>>>(
             this.baseUrl + "History/GetFileHistory", { headers: headers, params: params }).toPromise();
+    }
+
+    public async hideFile(fileId: number): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/HideFile", {
+            "id": fileId.toString()
+        }, { headers: headers }).toPromise();
+    }
+
+    public async showFile(fileId: number): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/ShowFile", {
+            "id": fileId.toString()
+        }, { headers: headers }).toPromise();
+    }
+
+    public async getFilePermissions(fileId: number): Promise<ServiceResultData<PermissionModel>> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        let params = new HttpParams();
+        params = params.append("fileId", fileId.toString());
+
+        return await this._http.get<ServiceResultData<PermissionModel>>(
+            this.baseUrl + "Permission/GetFilePermissions", { headers: headers, params: params }).toPromise();
+    }
+
+    public async removeFilePermissionForUser(fileId: number, userId: number): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "Permission/RemovePermission", {
+            "fileId": fileId.toString(),
+            "userId": userId.toString()
+        }, { headers: headers }).toPromise();
+    }
+
+    public async removeFilePermissionForGroup(fileId: number, groupId: number): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "Permission/RemovePermission", {
+            "fileId": fileId.toString(),
+            "groupId": groupId.toString()
+        }, { headers: headers }).toPromise();
+    }
+
+    public async appendFilePermissionForGroup(fileId: number, groupId: number, permissions: Array<PermissionTypeModel>): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "Permission/AppendPermission", {
+            "fileId": fileId,
+            "groupId": groupId,
+            "permissionTypes": permissions
+        }, { headers: headers }).toPromise();
+    }
+
+    public async appendFilePermissionForUser(fileId: number, userId: number, permissions: Array<PermissionTypeModel>): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "Permission/AppendPermission", {
+            "fileId": fileId,
+            "userId": userId,
+            "permissionTypes": permissions
+        }, { headers: headers }).toPromise();
     }
 }

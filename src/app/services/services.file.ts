@@ -11,6 +11,8 @@ import { ContextMenuItemModel } from '../models/model.contextmenuitem';
 import { ContextMenuRepository } from '../repositories/repositories.contextmenu';
 import { CommentItemModel } from '../models/model.commentitem';
 import { HistoryItemModel } from '../models/model.historyitem';
+import { PermissionModel } from '../models/model.permission';
+import { PermissionTypeModel } from '../models/model.permissiontype';
 
 @Injectable()
 export class FileService implements OnInit, HttpInterceptor {
@@ -91,5 +93,63 @@ export class FileService implements OnInit, HttpInterceptor {
         }
 
         return serviceResult.resultObject;
+    }
+
+    public async hideFile(fileId: number) {
+        let serviceResult: ServiceResult = await this._fileRepository.hideFile(fileId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async showFile(fileId: number) {
+        let serviceResult: ServiceResult = await this._fileRepository.showFile(fileId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async getFilePermissions(fileId: number): Promise<PermissionModel> {
+        let serviceResult: ServiceResultData<PermissionModel> = await this._fileRepository.getFilePermissions(fileId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+
+        return serviceResult.resultObject;
+    }
+
+    public async removeFilePermissionForUser(fileId: number, userId: number) {
+        let serviceResult: ServiceResult = await this._fileRepository.removeFilePermissionForUser(fileId, userId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async removeFilePermissionForGroup(fileId: number, groupId: number) {
+        let serviceResult: ServiceResult = await this._fileRepository.removeFilePermissionForGroup(fileId, groupId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async appendFilePermissionForGroup(fileId: number, groupId: number, permissions: Array<PermissionTypeModel>) {
+        let serviceResult: ServiceResult = await this._fileRepository.appendFilePermissionForGroup(fileId, groupId, permissions);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async appendFilePermissionForUser(fileId: number, userId: number, permissions: Array<PermissionTypeModel>) {
+        let serviceResult: ServiceResult = await this._fileRepository.appendFilePermissionForUser(fileId, userId, permissions);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
     }
 }

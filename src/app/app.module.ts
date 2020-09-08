@@ -10,11 +10,13 @@ import { DiskRepository } from "../app/repositories/repositories.disk";
 import { ContextMenuRepository } from "../app/repositories/repositories.contextmenu";
 import { FileRepository } from "../app/repositories/repositories.file";
 import { FolderRepository } from "../app/repositories/repositories.folder";
+import { UserRepository } from "../app/repositories/repositories.user";
 
 import { AuthenticationService } from "../app/services/services.authentication";
 import { DiskService } from "../app/services/services.disk";
 import { FileService } from "../app/services/services.file";
 import { FolderService } from "../app/services/services.folder";
+import { UserService } from "../app/services/services.user";
 
 import { LoginComponent } from "../app/components/login/component.login";
 import { IndexComponent } from "../app/components/index/component.index";
@@ -57,11 +59,12 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     FormsModule,
     HttpClientModule
   ],
-  providers: [DiskRepository, ContextMenuRepository, FileRepository, FolderRepository, AuthenticationRepository,
+  providers: [DiskRepository, ContextMenuRepository, FileRepository, FolderRepository, AuthenticationRepository, UserRepository,
     { provide: HTTP_INTERCEPTORS, useClass: DiskService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: FileService, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: FolderService, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationService, multi: true }],
+    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationService, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UserService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
