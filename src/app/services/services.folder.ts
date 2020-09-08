@@ -163,4 +163,20 @@ export class FolderService implements OnInit, HttpInterceptor {
             throw new Error(serviceResult.errorMessage);
         }
     }
+
+    public async lockFolder(folderId: number, password: string) {
+        let serviceResult: ServiceResult = await this._folderRepository.lockFolder(folderId, password);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async unLockFolder(folderId: number, password: string) {
+        let serviceResult: ServiceResult = await this._folderRepository.unLockFolder(folderId, password);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
 }

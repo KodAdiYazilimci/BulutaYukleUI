@@ -37,13 +37,14 @@ import { PermissionUserComponent } from "../app/components/permission/component.
 import { DialogInputComponent } from "../app/components/dialog/component.dialoginput";
 import { DialogInfoComponent } from "../app/components/dialog/component.dialoginfo";
 import { DialogPasswordConfirmComponent } from "../app/components/dialog/component.dialogpasswordconfirm";
+import { DialogPasswordInputComponent } from "../app/components/dialog/component.dialogpasswordinput";
 import { DialogUploadComponent } from "../app/components/dialog/component.dialogupload";
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 @NgModule({
   declarations: [
-    DialogYesNoComponent, DialogReadOnlyInputComponent, DialogInputComponent, DialogInfoComponent, DialogPasswordConfirmComponent, DialogUploadComponent,
+    DialogYesNoComponent, DialogReadOnlyInputComponent, DialogInputComponent, DialogInfoComponent, DialogPasswordConfirmComponent, DialogPasswordInputComponent, DialogUploadComponent,
     FormComponent,
     AppComponent,
     LoginComponent,

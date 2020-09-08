@@ -28,6 +28,7 @@ import { FolderService } from 'src/app/services/services.folder';
 import { PropertyModel } from 'src/app/models/model.property';
 import { FileService } from 'src/app/services/services.file';
 import { asLiteral } from '@angular/compiler/src/render3/view/util';
+import { DialogPasswordInputComponent } from '../dialog/component.dialogpasswordinput';
 
 @Component({
     selector: "grid",
@@ -72,6 +73,9 @@ export class GridComponent implements OnInit {
 
     @ViewChild(DialogPasswordConfirmComponent, { static: true })
     private passwordConfirmDialog: DialogPasswordConfirmComponent;
+
+    @ViewChild(DialogPasswordInputComponent, { static: true })
+    private passwordInputDialog: DialogPasswordInputComponent;
 
     @ViewChild(DialogUploadComponent, { static: true })
     private uploadDialog: DialogUploadComponent;
@@ -303,8 +307,8 @@ export class GridComponent implements OnInit {
                     title = "Dosyayı Kilidi Kaldır";
                     message = "Dosya kilidini kaldırırsanız diger kullanicilar bu dosya üzerinde islem yapabilecek!";
                 }
-                this.inputDialog.onOkClickedEvent.subscribe(async event => await this.onAcceptUnLockedItem(event));
-                this.inputDialog.show(title, message, "Parolayı girin..");
+                this.passwordInputDialog.onOkClicked.subscribe(async event => await this.onAcceptUnLockedItem(event));
+                this.passwordInputDialog.show(title, message, "Parolayı girin..");
             } else if (item.index == ContextMenuTypes.NewFolder()) {
                 this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
@@ -368,14 +372,22 @@ export class GridComponent implements OnInit {
         if (model.passwordFirst.length == 0 || model.passwordSecond.length == 0 || model.passwordFirst != model.passwordSecond) {
             this.infoDialog.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
         } else {
-
+            if (this.selectedItemType == ItemTypes.folder()) {
+                await this._folderService.lockFolder(this.selectedItemId, model.passwordFirst);
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                await this._fileService.lockFile(this.selectedItemId, model.passwordFirst);
+            }
         }
     }
-    private async onAcceptUnLockedItem(model: PasswordConfirmModel) {
-        if (model.passwordFirst.length == 0 || model.passwordSecond.length == 0 || model.passwordFirst != model.passwordSecond) {
-            this.infoDialog.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
+    private async onAcceptUnLockedItem(password: string) {
+        if (password.length == 0) {
+            this.infoDialog.show("Uyarı", "Bir parola giriniz!");
         } else {
-
+            if (this.selectedItemType == ItemTypes.folder()) {
+                await this._folderService.unLockFolder(this.selectedItemId, password);
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                await this._fileService.unLockFile(this.selectedItemId, password);
+            }
         }
     }
     public async onAcceptInternetSharing() {

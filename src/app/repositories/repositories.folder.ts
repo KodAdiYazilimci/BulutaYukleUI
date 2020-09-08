@@ -187,4 +187,28 @@ export class FolderRepository extends BaseRepository implements OnInit {
             "permissionTypes": permissions
         }, { headers: headers }).toPromise();
     }
+
+    public async lockFolder(folderId: number, password: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/LockFolder", {
+            "id": folderId,
+            "password": password
+        }, { headers: headers }).toPromise();
+    }
+
+    public async unLockFolder(folderId: number, password: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/UnLockFolder", {
+            "id": folderId,
+            "password": password
+        }, { headers: headers }).toPromise();
+    }
 }

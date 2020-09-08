@@ -152,4 +152,20 @@ export class FileService implements OnInit, HttpInterceptor {
             throw new Error(serviceResult.errorMessage);
         }
     }
+
+    public async lockFile(fileId: number, password: string) {
+        let serviceResult: ServiceResult = await this._fileRepository.lockFile(fileId, password);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async unLockFile(fileId: number, password: string) {
+        let serviceResult: ServiceResult = await this._fileRepository.unLockFile(fileId, password);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
 }

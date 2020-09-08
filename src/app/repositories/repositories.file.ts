@@ -206,4 +206,28 @@ export class FileRepository extends BaseRepository implements OnInit {
             "permissionTypes": permissions
         }, { headers: headers }).toPromise();
     }
+
+    public async lockFile(fileId: number, password: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/LockFile", {
+            "id": fileId,
+            "password": password
+        }, { headers: headers }).toPromise();
+    }
+
+    public async unLockFile(fileId: number, password: string): Promise<ServiceResult> {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/UnLockFile", {
+            "id": fileId,
+            "password": password
+        }, { headers: headers }).toPromise();
+    }
 }
