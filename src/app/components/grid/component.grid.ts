@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
+import { Component, ViewChild, OnInit, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
 import { ContextMenuComponent } from '../contextmenu/component.contextmenu';
 
 import { ContentModel } from "../../models/model.content";
@@ -31,6 +31,7 @@ import { asLiteral } from '@angular/compiler/src/render3/view/util';
 import { DialogPasswordInputComponent } from '../dialog/component.dialogpasswordinput';
 import { GridItemModel } from 'src/app/models/model.gridItem';
 import { ContentService } from 'src/app/services/services.content';
+import { componentFactoryName } from '@angular/compiler';
 
 @Component({
     selector: "grid",
@@ -46,43 +47,22 @@ export class GridComponent implements OnInit {
     public currentFolderId: number = 0;
     public content: ContentModel;
 
-    @ViewChild(ContextMenuComponent, { static: true })
-    private contextMenu: ContextMenuComponent;
-
-    @ViewChild(CommentComponent, { static: true })
-    private commentsWindow: CommentComponent;
-
-    @ViewChild(HistoryComponent, { static: true })
-    private historiesWindow: HistoryComponent;
-
-    @ViewChild(PermissionComponent, { static: true })
-    private permissionsWindow: PermissionComponent;
-
-    @ViewChild(PropertyComponent, { static: true })
-    private propertiesWindow: PropertyComponent;
-
-    @ViewChild(DialogYesNoComponent, { static: true })
-    private yesNoDialog: DialogYesNoComponent;
-
-    @ViewChild(DialogReadOnlyInputComponent, { static: true })
-    private readonlyDialog: DialogReadOnlyInputComponent;
-
-    @ViewChild(DialogInputComponent, { static: true })
-    private inputDialog: DialogInputComponent;
-
-    @ViewChild(DialogInfoComponent, { static: true })
-    private infoDialog: DialogInfoComponent;
-
-    @ViewChild(DialogPasswordConfirmComponent, { static: true })
-    private passwordConfirmDialog: DialogPasswordConfirmComponent;
-
-    @ViewChild(DialogPasswordInputComponent, { static: true })
-    private passwordInputDialog: DialogPasswordInputComponent;
-
-    @ViewChild(DialogUploadComponent, { static: true })
-    private uploadDialog: DialogUploadComponent;
+    private contextMenu: ComponentRef<ContextMenuComponent> = null;
+    private commentsWindow: ComponentRef<CommentComponent> = null;
+    private historiesWindow: ComponentRef<HistoryComponent> = null;
+    private permissionsWindow: ComponentRef<PermissionComponent> = null;
+    private propertiesWindow: ComponentRef<PropertyComponent> = null;
+    private yesNoDialog: ComponentRef<DialogYesNoComponent> = null;
+    private readonlyDialog: ComponentRef<DialogReadOnlyInputComponent> = null;
+    private inputDialog: ComponentRef<DialogInputComponent> = null;
+    private infoDialog: ComponentRef<DialogInfoComponent> = null;
+    private passwordConfirmDialog: ComponentRef<DialogPasswordConfirmComponent> = null;
+    private passwordInputDialog: ComponentRef<DialogPasswordInputComponent> = null;
+    private uploadDialog: ComponentRef<DialogUploadComponent> = null;
 
     constructor(private _router: Router,
+        private _viewContainerRef: ViewContainerRef,
+        private _componentFactoryResolver: ComponentFactoryResolver,
         private _contentService: ContentService,
         private _diskService: DiskService,
         private _fileService: FileService,
@@ -113,13 +93,18 @@ export class GridComponent implements OnInit {
     }
 
     public async showContextMenu(event: any, type: number, id: number, inside: boolean) {
-        try {
-            this.selectedItemType = type;
-            this.selectedItemId = id;
+        this.selectedItemType = type;
+        this.selectedItemId = id;
 
-            this.contextMenu.visible = true;
-            this.contextMenu.marginLeft = event.x + "px";
-            this.contextMenu.marginTop = event.y + "px";
+        if (this.contextMenu != null) {
+            this.contextMenu.destroy();
+        }
+        this.contextMenu = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(ContextMenuComponent));
+
+        try {
+            this.contextMenu.instance.visible = true;
+            this.contextMenu.instance.marginLeft = event.x + "px";
+            this.contextMenu.instance.marginTop = event.y + "px";
 
             let contextMenuTitle: string = ""
             let contextMenuItems: Array<ContextMenuItemModel> = null;
@@ -135,10 +120,11 @@ export class GridComponent implements OnInit {
                 contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
             }
 
-            this.contextMenu.show(contextMenuTitle, contextMenuItems);
-            this.contextMenu.onItemClickedEvent.subscribe(e => this.onContextMenuItemClicked(e));
+            this.contextMenu.instance.show(contextMenuTitle, contextMenuItems);
+            this.contextMenu.instance.onItemClickedEvent.subscribe(e => this.onContextMenuItemClicked(e));
             event.preventDefault();
         } catch (ex) {
+            this.contextMenu.destroy();
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
             }
@@ -146,7 +132,8 @@ export class GridComponent implements OnInit {
     }
 
     public hideContextMenu(): void {
-        this.contextMenu.hide();
+        this.contextMenu.destroy();
+        this.contextMenu = null;
     }
 
     public async onContextMenuItemClicked(item: ContextMenuItemModel) {
@@ -163,18 +150,27 @@ export class GridComponent implements OnInit {
             if (item.index == ContextMenuTypes.Refresh()) {
                 await this.refreshGrid();
             } else if (item.index == ContextMenuTypes.Upload()) {
-                this.uploadDialog.onFileUploaded.subscribe(async (event: FileUploadModel) => {
+                this.uploadDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogUploadComponent));
+                this.uploadDialog.instance.onFileUploaded.subscribe(async (event: FileUploadModel) => {
                     if (event.complete && (event.body as ServiceResult).isSuccess) {
                         await this.refreshGrid();
                     } else if (event.complete) {
                         let error: string = (event.body as ServiceResult).errorMessage;
-                        this.infoDialog.show("Hata", error);
+                        if (this.infoDialog != null) {
+                            this.infoDialog.destroy();
+                        }
+                        this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                        this.infoDialog.instance.show("Hata", error);
                     }
                 });
-                this.uploadDialog.onFailed.subscribe(event => {
-                    this.infoDialog.show("Hata", event);
+                this.uploadDialog.instance.onFailed.subscribe(event => {
+                    if (this.infoDialog != null) {
+                        this.infoDialog.destroy();
+                    }
+                    this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                    this.infoDialog.instance.show("Hata", event);
                 });
-                this.uploadDialog.uploadToDisk(this.currentDiskId);
+                this.uploadDialog.instance.uploadToDisk(this.currentDiskId);
             } else if (item.index == ContextMenuTypes.Comments()) {
                 let title: string = "";
                 let comments: Array<CommentItemModel> = new Array<CommentItemModel>();
@@ -186,10 +182,18 @@ export class GridComponent implements OnInit {
                     title = "Dosya Yorumları";
                     comments = await this._fileService.getFileComments(this.selectedItemId);
                 }
-                this.commentsWindow.onSendEmptyText.subscribe(event => {
-                    this.infoDialog.show("Uyarı", "Lütfen bir yorum yazınız!");
+                if (this.commentsWindow != null) {
+                    this.commentsWindow.destroy();
+                }
+                this.commentsWindow = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(CommentComponent));
+                this.commentsWindow.instance.onSendEmptyText.subscribe(event => {
+                    if (this.infoDialog != null) {
+                        this.infoDialog.destroy();
+                    }
+                    this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                    this.infoDialog.instance.show("Uyarı", "Lütfen bir yorum yazınız!");
                 });
-                this.commentsWindow.show(title, this.selectedItemType, this.selectedItemId, comments);
+                this.commentsWindow.instance.show(title, this.selectedItemType, this.selectedItemId, comments);
             } else if (item.index == ContextMenuTypes.History()) {
                 let title: string = "";
                 let histories: Array<HistoryItemModel> = null;
@@ -200,7 +204,11 @@ export class GridComponent implements OnInit {
                     title = "Dosya Geçmişi";
                     histories = await this._fileService.getFileHistories(this.selectedItemId);
                 }
-                this.historiesWindow.show(title, histories);
+                if (this.commentsWindow != null) {
+                    this.commentsWindow.destroy();
+                }
+                this.historiesWindow = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(HistoryComponent));
+                this.historiesWindow.instance.show(title, histories);
             } else if (item.index == ContextMenuTypes.Permissions()) {
                 let title: string = "";
                 if (this.selectedItemType == ItemTypes.folder()) {
@@ -210,7 +218,11 @@ export class GridComponent implements OnInit {
                 } else if (this.selectedItemType == ItemTypes.disk()) {
                     title = "Disk Yetkileri";
                 }
-                await this.permissionsWindow.show(this.selectedItemType, this.selectedItemId, title);
+                if (this.permissionsWindow != null) {
+                    this.permissionsWindow.destroy();
+                }
+                this.permissionsWindow = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(PermissionComponent));
+                await this.permissionsWindow.instance.show(this.selectedItemType, this.selectedItemId, title);
             } else if (item.index == ContextMenuTypes.Properties()) {
                 let properties: PropertyModel = null;
                 let title: string = "";
@@ -229,17 +241,19 @@ export class GridComponent implements OnInit {
                     logo = "/assets/images/disk.png";
                 }
 
-                this.propertiesWindow.content = properties.content;
-                this.propertiesWindow.createDate = properties.createDate;
-                this.propertiesWindow.creatorUser = properties.creatorUser;
-                this.propertiesWindow.crypted = properties.crypted;
-                this.propertiesWindow.type = properties.type;
-                this.propertiesWindow.path = properties.path;
-                this.propertiesWindow.modifierUser = properties.modifierUser;
-                this.propertiesWindow.modifyDate = properties.modifyDate;
-                this.propertiesWindow.access = properties.access;
-                this.propertiesWindow.size = properties.size;
-                this.propertiesWindow.onClickedOk.subscribe(async event => {
+                this.propertiesWindow = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(PropertyComponent));
+
+                this.propertiesWindow.instance.content = properties.content;
+                this.propertiesWindow.instance.createDate = properties.createDate;
+                this.propertiesWindow.instance.creatorUser = properties.creatorUser;
+                this.propertiesWindow.instance.crypted = properties.crypted;
+                this.propertiesWindow.instance.type = properties.type;
+                this.propertiesWindow.instance.path = properties.path;
+                this.propertiesWindow.instance.modifierUser = properties.modifierUser;
+                this.propertiesWindow.instance.modifyDate = properties.modifyDate;
+                this.propertiesWindow.instance.access = properties.access;
+                this.propertiesWindow.instance.size = properties.size;
+                this.propertiesWindow.instance.onClickedOk.subscribe(async event => {
                     if (event.length > 0 && event != properties.name) {
                         if (this.selectedItemType == ItemTypes.folder()) {
                             await this._folderService.renameFolder(this.selectedItemId, event);
@@ -254,16 +268,28 @@ export class GridComponent implements OnInit {
                         } else if (this.selectedItemType == ItemTypes.file()) {
                             errorMessage = "Dosya adı boş geçilemez!";
                         }
-                        this.infoDialog.show("Uyarı", errorMessage)
+                        if (this.infoDialog != null) {
+                            this.infoDialog.destroy();
+                        }
+                        this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                        this.infoDialog.instance.show("Uyarı", errorMessage)
                     }
                 });
-                this.propertiesWindow.show(title, logo, properties.name);
+                this.propertiesWindow.instance.show(title, logo, properties.name);
             } else if (item.index == ContextMenuTypes.Share()) {
-                this.yesNoDialog.onYesClicked.subscribe(async event => await this.onAcceptInternetSharing());
-                this.yesNoDialog.show("Uyarı", "Seçtiginiz ögeyi/ögeleri internete açik halde paylasmak istediginize emin misiniz?");
+                if (this.yesNoDialog != null) {
+                    this.yesNoDialog.destroy();
+                }
+                this.yesNoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogYesNoComponent));
+                this.yesNoDialog.instance.onYesClicked.subscribe(async event => await this.onAcceptInternetSharing());
+                this.yesNoDialog.instance.show("Uyarı", "Seçtiginiz ögeyi/ögeleri internete açik halde paylasmak istediginize emin misiniz?");
             } else if (item.index == ContextMenuTypes.UnShare()) {
-                this.yesNoDialog.onYesClicked.subscribe(async event => await this.onAcceptInternetSharingClosed());
-                this.yesNoDialog.show("Uyarı", "Seçtiginiz ögenin/ögelerin internete açık paylaşımını kapatmak istediginize emin misiniz?");
+                if (this.yesNoDialog != null) {
+                    this.yesNoDialog.destroy();
+                }
+                this.yesNoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogYesNoComponent));
+                this.yesNoDialog.instance.onYesClicked.subscribe(async event => await this.onAcceptInternetSharingClosed());
+                this.yesNoDialog.instance.show("Uyarı", "Seçtiginiz ögenin/ögelerin internete açık paylaşımını kapatmak istediginize emin misiniz?");
             } else if (item.index == ContextMenuTypes.ShareUrl()) {
                 //Burada ne yapılacağı şimdilik belirsiz
             } else if (item.index == ContextMenuTypes.Rename()) {
@@ -280,7 +306,11 @@ export class GridComponent implements OnInit {
                     message = "Diskin yeni adini giriniz:";
                 }
 
-                this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
+                if (this.inputDialog != null) {
+                    this.inputDialog.destroy();
+                }
+                this.inputDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInputComponent));
+                this.inputDialog.instance.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
                         if (this.selectedItemType == ItemTypes.folder()) {
                             await this._folderService.renameFolder(this.selectedItemId, event);
@@ -289,10 +319,14 @@ export class GridComponent implements OnInit {
                         }
                         await this.refreshGrid();
                     } else {
-                        this.infoDialog.show("Uyarı", "Lütfen bir isim belirtiniz!");
+                        if (this.infoDialog != null) {
+                            this.infoDialog.destroy();
+                        }
+                        this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                        this.infoDialog.instance.show("Uyarı", "Lütfen bir isim belirtiniz!");
                     }
                 });
-                this.inputDialog.show(title, message, "İsim giriniz..");
+                this.inputDialog.instance.show(title, message, "İsim giriniz..");
             } else if (item.index == ContextMenuTypes.Lock()) {
                 let title: string = "";
                 let message: string = "";
@@ -303,8 +337,12 @@ export class GridComponent implements OnInit {
                     title = "Dosyayı Kilitle";
                     message = "Dosyayı kilitlerseniz diger kullanicilar bu dosya üzerinde islem yapamayacak!";
                 }
-                this.passwordConfirmDialog.onOkClicked.subscribe(async event => await this.onAcceptLockedItem(event));
-                this.passwordConfirmDialog.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
+                if (this.passwordConfirmDialog != null) {
+                    this.passwordConfirmDialog.destroy();
+                }
+                this.passwordConfirmDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogPasswordConfirmComponent));
+                this.passwordConfirmDialog.instance.onOkClicked.subscribe(async event => await this.onAcceptLockedItem(event));
+                this.passwordConfirmDialog.instance.show(title, message, "Bir parola girin..", "Parolayi tekrar girin..");
             } else if (item.index == ContextMenuTypes.UnLock()) {
                 let title: string = "";
                 let message: string = "";
@@ -315,18 +353,30 @@ export class GridComponent implements OnInit {
                     title = "Dosyayı Kilidi Kaldır";
                     message = "Dosya kilidini kaldırırsanız diger kullanicilar bu dosya üzerinde islem yapabilecek!";
                 }
-                this.passwordInputDialog.onOkClicked.subscribe(async event => await this.onAcceptUnLockedItem(event));
-                this.passwordInputDialog.show(title, message, "Parolayı girin..");
+                if (this.passwordInputDialog != null) {
+                    this.passwordInputDialog.destroy();
+                }
+                this.passwordInputDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogPasswordInputComponent));
+                this.passwordInputDialog.instance.onOkClicked.subscribe(async event => await this.onAcceptUnLockedItem(event));
+                this.passwordInputDialog.instance.show(title, message, "Parolayı girin..");
             } else if (item.index == ContextMenuTypes.NewFolder()) {
-                this.inputDialog.onOkClickedEvent.subscribe(async (event: string) => {
+                if (this.inputDialog != null) {
+                    this.inputDialog.destroy();
+                }
+                this.inputDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInputComponent));
+                this.inputDialog.instance.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
                         await this._folderService.createFolderOnDisk(this.currentDiskId, event);
                         await this.refreshGrid();
                     } else {
-                        this.infoDialog.show("Uyarı", "Klasör adı boş geçilemez!");
+                        if (this.infoDialog != null) {
+                            this.infoDialog.destroy();
+                        }
+                        this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                        this.infoDialog.instance.show("Uyarı", "Klasör adı boş geçilemez!");
                     }
                 });
-                this.inputDialog.show("Yeni Klasör", "Oluşturulacak Klasörün Adını Giriniz:", "İsim giriniz..");
+                this.inputDialog.instance.show("Yeni Klasör", "Oluşturulacak Klasörün Adını Giriniz:", "İsim giriniz..");
             } else if (item.index == ContextMenuTypes.Hide()) {
                 let title: string = "";
                 let message: string = "";
@@ -337,15 +387,18 @@ export class GridComponent implements OnInit {
                     title = "Dosyayı Gizle";
                     message = "Dosyayı diğer kullanıcılara gizlemek istediğinize emin misiniz?";
                 }
-                this.yesNoDialog.onYesClicked.subscribe(async event => {
+                if (this.yesNoDialog != null) {
+                    this.yesNoDialog.destroy();
+                }
+                this.yesNoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogYesNoComponent));
+                this.yesNoDialog.instance.onYesClicked.subscribe(async event => {
                     if (this.selectedItemType == ItemTypes.folder()) {
                         await this._folderService.hideFolder(this.selectedItemId);
                     } else if (this.selectedItemType == ItemTypes.file()) {
                         await this._fileService.hideFile(this.selectedItemId);
                     }
                 });
-                this.yesNoDialog.show(title, message);
-
+                this.yesNoDialog.instance.show(title, message);
             } else if (item.index == ContextMenuTypes.Show()) {
                 let title: string = "";
                 let message: string = "";
@@ -356,20 +409,25 @@ export class GridComponent implements OnInit {
                     title = "Dosyayı Gizle";
                     message = "Dosyayı diğer kullanıcılara göstermek istediğinize emin misiniz?";
                 }
-                this.yesNoDialog.onYesClicked.subscribe(async event => {
+                if (this.yesNoDialog != null) {
+                    this.yesNoDialog.destroy();
+                }
+                this.yesNoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogYesNoComponent));
+                this.yesNoDialog.instance.onYesClicked.subscribe(async event => {
                     if (this.selectedItemType == ItemTypes.folder()) {
                         await this._folderService.showFolder(this.selectedItemId);
                     } else if (this.selectedItemType == ItemTypes.file()) {
                         await this._fileService.showFile(this.selectedItemId);
                     }
                 });
-                this.yesNoDialog.show(title, message);
+                this.yesNoDialog.instance.show(title, message);
             } else if (item.index == ContextMenuTypes.SendEmail()) {
 
             } else if (item.index == ContextMenuTypes.Download()) {
 
             }
-            this.contextMenu.visible = false;
+            this.contextMenu.destroy();
+            this.contextMenu = null;
         } catch (ex) {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
@@ -378,7 +436,11 @@ export class GridComponent implements OnInit {
     }
     private async onAcceptLockedItem(model: PasswordConfirmModel) {
         if (model.passwordFirst.length == 0 || model.passwordSecond.length == 0 || model.passwordFirst != model.passwordSecond) {
-            this.infoDialog.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
+            if (this.infoDialog != null) {
+                this.infoDialog.destroy();
+            }
+            this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+            this.infoDialog.instance.show("Uyarı", "Girilen parolalar birbirleriyle eslesmiyor!");
         } else {
             if (this.selectedItemType == ItemTypes.folder()) {
                 await this._folderService.lockFolder(this.selectedItemId, model.passwordFirst);
@@ -389,7 +451,11 @@ export class GridComponent implements OnInit {
     }
     private async onAcceptUnLockedItem(password: string) {
         if (password.length == 0) {
-            this.infoDialog.show("Uyarı", "Bir parola giriniz!");
+            if (this.infoDialog != null) {
+                this.infoDialog.destroy();
+            }
+            this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+            this.infoDialog.instance.show("Uyarı", "Bir parola giriniz!");
         } else {
             if (this.selectedItemType == ItemTypes.folder()) {
                 await this._folderService.unLockFolder(this.selectedItemId, password);
@@ -416,7 +482,11 @@ export class GridComponent implements OnInit {
 
         let shareUrl: string = await this._contentService.shareItems(foldersToShare, filesToShare);
 
-        this.readonlyDialog.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", shareUrl)
+        if (this.readonlyDialog != null) {
+            this.readonlyDialog.destroy();
+        }
+        this.readonlyDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogReadOnlyInputComponent));
+        this.readonlyDialog.instance.show("Paylaşım Bağlantısı", "Asagidaki baglantiyi kullanarak ögeleri sistem kullanicilari disinda internete açik halde paylasabilirsiniz.", shareUrl)
     }
     public async onAcceptInternetSharingClosed() {
         let foldersToUnShare: Array<GridItemModel> = new Array<GridItemModel>();
@@ -435,7 +505,10 @@ export class GridComponent implements OnInit {
         });
 
         await this._contentService.unShareItems(foldersToUnShare, filesToUnShare);
-
-        this.infoDialog.show("İşlem Sonucu", "Paylaşım internete kapatıldı");
+        if (this.infoDialog != null) {
+            this.infoDialog.destroy();
+        }
+        this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+        this.infoDialog.instance.show("İşlem Sonucu", "Paylaşım internete kapatıldı");
     }
 }
