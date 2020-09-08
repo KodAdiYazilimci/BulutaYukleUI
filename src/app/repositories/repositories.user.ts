@@ -16,20 +16,12 @@ export class UserRepository extends BaseRepository implements OnInit {
     ngOnInit(): void { }
 
     public async getGroups(): Promise<ServiceResultData<Array<UserGroupModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.get<ServiceResultData<Array<UserGroupModel>>>(
-            this.baseUrl + "User/GetGroups", { headers: headers }).toPromise();
+            this.baseUrl + "User/GetGroups", { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getUsers(): Promise<ServiceResultData<Array<UserModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.get<ServiceResultData<Array<UserModel>>>(
-            this.baseUrl + "User/GetUsers", { headers: headers }).toPromise();
+            this.baseUrl + "User/GetUsers", { headers: this.getDefaultHeaders() }).toPromise();
     }
 }

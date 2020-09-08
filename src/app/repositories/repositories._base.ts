@@ -1,3 +1,5 @@
+import { HttpHeaders } from '@angular/common/http';
+
 export class BaseRepository {
     constructor() {
 
@@ -12,5 +14,13 @@ export class BaseRepository {
         }
 
         return token;
+    }
+
+    public getDefaultHeaders(): HttpHeaders {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Content-Type", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        return headers;
     }
 }

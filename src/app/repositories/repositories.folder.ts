@@ -21,194 +21,130 @@ export class FolderRepository extends BaseRepository implements OnInit {
     ngOnInit(): void { }
 
     public async getFolderContent(folderId: number): Promise<ServiceResultData<ContentModel>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         let params = new HttpParams();
         params = params.append("folderId", folderId.toString());
 
         return await this._http.get<ServiceResultData<ContentModel>>(
-            this.baseUrl + "File/GetContentsByFolder", { headers: headers, params: params }).toPromise();
+            this.baseUrl + "File/GetContentsByFolder", { headers: this.getDefaultHeaders(), params: params }).toPromise();
     }
 
     public async createFolderOnDisk(diskId: number, name: string): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/CreateFolder", {
             "diskId": diskId,
             "name": name
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getFolderProperties(folderId: number): Promise<ServiceResultData<PropertyModel>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         let params = new HttpParams();
         params = params.append("folderId", folderId.toString());
 
         return await this._http.get<ServiceResultData<PropertyModel>>(
-            this.baseUrl + "File/GetFolderProperty", { headers: headers, params: params }).toPromise();
+            this.baseUrl + "File/GetFolderProperty", { headers: this.getDefaultHeaders(), params: params }).toPromise();
     }
 
     public async renameFolder(folderId: number, name: string): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/RenameFolder", {
             "id": folderId,
             "name": name
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getFolderComments(folderId: number): Promise<ServiceResultData<Array<CommentItemModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         let params = new HttpParams();
         params = params.append("folderId", folderId.toString());
 
         return await this._http.get<ServiceResultData<Array<CommentItemModel>>>(
-            this.baseUrl + "File/GetFolderComments", { headers: headers, params: params }).toPromise();
+            this.baseUrl + "File/GetFolderComments", { headers: this.getDefaultHeaders(), params: params }).toPromise();
     }
 
     public async createFolderComment(folderId: number, text: string): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/CreateComment", {
             "folderId": folderId,
             "text": text
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getFolderHistories(folderId: number): Promise<ServiceResultData<Array<HistoryItemModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         let params = new HttpParams();
         params = params.append("folderId", folderId.toString());
 
         return await this._http.get<ServiceResultData<Array<HistoryItemModel>>>(
-            this.baseUrl + "History/GetFolderHistory", { headers: headers, params: params }).toPromise();
+            this.baseUrl + "History/GetFolderHistory", { headers: this.getDefaultHeaders(), params: params }).toPromise();
     }
 
     public async hideFolder(folderId: number): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/HideFolder", {
             "id": folderId.toString()
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async showFolder(folderId: number): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/ShowFolder", {
             "id": folderId.toString()
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getFolderPermissions(folderId: number): Promise<ServiceResultData<PermissionModel>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         let params = new HttpParams();
         params = params.append("folderId", folderId.toString());
 
         return await this._http.get<ServiceResultData<PermissionModel>>(
-            this.baseUrl + "Permission/GetFolderPermissions", { headers: headers, params: params }).toPromise();
+            this.baseUrl + "Permission/GetFolderPermissions", { headers: this.getDefaultHeaders(), params: params }).toPromise();
     }
 
     public async removeFolderPermissionForUser(folderId: number, userId: number): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/RemovePermission", {
             "folderId": folderId.toString(),
             "userId": userId.toString()
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async removeFolderPermissionForGroup(folderId: number, groupId: number): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/RemovePermission", {
             "folderId": folderId.toString(),
             "groupId": groupId.toString()
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async appendFolderPermissionForGroup(folderId: number, groupId: number, permissions: Array<PermissionTypeModel>): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/AppendPermission", {
             "folderId": folderId,
             "groupId": groupId,
             "permissionTypes": permissions
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async appendFolderPermissionForUser(folderId: number, userId: number, permissions: Array<PermissionTypeModel>): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/AppendPermission", {
             "folderId": folderId,
             "userId": userId,
             "permissionTypes": permissions
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async lockFolder(folderId: number, password: string): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/LockFolder", {
             "id": folderId,
             "password": password
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async unLockFolder(folderId: number, password: string): Promise<ServiceResult> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Accept", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResult>(
             this.baseUrl + "File/UnLockFolder", {
             "id": folderId,
             "password": password
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 }

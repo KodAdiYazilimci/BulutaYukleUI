@@ -17,38 +17,26 @@ export class ContextMenuRepository extends BaseRepository implements OnInit {
     }
 
     public async getContextMenuOfDisk(diskId: number, inside: boolean): Promise<ServiceResultData<Array<ContextMenuItemModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResultData<Array<ContextMenuItemModel>>>(
             this.baseUrl + "File/GetContextMenu", {
             "folderInside": inside,
             "diskId": diskId
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getContextMenuOfFolder(folderId: number, inside: boolean): Promise<ServiceResultData<Array<ContextMenuItemModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResultData<Array<ContextMenuItemModel>>>(
             this.baseUrl + "File/GetContextMenu", {
             "folderInside": inside,
             "folderId": folderId
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
     public async getContextMenuOfFile(fileId: number): Promise<ServiceResultData<Array<ContextMenuItemModel>>> {
-        let headers: HttpHeaders = new HttpHeaders();
-        headers = headers.append("Content-Type", "application/json");
-        headers = headers.append("token", this.getToken());
-
         return await this._http.post<ServiceResultData<Array<ContextMenuItemModel>>>(
             this.baseUrl + "File/GetContextMenu", {
             "folderInside": false,
             "fileId": fileId
-        }, { headers: headers }).toPromise();
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 }
