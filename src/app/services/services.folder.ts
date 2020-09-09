@@ -187,4 +187,12 @@ export class FolderService implements OnInit, HttpInterceptor {
             throw new Error(serviceResult.errorMessage);
         }
     }
+
+    public async deleteFolder(folderId: number) {
+        let serviceResult: ServiceResult = await this._folderRepository.deleteFolder(folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
 }

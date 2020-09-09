@@ -38,27 +38,27 @@ export class FileRepository extends BaseRepository implements OnInit {
         formData.append("diskId", diskId.toString());
 
         this._http.post(this.baseUrl + "File/UploadFile", formData, { headers: headers, reportProgress: true, observe: "events" })
-        .subscribe(resp => {
-            let uploadModel: FileUploadModel = new FileUploadModel();
-            if (resp.type == HttpEventType.Response) {
+            .subscribe(resp => {
+                let uploadModel: FileUploadModel = new FileUploadModel();
+                if (resp.type == HttpEventType.Response) {
+                    uploadModel.complete = true;
+                    uploadModel.percentage = 100;
+                    uploadModel.status = resp.status;
+                    uploadModel.body = resp.body;
+                }
+                if (resp.type == HttpEventType.UploadProgress) {
+                    uploadModel.percentage = Math.round(100 * resp.loaded / resp.total);
+                    uploadModel.complete = false;
+                }
+                this.onUploadingEventHandler.emit(uploadModel);
+            }, errorObj => {
+                let uploadModel: FileUploadModel = new FileUploadModel();
                 uploadModel.complete = true;
+                uploadModel.status = errorObj.status;
+                uploadModel.error = (errorObj.error as ServiceResult).errorMessage;
                 uploadModel.percentage = 100;
-                uploadModel.status = resp.status;
-                uploadModel.body = resp.body;
-            }
-            if (resp.type == HttpEventType.UploadProgress) {
-                uploadModel.percentage = Math.round(100 * resp.loaded / resp.total);
-                uploadModel.complete = false;
-            }
-            this.onUploadingEventHandler.emit(uploadModel);
-        }, errorObj => {
-            let uploadModel: FileUploadModel = new FileUploadModel();
-            uploadModel.complete = true;
-            uploadModel.status = errorObj.status;
-            uploadModel.error = (errorObj.error as ServiceResult).errorMessage;
-            uploadModel.percentage = 100;
-            this.onUploadingEventHandler.emit(uploadModel);
-        });
+                this.onUploadingEventHandler.emit(uploadModel);
+            });
     }
 
     public uploadFileToFolder(folderId: number, files: any) {
@@ -74,27 +74,27 @@ export class FileRepository extends BaseRepository implements OnInit {
         formData.append("folderId", folderId.toString());
 
         this._http.post(this.baseUrl + "File/UploadFile", formData, { headers: headers, reportProgress: true, observe: "events" })
-        .subscribe(resp => {
-            let uploadModel: FileUploadModel = new FileUploadModel();
-            if (resp.type == HttpEventType.Response) {
+            .subscribe(resp => {
+                let uploadModel: FileUploadModel = new FileUploadModel();
+                if (resp.type == HttpEventType.Response) {
+                    uploadModel.complete = true;
+                    uploadModel.percentage = 100;
+                    uploadModel.status = resp.status;
+                    uploadModel.body = resp.body;
+                }
+                if (resp.type == HttpEventType.UploadProgress) {
+                    uploadModel.percentage = Math.round(100 * resp.loaded / resp.total);
+                    uploadModel.complete = false;
+                }
+                this.onUploadingEventHandler.emit(uploadModel);
+            }, errorObj => {
+                let uploadModel: FileUploadModel = new FileUploadModel();
                 uploadModel.complete = true;
+                uploadModel.status = errorObj.status;
+                uploadModel.error = (errorObj.error as ServiceResult).errorMessage;
                 uploadModel.percentage = 100;
-                uploadModel.status = resp.status;
-                uploadModel.body = resp.body;
-            }
-            if (resp.type == HttpEventType.UploadProgress) {
-                uploadModel.percentage = Math.round(100 * resp.loaded / resp.total);
-                uploadModel.complete = false;
-            }
-            this.onUploadingEventHandler.emit(uploadModel);
-        }, errorObj => {
-            let uploadModel: FileUploadModel = new FileUploadModel();
-            uploadModel.complete = true;
-            uploadModel.status = errorObj.status;
-            uploadModel.error = (errorObj.error as ServiceResult).errorMessage;
-            uploadModel.percentage = 100;
-            this.onUploadingEventHandler.emit(uploadModel);
-        });
+                this.onUploadingEventHandler.emit(uploadModel);
+            });
     }
 
     public async getFileProperties(fileId: number): Promise<ServiceResultData<PropertyModel>> {
@@ -207,5 +207,13 @@ export class FileRepository extends BaseRepository implements OnInit {
             "id": fileId,
             "password": password
         }, { headers: this.getDefaultHeaders() }).toPromise();
+    }
+
+    public async deleteFile(fileId: number): Promise<ServiceResult> {
+        let params = new HttpParams();
+        params = params.append("fileId", fileId.toString());
+
+        return await this._http.get<ServiceResult>(
+            this.baseUrl + "File/DeleteFile", { params: params, headers: this.getDefaultHeaders() }).toPromise();
     }
 }

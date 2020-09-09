@@ -155,4 +155,12 @@ export class FolderRepository extends BaseRepository implements OnInit {
             "password": password
         }, { headers: this.getDefaultHeaders() }).toPromise();
     }
+
+    public async deleteFolder(folderId: number): Promise<ServiceResult> {
+        let params = new HttpParams();
+        params = params.append("folderId", folderId.toString());
+
+        return await this._http.get<ServiceResult>(
+            this.baseUrl + "File/DeleteFolder", { params: params, headers: this.getDefaultHeaders() }).toPromise();
+    }
 }

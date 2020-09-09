@@ -82,10 +82,14 @@ export class GridComponent implements OnInit {
 
     private async refreshGrid(): Promise<void> {
         try {
-            if (this.selectedItemType == ItemTypes.disk()) {
-                this.content = await this._diskService.getDiskContent(this.selectedItemId);
-            } else if (this.selectedItemType == ItemTypes.folder()) {
-                this.content = await this._folderService.getFolderContent(this.selectedItemId);
+            if (this.currentDiskId != null) {
+                this.content = await this._diskService.getDiskContent(this.currentDiskId);
+                this.selectedItemType = ItemTypes.disk();
+                this.selectedItemId = this.currentDiskId;
+            } else if (this.currentFolderId != null) {
+                this.content = await this._folderService.getFolderContent(this.currentFolderId);
+                this.selectedItemType = ItemTypes.folder();
+                this.selectedItemId = this.currentFolderId;
             }
         } catch (ex) {
             if (ex.status == 401) {
@@ -174,7 +178,23 @@ export class GridComponent implements OnInit {
             } else if (item.index == ContextMenuTypes.Paste()) {
 
             } else if (item.index == ContextMenuTypes.Delete()) {
-
+                if (this.yesNoDialog != null) {
+                    this.yesNoDialog.destroy();
+                }
+                this.yesNoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogYesNoComponent));
+                this.yesNoDialog.instance.onYesClicked.subscribe(async event => {
+                    if (this.selectedItemType == ItemTypes.folder()) {
+                        await this._folderService.deleteFolder(this.selectedItemId);
+                    } else if (this.selectedItemType == ItemTypes.file()) {
+                        await this._fileService.deleteFile(this.selectedItemId);
+                    }
+                    await this.refreshGrid();
+                });
+                if (this.selectedItemType == ItemTypes.folder()) {
+                    this.yesNoDialog.instance.show("Onay", "Klasörü silmek istediğinize emin misiniz?");
+                } else if (this.selectedItemType == ItemTypes.file()) {
+                    this.yesNoDialog.instance.show("Onay", "Dosyayı silmek istediğinize emin misiniz?");
+                }
             }
             if (item.index == ContextMenuTypes.Refresh()) {
                 await this.refreshGrid();

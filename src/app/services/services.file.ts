@@ -175,4 +175,12 @@ export class FileService implements OnInit, HttpInterceptor {
             throw new Error(serviceResult.errorMessage);
         }
     }
+
+    public async deleteFile(fileId: number) {
+        let serviceResult: ServiceResult = await this._fileRepository.deleteFile(fileId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
 }
