@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
+import { Component, ViewChild, OnInit, ViewContainerRef, ComponentFactoryResolver, ComponentRef, EventEmitter } from "@angular/core";
 import { ContextMenuComponent } from '../contextmenu/component.contextmenu';
 
 import { ContentModel } from "../../models/model.content";
@@ -47,6 +47,8 @@ export class GridComponent implements OnInit {
     public currentFolderId: number = 0;
     public content: ContentModel;
 
+    public onChangedPath: EventEmitter<Array<GridItemModel>> = new EventEmitter<Array<GridItemModel>>();
+
     private contextMenu: ComponentRef<ContextMenuComponent> = null;
     private commentsWindow: ComponentRef<CommentComponent> = null;
     private historiesWindow: ComponentRef<HistoryComponent> = null;
@@ -72,14 +74,19 @@ export class GridComponent implements OnInit {
         this.content = new ContentModel();
     }
 
-    public loadGridData(diskId: number, content: ContentModel) {
+    public loadGridData(diskId: number, folderId: number, content: ContentModel) {
         this.currentDiskId = diskId;
+        this.currentFolderId = folderId;
         this.content = content;
     }
 
     private async refreshGrid(): Promise<void> {
         try {
-            this.content = await this._diskService.getDiskContent(this.currentDiskId);
+            if (this.currentDiskId != null) {
+                this.content = await this._diskService.getDiskContent(this.currentDiskId);
+            } else if (this.currentFolderId != null) {
+                this.content = await this._folderService.getFolderContent(this.currentFolderId);
+            }
         } catch (ex) {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
@@ -112,15 +119,25 @@ export class GridComponent implements OnInit {
             let contextMenuTitle: string = ""
             let contextMenuItems: Array<ContextMenuItemModel> = null;
 
-            if (type == ItemTypes.folder()) {
-                contextMenuTitle = "Klasör Seçenekleri";
-                contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId, inside);
-            } else if (type == ItemTypes.disk()) {
-                contextMenuTitle = "Disk Seçenekleri";
-                contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId, inside);
-            } else if (type == ItemTypes.file()) {
-                contextMenuTitle = "Dosya Seçenekleri";
-                contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
+            if (inside) {
+                if (this.currentDiskId != null) {
+                    contextMenuTitle = "Disk Seçenekleri";
+                    contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId, inside);
+                } else if (this.currentFolderId != null) {
+                    contextMenuTitle = "Klasör Seçenekleri";
+                    contextMenuItems = await this._folderService.getContextMenu(this.currentFolderId, inside);
+                }
+            } else {
+                if (type == ItemTypes.folder()) {
+                    contextMenuTitle = "Klasör Seçenekleri";
+                    contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId, inside);
+                } else if (type == ItemTypes.disk()) {
+                    contextMenuTitle = "Disk Seçenekleri";
+                    contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId, inside);
+                } else if (type == ItemTypes.file()) {
+                    contextMenuTitle = "Dosya Seçenekleri";
+                    contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
+                }
             }
 
             this.contextMenu.instance.show(contextMenuTitle, contextMenuItems);
@@ -138,6 +155,13 @@ export class GridComponent implements OnInit {
         if (this.contextMenu != null) {
             this.contextMenu.instance.hide();
         }
+    }
+
+    public async openFolder(folderId: number) {
+        this.content = await this._folderService.getFolderContent(folderId);
+        this.currentFolderId = folderId;
+        this.currentDiskId = null;
+        this.onChangedPath.emit(this.content.location);
     }
 
     public async onContextMenuItemClicked(item: ContextMenuItemModel) {
@@ -174,7 +198,11 @@ export class GridComponent implements OnInit {
                     this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
                     this.infoDialog.instance.show("Hata", event);
                 });
-                this.uploadDialog.instance.uploadToDisk(this.currentDiskId);
+                if (this.currentDiskId != null) {
+                    this.uploadDialog.instance.uploadToDisk(this.currentDiskId);
+                } else if (this.currentFolderId != null) {
+                    this.uploadDialog.instance.uploadToFolder(this.currentFolderId);
+                }
             } else if (item.index == ContextMenuTypes.Comments()) {
                 let title: string = "";
                 let comments: Array<CommentItemModel> = new Array<CommentItemModel>();
@@ -370,7 +398,11 @@ export class GridComponent implements OnInit {
                 this.inputDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInputComponent));
                 this.inputDialog.instance.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
-                        await this._folderService.createFolderOnDisk(this.currentDiskId, event);
+                        if (this.currentDiskId != null) {
+                            await this._folderService.createFolderOnDisk(this.currentDiskId, event);
+                        } else if (this.currentFolderId != null) {
+                            await this._folderService.createFolderOnFolder(this.currentFolderId, event);
+                        }
                         await this.refreshGrid();
                     } else {
                         if (this.infoDialog != null) {

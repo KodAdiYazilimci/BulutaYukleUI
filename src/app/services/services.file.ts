@@ -39,6 +39,13 @@ export class FileService implements OnInit, HttpInterceptor {
         this._fileRepository.uploadFileToDisk(diskId, files);
     }
 
+    public uploadFileToFolder(folderId: number, files: any) {
+        this._fileRepository.onUploadingEventHandler.subscribe((event: FileUploadModel) => {
+            this.onFileUploadingEventHandler.emit(event);
+        });
+        this._fileRepository.uploadFileToFolder(folderId, files);
+    }
+
     public async getContextMenu(folderId: number): Promise<Array<ContextMenuItemModel>> {
         let result: ServiceResultData<Array<ContextMenuItemModel>> = await this._contextMenuRepository.getContextMenuOfFile(folderId);
 

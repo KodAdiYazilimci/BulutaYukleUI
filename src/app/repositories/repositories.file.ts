@@ -61,6 +61,42 @@ export class FileRepository extends BaseRepository implements OnInit {
         });
     }
 
+    public uploadFileToFolder(folderId: number, files: any) {
+        let headers: HttpHeaders = new HttpHeaders();
+        headers = headers.append("Accept", "application/json");
+        headers = headers.append("token", this.getToken());
+
+        let formData: FormData = new FormData();
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append("files", files[i]);
+        }
+        formData.append("folderId", folderId.toString());
+
+        this._http.post(this.baseUrl + "File/UploadFile", formData, { headers: headers, reportProgress: true, observe: "events" })
+        .subscribe(resp => {
+            let uploadModel: FileUploadModel = new FileUploadModel();
+            if (resp.type == HttpEventType.Response) {
+                uploadModel.complete = true;
+                uploadModel.percentage = 100;
+                uploadModel.status = resp.status;
+                uploadModel.body = resp.body;
+            }
+            if (resp.type == HttpEventType.UploadProgress) {
+                uploadModel.percentage = Math.round(100 * resp.loaded / resp.total);
+                uploadModel.complete = false;
+            }
+            this.onUploadingEventHandler.emit(uploadModel);
+        }, errorObj => {
+            let uploadModel: FileUploadModel = new FileUploadModel();
+            uploadModel.complete = true;
+            uploadModel.status = errorObj.status;
+            uploadModel.error = (errorObj.error as ServiceResult).errorMessage;
+            uploadModel.percentage = 100;
+            this.onUploadingEventHandler.emit(uploadModel);
+        });
+    }
+
     public async getFileProperties(fileId: number): Promise<ServiceResultData<PropertyModel>> {
         let params = new HttpParams();
         params = params.append("fileId", fileId.toString());

@@ -4,7 +4,7 @@
             <div ngClass="folderItem" name="pathTitle" currentlocation="2" locationid="40" diskid="40">
                 <span>Konum</span>
             </div>
-            <div ngClass="folderItem" *ngFor="let item of paths">
+            <div ngClass="folderItem" *ngFor="let item of paths" (click)="openPath(item)">
                 <img src="{{item.logo}}" /><span> {{item.name}}</span>
             </div>
             <div ngClass="searchBar">

@@ -50,7 +50,7 @@
     </div>
     <div ngClass="gridContent" (click)="hideContextMenu();">
         <div ngClass="gridLine splitterBottom" *ngFor="let item of content.folders" gridlinechecked="0"
-            (contextmenu)="showContextMenu($event,item.type,item.id,false);">
+            (contextmenu)="showContextMenu($event,item.type,item.id,false);" (dblclick)="openFolder(item.id)">
             <div ngClass="checkboxField" column="checkbox" style="width: 20px;">
                 <input type="checkbox" (change)="setChecked(item)" name="select"></div>
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">

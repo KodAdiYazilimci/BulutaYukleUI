@@ -60,6 +60,14 @@ export class FolderService implements OnInit, HttpInterceptor {
         }
     }
 
+    public async createFolderOnFolder(folderId: number, folderName: string) {
+        let serviceResult: ServiceResult = await this._folderRepository.createFolderOnFolder(folderId, folderName);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
     public async getFolderProperty(folderId: number): Promise<PropertyModel> {
         let result: ServiceResultData<PropertyModel> = await this._folderRepository.getFolderProperties(folderId);
 

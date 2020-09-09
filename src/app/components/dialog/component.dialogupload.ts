@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class DialogUploadComponent {
     private diskId: number = 0;
+    private folderId: number = 0;
 
     public visible: boolean;
     public visibleSelectFile: boolean;
@@ -25,6 +26,13 @@ export class DialogUploadComponent {
 
     public uploadToDisk(diskId: number): void {
         this.diskId = diskId;
+        this.visibleSelectFile = true;
+        this.visibleUploading = false;
+        this.visible = true;
+    }
+
+    public uploadToFolder(folderId: number): void {
+        this.folderId = folderId;
         this.visibleSelectFile = true;
         this.visibleUploading = false;
         this.visible = true;
@@ -47,6 +55,8 @@ export class DialogUploadComponent {
             });
             if (this.diskId > 0) {
                 this._fileService.uploadFileToDisk(this.diskId, event.target.files);
+            } else if (this.folderId > 0) {
+                this._fileService.uploadFileToFolder(this.folderId, event.target.files);
             }
         } catch (ex) {
             if (ex.status == 401) {

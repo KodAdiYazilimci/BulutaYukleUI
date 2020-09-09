@@ -36,6 +36,14 @@ export class FolderRepository extends BaseRepository implements OnInit {
         }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
+    public async createFolderOnFolder(folderId: number, name: string): Promise<ServiceResult> {
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/CreateFolder", {
+            "topFolderId": folderId,
+            "name": name
+        }, { headers: this.getDefaultHeaders() }).toPromise();
+    }
+
     public async getFolderProperties(folderId: number): Promise<ServiceResultData<PropertyModel>> {
         let params = new HttpParams();
         params = params.append("folderId", folderId.toString());
