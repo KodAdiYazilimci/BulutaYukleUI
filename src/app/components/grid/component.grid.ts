@@ -82,10 +82,10 @@ export class GridComponent implements OnInit {
 
     private async refreshGrid(): Promise<void> {
         try {
-            if (this.currentDiskId != null) {
-                this.content = await this._diskService.getDiskContent(this.currentDiskId);
-            } else if (this.currentFolderId != null) {
-                this.content = await this._folderService.getFolderContent(this.currentFolderId);
+            if (this.selectedItemType == ItemTypes.disk()) {
+                this.content = await this._diskService.getDiskContent(this.selectedItemId);
+            } else if (this.selectedItemType == ItemTypes.folder()) {
+                this.content = await this._folderService.getFolderContent(this.selectedItemId);
             }
         } catch (ex) {
             if (ex.status == 401) {
@@ -105,6 +105,15 @@ export class GridComponent implements OnInit {
     public async showContextMenu(event: any, type: number, id: number, inside: boolean) {
         this.selectedItemType = type;
         this.selectedItemId = id;
+        if (type == null) {
+            if (this.currentDiskId != null) {
+                this.selectedItemType = ItemTypes.disk();
+                this.selectedItemId = this.currentDiskId;
+            } else if (this.currentFolderId != null) {
+                this.selectedItemType = ItemTypes.folder();
+                this.selectedItemId = this.currentFolderId;
+            }
+        }
 
         if (this.contextMenu != null) {
             this.contextMenu.destroy();
@@ -119,25 +128,15 @@ export class GridComponent implements OnInit {
             let contextMenuTitle: string = ""
             let contextMenuItems: Array<ContextMenuItemModel> = null;
 
-            if (inside) {
-                if (this.currentDiskId != null) {
-                    contextMenuTitle = "Disk Seçenekleri";
-                    contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId, inside);
-                } else if (this.currentFolderId != null) {
-                    contextMenuTitle = "Klasör Seçenekleri";
-                    contextMenuItems = await this._folderService.getContextMenu(this.currentFolderId, inside);
-                }
-            } else {
-                if (type == ItemTypes.folder()) {
-                    contextMenuTitle = "Klasör Seçenekleri";
-                    contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId, inside);
-                } else if (type == ItemTypes.disk()) {
-                    contextMenuTitle = "Disk Seçenekleri";
-                    contextMenuItems = await this._diskService.getContextMenu(this.currentDiskId, inside);
-                } else if (type == ItemTypes.file()) {
-                    contextMenuTitle = "Dosya Seçenekleri";
-                    contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
-                }
+            if (this.selectedItemType == ItemTypes.folder()) {
+                contextMenuTitle = "Klasör Seçenekleri";
+                contextMenuItems = await this._folderService.getContextMenu(this.selectedItemId, inside);
+            } else if (this.selectedItemType == ItemTypes.disk()) {
+                contextMenuTitle = "Disk Seçenekleri";
+                contextMenuItems = await this._diskService.getContextMenu(this.selectedItemId, inside);
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                contextMenuTitle = "Dosya Seçenekleri";
+                contextMenuItems = await this._fileService.getContextMenu(this.selectedItemId);
             }
 
             this.contextMenu.instance.show(contextMenuTitle, contextMenuItems);
@@ -161,6 +160,8 @@ export class GridComponent implements OnInit {
         this.content = await this._folderService.getFolderContent(folderId);
         this.currentFolderId = folderId;
         this.currentDiskId = null;
+        this.selectedItemId = folderId;
+        this.selectedItemType = ItemTypes.folder();
         this.onChangedPath.emit(this.content.location);
     }
 
@@ -198,10 +199,10 @@ export class GridComponent implements OnInit {
                     this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
                     this.infoDialog.instance.show("Hata", event);
                 });
-                if (this.currentDiskId != null) {
-                    this.uploadDialog.instance.uploadToDisk(this.currentDiskId);
-                } else if (this.currentFolderId != null) {
-                    this.uploadDialog.instance.uploadToFolder(this.currentFolderId);
+                if (this.selectedItemType == ItemTypes.disk()) {
+                    this.uploadDialog.instance.uploadToDisk(this.selectedItemId);
+                } else if (this.selectedItemType == ItemTypes.folder()) {
+                    this.uploadDialog.instance.uploadToFolder(this.selectedItemId);
                 }
             } else if (item.index == ContextMenuTypes.Comments()) {
                 let title: string = "";
@@ -398,10 +399,10 @@ export class GridComponent implements OnInit {
                 this.inputDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInputComponent));
                 this.inputDialog.instance.onOkClickedEvent.subscribe(async (event: string) => {
                     if (event.length > 0) {
-                        if (this.currentDiskId != null) {
-                            await this._folderService.createFolderOnDisk(this.currentDiskId, event);
-                        } else if (this.currentFolderId != null) {
-                            await this._folderService.createFolderOnFolder(this.currentFolderId, event);
+                        if (this.selectedItemType == ItemTypes.disk()) {
+                            await this._folderService.createFolderOnDisk(this.selectedItemId, event);
+                        } else if (this.selectedItemType == ItemTypes.folder()) {
+                            await this._folderService.createFolderOnFolder(this.selectedItemId, event);
                         }
                         await this.refreshGrid();
                     } else {
