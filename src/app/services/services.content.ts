@@ -37,4 +37,8 @@ export class ContentService implements OnInit, HttpInterceptor {
             throw new Error(serviceResult.errorMessage);
         }
     }
+
+    public async downloadItems(folders: Array<GridItemModel>, files: Array<GridItemModel>): Promise<Blob> {
+        return await this._contentRepository.downloadItems(folders, files);
+    }
 }

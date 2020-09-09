@@ -88,8 +88,11 @@ export class GridComponent implements OnInit {
     }
 
     public async setChecked(item: GridItemModel) {
-        item.checked = !item.checked;
-        console.log(item.checked);
+        if (item.checked == null || item.checked == undefined) {
+            item.checked = true;
+        } else {
+            item.checked = !item.checked;
+        }
     }
 
     public async showContextMenu(event: any, type: number, id: number, inside: boolean) {
@@ -132,8 +135,9 @@ export class GridComponent implements OnInit {
     }
 
     public hideContextMenu(): void {
-        this.contextMenu.destroy();
-        this.contextMenu = null;
+        if (this.contextMenu != null) {
+            this.contextMenu.instance.hide();
+        }
     }
 
     public async onContextMenuItemClicked(item: ContextMenuItemModel) {
@@ -422,9 +426,46 @@ export class GridComponent implements OnInit {
                 });
                 this.yesNoDialog.instance.show(title, message);
             } else if (item.index == ContextMenuTypes.SendEmail()) {
-
+                //Web servisi hazır değil
             } else if (item.index == ContextMenuTypes.Download()) {
-
+                let foldersToDownload: Array<GridItemModel> = new Array<GridItemModel>();
+                let filesToDownload: Array<GridItemModel> = new Array<GridItemModel>();
+                let currentSelected: boolean = false;
+                this.content.folders.forEach(folder => {
+                    if (folder.checked) {
+                        foldersToDownload.push(folder);
+                        if (this.selectedItemType == ItemTypes.folder() && folder.id == this.selectedItemId) {
+                            currentSelected = true;
+                        }
+                    }
+                });
+                this.content.files.forEach(file => {
+                    if (file.checked) {
+                        filesToDownload.push(file);
+                        if (this.selectedItemType == ItemTypes.file() && file.id == this.selectedItemId) {
+                            currentSelected = true;
+                        }
+                    }
+                });
+                if (currentSelected == false) {
+                    if (this.selectedItemType == ItemTypes.folder()) {
+                        let currentFocusedFolder: GridItemModel = new GridItemModel();
+                        currentFocusedFolder.id = this.selectedItemId;
+                        currentFocusedFolder.type = ItemTypes.folder();
+                        foldersToDownload.push(currentFocusedFolder);
+                    } else if (this.selectedItemType == ItemTypes.file()) {
+                        let currentFocusedFile: GridItemModel = new GridItemModel();
+                        currentFocusedFile.id = this.selectedItemId;
+                        currentFocusedFile.type = ItemTypes.file();
+                        filesToDownload.push(currentFocusedFile);
+                    }
+                }
+                let data = await this._contentService.downloadItems(foldersToDownload, filesToDownload);
+                const url = window.URL.createObjectURL(data);
+                var anchor = document.createElement("a");
+                anchor.download = "Files.zip";
+                anchor.href = url;
+                anchor.click();
             }
             this.contextMenu.destroy();
             this.contextMenu = null;
@@ -468,17 +509,38 @@ export class GridComponent implements OnInit {
         let foldersToShare: Array<GridItemModel> = new Array<GridItemModel>();
         let filesToShare: Array<GridItemModel> = new Array<GridItemModel>();
 
+        let currentSelected: boolean = false;
         this.content.folders.forEach(folder => {
             if (folder.checked) {
                 foldersToShare.push(folder);
+                if (this.selectedItemType == ItemTypes.folder() && folder.id == this.selectedItemId) {
+                    currentSelected = true;
+                }
             }
         });
 
         this.content.files.forEach(file => {
             if (file.checked) {
                 filesToShare.push(file);
+                if (this.selectedItemType == ItemTypes.file() && file.id == this.selectedItemId) {
+                    currentSelected = true;
+                }
             }
         });
+
+        if (currentSelected == false) {
+            if (this.selectedItemType == ItemTypes.folder()) {
+                let currentFocusedFolder: GridItemModel = new GridItemModel();
+                currentFocusedFolder.id = this.selectedItemId;
+                currentFocusedFolder.type = ItemTypes.folder();
+                foldersToShare.push(currentFocusedFolder);
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                let currentFocusedFile: GridItemModel = new GridItemModel();
+                currentFocusedFile.id = this.selectedItemId;
+                currentFocusedFile.type = ItemTypes.file();
+                filesToShare.push(currentFocusedFile);
+            }
+        }
 
         let shareUrl: string = await this._contentService.shareItems(foldersToShare, filesToShare);
 
@@ -492,18 +554,37 @@ export class GridComponent implements OnInit {
         let foldersToUnShare: Array<GridItemModel> = new Array<GridItemModel>();
         let filesToUnShare: Array<GridItemModel> = new Array<GridItemModel>();
 
+        let currentSelected: boolean = false;
         this.content.folders.forEach(folder => {
             if (folder.checked) {
                 foldersToUnShare.push(folder);
+                if (this.selectedItemType == ItemTypes.folder() && folder.id == this.selectedItemId) {
+                    currentSelected = true;
+                }
             }
         });
 
         this.content.files.forEach(file => {
             if (file.checked) {
                 filesToUnShare.push(file);
+                if (this.selectedItemType == ItemTypes.file() && file.id == this.selectedItemId) {
+                    currentSelected = true;
+                }
             }
         });
-
+        if (currentSelected == false) {
+            if (this.selectedItemType == ItemTypes.folder()) {
+                let currentFocusedFolder: GridItemModel = new GridItemModel();
+                currentFocusedFolder.id = this.selectedItemId;
+                currentFocusedFolder.type = ItemTypes.folder();
+                foldersToUnShare.push(currentFocusedFolder);
+            } else if (this.selectedItemType == ItemTypes.file()) {
+                let currentFocusedFile: GridItemModel = new GridItemModel();
+                currentFocusedFile.id = this.selectedItemId;
+                currentFocusedFile.type = ItemTypes.file();
+                filesToUnShare.push(currentFocusedFile);
+            }
+        }
         await this._contentService.unShareItems(foldersToUnShare, filesToUnShare);
         if (this.infoDialog != null) {
             this.infoDialog.destroy();

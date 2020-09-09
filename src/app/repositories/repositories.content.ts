@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from "@angular/core";
-import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { from } from "rxjs";
+import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http";
+import { from, Observable } from "rxjs";
 
 import { ServiceResult, ServiceResultData } from "../models/model.serviceresult";
 
@@ -30,5 +30,13 @@ export class ContentRepository extends BaseRepository implements OnInit {
             "folders": folders,
             "files": files
         }, { headers: this.getDefaultHeaders() }).toPromise();
+    }
+
+    public async downloadItems(folders: Array<GridItemModel>, files: Array<GridItemModel>): Promise<Blob> {
+        return await this._http.post(
+            this.baseUrl + "File/DownloadItems", {
+            "folders": folders,
+            "files": files
+        }, { headers: this.getDefaultHeaders(), responseType: "blob" }).toPromise();
     }
 }
