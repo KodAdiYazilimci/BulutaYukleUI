@@ -7,6 +7,7 @@ import { ServiceResult, ServiceResultData } from "../models/model.serviceresult"
 import { BaseRepository } from "../repositories/repositories._base";
 import { ContentModel } from '../models/model.content';
 import { GridItemModel } from '../models/model.gridItem';
+import { ItemTypes } from '../util/util.itemtypes';
 
 @Injectable()
 export class ContentRepository extends BaseRepository implements OnInit {
@@ -24,7 +25,7 @@ export class ContentRepository extends BaseRepository implements OnInit {
         }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 
-    public async unShareItems(folders: Array<GridItemModel>, files: Array<GridItemModel>) {
+    public async unShareItems(folders: Array<GridItemModel>, files: Array<GridItemModel>): Promise<ServiceResult> {
         return await this._http.post<ServiceResult>(
             this.baseUrl + "UnShareItems", {
             "folders": folders,
@@ -38,5 +39,45 @@ export class ContentRepository extends BaseRepository implements OnInit {
             "folders": folders,
             "files": files
         }, { headers: this.getDefaultHeaders(), responseType: "blob" }).toPromise();
+    }
+
+    public async moveItemsToDisk(folders: Array<GridItemModel>, files: Array<GridItemModel>, diskId: number): Promise<ServiceResult> {
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/MoveItems", {
+            "folders": folders,
+            "files": files,
+            "type": ItemTypes.disk(),
+            "targetId": diskId
+        }, { headers: this.getDefaultHeaders() }).toPromise();
+    }
+
+    public async moveItemsToFolder(folders: Array<GridItemModel>, files: Array<GridItemModel>, folderId: number): Promise<ServiceResult> {
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/MoveItems", {
+            "folders": folders,
+            "files": files,
+            "type": ItemTypes.folder(),
+            "targetId": folderId
+        }, { headers: this.getDefaultHeaders() }).toPromise();
+    }
+
+    public async copyItemsToDisk(folders: Array<GridItemModel>, files: Array<GridItemModel>, diskId: number): Promise<ServiceResult> {
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/CopyItems", {
+            "folders": folders,
+            "files": files,
+            "type": ItemTypes.disk(),
+            "targetId": diskId
+        }, { headers: this.getDefaultHeaders() }).toPromise();
+    }
+
+    public async copyItemsToFolder(folders: Array<GridItemModel>, files: Array<GridItemModel>, folderId: number): Promise<ServiceResult> {
+        return await this._http.post<ServiceResult>(
+            this.baseUrl + "File/CopyItems", {
+            "folders": folders,
+            "files": files,
+            "type": ItemTypes.folder(),
+            "targetId": folderId
+        }, { headers: this.getDefaultHeaders() }).toPromise();
     }
 }

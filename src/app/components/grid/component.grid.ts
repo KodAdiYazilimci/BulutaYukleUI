@@ -43,6 +43,12 @@ export class GridComponent implements OnInit {
     private selectedItemType: number;
     private selectedItemId: number;
 
+    private movingFolders: Array<GridItemModel> = new Array<GridItemModel>();
+    private movingFiles: Array<GridItemModel> = new Array<GridItemModel>();
+
+    private copyingFolders: Array<GridItemModel> = new Array<GridItemModel>();
+    private copyingFiles: Array<GridItemModel> = new Array<GridItemModel>();
+
     public currentDiskId: number = 0;
     public currentFolderId: number = 0;
     public content: ContentModel;
@@ -172,11 +178,96 @@ export class GridComponent implements OnInit {
     public async onContextMenuItemClicked(item: ContextMenuItemModel) {
         try {
             if (item.index == ContextMenuTypes.Cut()) {
+                this.movingFiles = new Array<GridItemModel>();
+                this.movingFolders = new Array<GridItemModel>();
+                this.copyingFiles = new Array<GridItemModel>();
+                this.copyingFolders = new Array<GridItemModel>();
 
+                let currentSelected: boolean = false;
+                this.content.folders.forEach(folder => {
+                    if (folder.checked) {
+                        this.movingFolders.push(folder);
+                        if (this.selectedItemType == ItemTypes.folder() && folder.id == this.selectedItemId) {
+                            currentSelected = true;
+                        }
+                    }
+                });
+                this.content.files.forEach(file => {
+                    if (file.checked) {
+                        this.movingFiles.push(file);
+                        if (this.selectedItemType == ItemTypes.file() && file.id == this.selectedItemId) {
+                            currentSelected = true;
+                        }
+                    }
+                });
+                if (currentSelected == false) {
+                    if (this.selectedItemType == ItemTypes.folder()) {
+                        let currentFocusedFolder: GridItemModel = new GridItemModel();
+                        currentFocusedFolder.id = this.selectedItemId;
+                        currentFocusedFolder.type = ItemTypes.folder();
+                        this.movingFolders.push(currentFocusedFolder);
+                    } else if (this.selectedItemType == ItemTypes.file()) {
+                        let currentFocusedFile: GridItemModel = new GridItemModel();
+                        currentFocusedFile.id = this.selectedItemId;
+                        currentFocusedFile.type = ItemTypes.file();
+                        this.movingFiles.push(currentFocusedFile);
+                    }
+                }
             } else if (item.index == ContextMenuTypes.Copy()) {
+                this.movingFiles = new Array<GridItemModel>();
+                this.movingFolders = new Array<GridItemModel>();
+                this.copyingFiles = new Array<GridItemModel>();
+                this.copyingFolders = new Array<GridItemModel>();
 
+                let currentSelected: boolean = false;
+                this.content.folders.forEach(folder => {
+                    if (folder.checked) {
+                        this.copyingFolders.push(folder);
+                        if (this.selectedItemType == ItemTypes.folder() && folder.id == this.selectedItemId) {
+                            currentSelected = true;
+                        }
+                    }
+                });
+                this.content.files.forEach(file => {
+                    if (file.checked) {
+                        this.copyingFiles.push(file);
+                        if (this.selectedItemType == ItemTypes.file() && file.id == this.selectedItemId) {
+                            currentSelected = true;
+                        }
+                    }
+                });
+                if (currentSelected == false) {
+                    if (this.selectedItemType == ItemTypes.folder()) {
+                        let currentFocusedFolder: GridItemModel = new GridItemModel();
+                        currentFocusedFolder.id = this.selectedItemId;
+                        currentFocusedFolder.type = ItemTypes.folder();
+                        this.copyingFolders.push(currentFocusedFolder);
+                    } else if (this.selectedItemType == ItemTypes.file()) {
+                        let currentFocusedFile: GridItemModel = new GridItemModel();
+                        currentFocusedFile.id = this.selectedItemId;
+                        currentFocusedFile.type = ItemTypes.file();
+                        this.copyingFiles.push(currentFocusedFile);
+                    }
+                }
             } else if (item.index == ContextMenuTypes.Paste()) {
-
+                if (this.copyingFolders.length > 0 || this.copyingFiles.length > 0) {
+                    if (this.selectedItemType == ItemTypes.disk()) {
+                        await this._contentService.copyItemsToDisk(this.copyingFolders, this.copyingFiles, this.selectedItemId);
+                    } else if (this.selectedItemType == ItemTypes.folder()) {
+                        await this._contentService.copyItemsToFolder(this.copyingFolders, this.copyingFiles, this.selectedItemId);
+                    }
+                    this.copyingFiles = new Array<GridItemModel>();
+                    this.copyingFolders = new Array<GridItemModel>();
+                } else if (this.movingFolders.length > 0 || this.movingFiles.length > 0) {
+                    if (this.selectedItemType == ItemTypes.disk()) {
+                        await this._contentService.moveItemsToDisk(this.movingFolders, this.movingFiles, this.selectedItemId);
+                    } else if (this.selectedItemType == ItemTypes.folder()) {
+                        await this._contentService.moveItemsToFolder(this.movingFolders, this.movingFiles, this.selectedItemId);
+                    }
+                    this.movingFiles = new Array<GridItemModel>();
+                    this.movingFolders = new Array<GridItemModel>();
+                }
+                this.refreshGrid();
             } else if (item.index == ContextMenuTypes.Delete()) {
                 if (this.yesNoDialog != null) {
                     this.yesNoDialog.destroy();

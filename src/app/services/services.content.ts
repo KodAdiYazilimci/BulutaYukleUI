@@ -41,4 +41,36 @@ export class ContentService implements OnInit, HttpInterceptor {
     public async downloadItems(folders: Array<GridItemModel>, files: Array<GridItemModel>): Promise<Blob> {
         return await this._contentRepository.downloadItems(folders, files);
     }
+
+    public async moveItemsToDisk(folders: Array<GridItemModel>, files: Array<GridItemModel>, diskId: number) {
+        let serviceResult: ServiceResult = await this._contentRepository.moveItemsToDisk(folders, files, diskId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async moveItemsToFolder(folders: Array<GridItemModel>, files: Array<GridItemModel>, folderId: number) {
+        let serviceResult: ServiceResult = await this._contentRepository.moveItemsToFolder(folders, files, folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async copyItemsToDisk(folders: Array<GridItemModel>, files: Array<GridItemModel>, diskId: number) {
+        let serviceResult: ServiceResult = await this._contentRepository.copyItemsToDisk(folders, files, diskId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
+
+    public async copyItemsToFolder(folders: Array<GridItemModel>, files: Array<GridItemModel>, folderId: number) {
+        let serviceResult: ServiceResult = await this._contentRepository.copyItemsToFolder(folders, files, folderId);
+
+        if (serviceResult.isSuccess == false) {
+            throw new Error(serviceResult.errorMessage);
+        }
+    }
 }
