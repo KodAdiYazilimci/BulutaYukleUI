@@ -1,6 +1,8 @@
-<div class="dialog" name="infoDialog" *ngIf="visible">
-    <div class="dialogTop">
-        <div class="dialogTitle">
+<div class="dialog" name="infoDialog" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+    (mouseup)="mouseUp($event)">
+    <div class="dialogTop" (mouseup)="mouseUp($event)">
+        <div class="dialogTitle" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+            (mouseup)="mouseUp($event)">
             <span name="dialogTitle">{{title}}</span>
         </div>
         <div class="dialogClose" (click)="hide();">

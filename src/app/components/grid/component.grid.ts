@@ -80,6 +80,77 @@ export class GridComponent implements OnInit {
         this.content = new ContentModel();
     }
 
+    public mouseMove(event: any) {
+        if (this.commentsWindow != null) {
+            this.commentsWindow.instance.mouseMove(event);
+        }
+        if (this.historiesWindow != null) {
+            this.historiesWindow.instance.mouseMove(event);
+        }
+        if (this.infoDialog != null) {
+            this.infoDialog.instance.mouseMove(event);
+        }
+        if (this.inputDialog != null) {
+            this.inputDialog.instance.mouseMove(event);
+        }
+        if (this.yesNoDialog != null) {
+            this.yesNoDialog.instance.mouseMove(event);
+        }
+        if (this.uploadDialog != null) {
+            this.uploadDialog.instance.mouseMove(event);
+        }
+        if (this.readonlyDialog != null) {
+            this.readonlyDialog.instance.mouseMove(event);
+        }
+        if (this.passwordInputDialog != null) {
+            this.passwordInputDialog.instance.mouseMove(event);
+        }
+        if (this.passwordConfirmDialog != null) {
+            this.passwordConfirmDialog.instance.mouseMove(event);
+        }
+        if (this.permissionsWindow != null) {
+            this.permissionsWindow.instance.mouseMove(event);
+        }
+        if (this.propertiesWindow != null) {
+            this.propertiesWindow.instance.mouseMove(event);
+        }
+    }
+    public mouseUp(event: any) {
+        if (this.commentsWindow != null) {
+            this.commentsWindow.instance.mouseUp(event);
+        }
+        if (this.historiesWindow != null) {
+            this.historiesWindow.instance.mouseUp(event);
+        }
+        if (this.infoDialog != null) {
+            this.infoDialog.instance.mouseUp(event);
+        }
+        if (this.inputDialog != null) {
+            this.inputDialog.instance.mouseUp(event);
+        }
+        if (this.yesNoDialog != null) {
+            this.yesNoDialog.instance.mouseUp(event);
+        }
+        if (this.uploadDialog != null) {
+            this.uploadDialog.instance.mouseUp(event);
+        }
+        if (this.readonlyDialog != null) {
+            this.readonlyDialog.instance.mouseUp(event);
+        }
+        if (this.passwordInputDialog != null) {
+            this.passwordInputDialog.instance.mouseUp(event);
+        }
+        if (this.passwordConfirmDialog != null) {
+            this.passwordConfirmDialog.instance.mouseUp(event);
+        }
+        if (this.permissionsWindow != null) {
+            this.permissionsWindow.instance.mouseUp(event);
+        }
+        if (this.propertiesWindow != null) {
+            this.propertiesWindow.instance.mouseUp(event);
+        }
+    }
+
     public loadGridData(diskId: number, folderId: number, content: ContentModel) {
         this.currentDiskId = diskId;
         this.currentFolderId = folderId;

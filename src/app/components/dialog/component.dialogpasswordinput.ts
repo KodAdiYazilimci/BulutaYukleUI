@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Output, Input } from "@angular/core";
 import { PasswordConfirmModel } from "../../models/model.passwordconfirm";
 import { from } from "rxjs";
+import { BaseDialog } from './component._dialogbase';
 
 @Component({
     selector: "dialogpasswordinput",
     templateUrl: "./component.dialogpasswordinput.html",
     styleUrls: ["./component.dialogpasswordinput.css"]
 })
-export class DialogPasswordInputComponent {
+export class DialogPasswordInputComponent extends BaseDialog {
     public visible: boolean = false;
     public title: string;
     public message: string;
@@ -19,7 +20,9 @@ export class DialogPasswordInputComponent {
     @Output()
     public onOkClicked: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor() { }
+    constructor() {
+        super();
+    }
 
     public show(title: string, message: string, placeholder: string): void {
         this.title = title;

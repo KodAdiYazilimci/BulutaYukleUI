@@ -28,6 +28,10 @@ export class PermissionGroupComponent {
     @Output()
     public onClosedEvent: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+    public marginLeft: string = "50%";
+    public marginTop: string = "15%";
+    public mouseDowned: boolean = false;
+
     constructor(
         private _diskService: DiskService,
         private _fileService: FileService,
@@ -82,5 +86,18 @@ export class PermissionGroupComponent {
 
         this.onClosedEvent.emit(true);
         this.visible = false;
+    }
+    
+    public mouseDown(event: any) {
+        this.mouseDowned = true;
+    }
+    public mouseMove(event: any) {
+        if (this.mouseDowned == true) {
+            this.marginLeft = event.pageX + "px";
+            this.marginTop = event.pageY + "px";
+        }
+    }
+    public mouseUp(event: any) {
+        this.mouseDowned = false;
     }
 }

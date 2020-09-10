@@ -3,6 +3,7 @@ import { FileService } from 'src/app/services/services.file';
 import { FileUploadModel } from 'src/app/models/model.fileupload';
 import { GridItemModel } from 'src/app/models/model.gridItem';
 import { Router } from '@angular/router';
+import { BaseDialog } from './component._dialogbase';
 
 @Component({
     selector: "dialogupload",
@@ -10,7 +11,7 @@ import { Router } from '@angular/router';
     styleUrls: ["./component.dialogupload.css"],
     providers: [FileService]
 })
-export class DialogUploadComponent {
+export class DialogUploadComponent extends BaseDialog {
     private diskId: number = 0;
     private folderId: number = 0;
 
@@ -22,7 +23,9 @@ export class DialogUploadComponent {
     public onFailed: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private _router: Router,
-        private _fileService: FileService) { }
+        private _fileService: FileService) {
+        super();
+    }
 
     public uploadToDisk(diskId: number): void {
         this.diskId = diskId;

@@ -1,7 +1,9 @@
-<div class="permissionGroup" name="addPermissionGroup" *ngIf="visible">
-    <div class="permissionGroupTitle">
-        <div class="permissionGroupTitle">
-            <div class="permissionGroupTitleText">
+<div class="permissionGroup" name="addPermissionGroup" *ngIf="visible"
+    [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}" (mouseup)="mouseUp($event)">
+    <div class="permissionGroupTitle" (mouseup)="mouseUp($event)">
+        <div class="permissionGroupTitle" (mouseup)="mouseUp($event)">
+            <div class="permissionGroupTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+                (mouseup)="mouseUp($event)">
                 <span name="permissionGroupTitle">Grup Yetkilendir</span>
             </div>
             <div class="permissionGroupTitleClose" (click)="hide();">

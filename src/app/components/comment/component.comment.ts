@@ -24,6 +24,10 @@ export class CommentComponent {
     @Output()
     public onSendEmptyText: EventEmitter<{}> = new EventEmitter<{}>();
 
+    public marginLeft: string = "30%";
+    public marginTop: string = "2%";
+    public mouseDowned: boolean = false;
+
     constructor(
         private _fileService: FileService,
         private _folderService: FolderService) { }
@@ -54,5 +58,18 @@ export class CommentComponent {
         }
 
         this.formText = "";
+    }
+
+    public mouseDown(event: any) {
+        this.mouseDowned = true;
+    }
+    public mouseMove(event: any) {
+        if (this.mouseDowned == true) {
+            this.marginLeft = event.pageX + "px";
+            this.marginTop = event.pageY + "px";
+        }
+    }
+    public mouseUp(event: any) {
+        this.mouseDowned = false;
     }
 }

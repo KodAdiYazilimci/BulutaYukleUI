@@ -1,17 +1,20 @@
 import { Component } from "@angular/core";
+import { BaseDialog } from './component._dialogbase';
 
 @Component({
     selector: "dialogreadonly",
     templateUrl: "./component.dialogreadonlyinput.html",
     styleUrls: ["./component.dialogreadonlyinput.css"]
 })
-export class DialogReadOnlyInputComponent {
+export class DialogReadOnlyInputComponent extends BaseDialog {
     public visible: boolean;
     public title: string = "";
     public message: string = "";
     public content: string = "";
 
-    constructor() { }
+    constructor() {
+        super();
+    }
 
     public show(title: string, message: string, content: string): void {
         this.title = title;

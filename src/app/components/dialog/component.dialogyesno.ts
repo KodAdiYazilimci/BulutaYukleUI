@@ -1,11 +1,12 @@
 import { Component, Output, EventEmitter } from "@angular/core";
+import { BaseDialog } from './component._dialogbase';
 
 @Component({
     selector: "dialogyesno",
     templateUrl: "./component.dialogyesno.html",
     styleUrls: ["./component.dialogyesno.css"]
 })
-export class DialogYesNoComponent {
+export class DialogYesNoComponent extends BaseDialog {
     public visible: boolean;
     public title: string = "";
     public message: string = "";
@@ -16,7 +17,9 @@ export class DialogYesNoComponent {
     @Output()
     public onNoClicked: EventEmitter<{}> = new EventEmitter<{}>();
 
-    constructor() { }
+    constructor() {
+        super();
+    }
 
     public show(title: string, message: string): void {
         this.title = title;

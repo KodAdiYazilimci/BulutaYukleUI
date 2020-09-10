@@ -1,6 +1,8 @@
-<div class="permissionsScreen" *ngIf="visible">
-    <div class="permissionTitle">
-        <div class="permissionTitleText">
+<div class="permissionsScreen" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+    (mouseup)="mouseUp($event)">
+    <div class="permissionTitle" (mouseup)="mouseUp($event)">
+        <div class="permissionTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+            (mouseup)="mouseUp($event)">
             <span name="permissionTitle">{{title}}</span>
         </div>
         <div class="permissionTitleClose" (click)="hide();">

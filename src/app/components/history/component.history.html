@@ -1,6 +1,8 @@
-<div ngClass="history" *ngIf="visible">
-    <div ngClass="historyTitle">
-        <div ngClass="historyTitleText">
+<div ngClass="history" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+    (mouseup)="mouseUp($event)">
+    <div ngClass="historyTitle" (mouseup)="mouseUp($event)">
+        <div ngClass="historyTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+            (mouseup)="mouseUp($event)">
             <span name="historyTitle">
                 {{title}}
             </span>

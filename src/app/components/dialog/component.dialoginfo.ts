@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Output } from "@angular/core";
+import { BaseDialog } from './component._dialogbase';
 
 @Component({
     selector: "dialoginfo",
     templateUrl: "./component.dialoginfo.html",
     styleUrls: ["./component.dialoginfo.css"]
 })
-export class DialogInfoComponent {
+export class DialogInfoComponent extends BaseDialog {
     public visible: boolean = false;
     public title: string;
     public message: string;
@@ -13,7 +14,13 @@ export class DialogInfoComponent {
     @Output()
     public onClickedOk: EventEmitter<{}> = new EventEmitter<{}>();
 
-    constructor() { }
+    public marginLeft: string = "30%";
+    public marginTop: string = "5%";
+    public mouseDowned: boolean = false;
+
+    constructor() {
+        super();
+    }
 
     public hide(): void {
         this.visible = false;

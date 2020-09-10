@@ -34,6 +34,10 @@ export class PermissionComponent {
     public users: Array<PermissionModel> = new Array<PermissionModel>();
     public solidPermissions: PermissionModel = new PermissionModel();
 
+    public marginLeft: string = "33%";
+    public marginTop: string = "5%";
+    public mouseDowned: boolean = false;
+
     constructor(
         private _diskService: DiskService,
         private _fileService: FileService,
@@ -120,5 +124,21 @@ export class PermissionComponent {
         if (clickedOk) {
             await this.loadPermissions();
         }
+    }
+
+    public mouseDown(event: any) {
+        this.mouseDowned = true;
+    }
+    public mouseMove(event: any) {
+        if (this.mouseDowned == true) {
+            this.marginLeft = event.pageX + "px";
+            this.marginTop = event.pageY + "px";
+        }
+
+        this.permissionGroupWindow.mouseMove(event);
+        this.permissionUserWindow.mouseMove(event);
+    }
+    public mouseUp(event: any) {
+        this.mouseDowned = false;
     }
 }

@@ -1,6 +1,8 @@
-<div ngClass="dialogProgress" *ngIf="visible">
-    <div ngClass="dialogProgressTop">
-        <div ngClass="dialogProgressTitle">
+<div ngClass="dialogProgress" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+    (mouseup)="mouseUp($event)">
+    <div ngClass="dialogProgressTop" (mouseup)="mouseUp($event)">
+        <div ngClass="dialogProgressTitle" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+            (mouseup)="mouseUp($event)">
             <span>Yükle</span>
         </div>
         <div class="dialogProgressClose" (click)="hide();">

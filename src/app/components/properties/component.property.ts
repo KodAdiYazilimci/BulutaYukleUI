@@ -24,6 +24,10 @@ export class PropertyComponent {
     @Output()
     public onClickedOk: EventEmitter<string> = new EventEmitter<string>();
 
+    public marginLeft: string = "33%";
+    public marginTop: string = "5%";
+    public mouseDowned: boolean = false;
+
     constructor() { }
 
     public show(title: string, logo: string, name: string): void {
@@ -40,5 +44,18 @@ export class PropertyComponent {
     public Ok(): void {
         this.onClickedOk.emit(this.name);
         this.visible = false;
+    }
+
+    public mouseDown(event: any) {
+        this.mouseDowned = true;
+    }
+    public mouseMove(event: any) {
+        if (this.mouseDowned == true) {
+            this.marginLeft = event.pageX + "px";
+            this.marginTop = event.pageY + "px";
+        }
+    }
+    public mouseUp(event: any) {
+        this.mouseDowned = false;
     }
 }

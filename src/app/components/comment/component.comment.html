@@ -1,6 +1,8 @@
-<div ngClass="commentsWindow" *ngIf="visible">
-    <div ngClass="commentsWindowTitle">
-        <div ngClass="commentsWindowTitleText">
+<div ngClass="commentsWindow" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+    (mouseup)="mouseUp($event)">
+    <div ngClass="commentsWindowTitle" (mouseup)="mouseUp($event)">
+        <div ngClass="commentsWindowTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+            (mouseup)="mouseUp($event)">
             <span name="commentTitle">{{title}}</span>
         </div>
         <div ngClass="commentsWindowTitleClose" (click)="hide();">

@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Output } from "@angular/core";
+import { BaseDialog } from "./component._dialogbase";
 
 @Component({
     selector: "dialoginput",
     templateUrl: "./component.dialoginput.html",
     styleUrls: ["./component.dialoginput.css"]
 })
-export class DialogInputComponent {
+export class DialogInputComponent extends BaseDialog {
     public visible: boolean;
     public title: string;
     public message: string;
@@ -15,7 +16,9 @@ export class DialogInputComponent {
     @Output()
     public onOkClickedEvent: EventEmitter<string> = new EventEmitter<string>();
 
-    constructor() { }
+    constructor() {
+        super();
+    }
 
     public show(title: string, message: string, placeholder: string) {
         this.title = title;

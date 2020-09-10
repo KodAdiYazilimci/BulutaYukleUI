@@ -1,4 +1,4 @@
-<div ngClass="grid" (contextmenu)="$event.preventDefault();">
+<div ngClass="grid" (contextmenu)="$event.preventDefault();" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)">
     <div ngClass="gridHeader bottomBorder">
         <div ngClass="gridHeaderLine">
             <div ngClass="checkboxField">
