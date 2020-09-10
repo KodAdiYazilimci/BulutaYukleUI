@@ -1,4 +1,4 @@
-<div ngClass="folderSide">
+<div ngClass="folderSide" [ngStyle]="{'width':width}">
     <div id="diskTree" ngClass="directory tj_container">
         <ul>
             <li><span ngClass="tj_description"><span ngClass="tj_mod_icon"><span>◢</span></span><span
@@ -40,4 +40,5 @@
         </ul>
     </div>
 </div>
-<div ngClass="dragSide"></div>
+<div ngClass="dragSide" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)" (mousedown)="mouseDown($event)">
+</div>

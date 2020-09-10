@@ -22,6 +22,8 @@ export class ContentSideComponent implements OnInit {
     @ViewChild(FolderPathComponent, { static: true })
     private pathBar: FolderPathComponent;
 
+    public width: string = "";
+
     constructor(private _router: Router,
         private _diskService: DiskService,
         private _folderService: FolderService) { }

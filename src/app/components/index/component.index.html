@@ -1,5 +1,5 @@
 <div ngClass="lockField" style="display: none;"></div>
-<div ngClass="content">
+<div ngClass="content" (mouseup)="mouseUp($event)" (mousemove)="mouseMove($event)" (mousedown)="mouseDown($event)">
     <folderside></folderside>
     <contentside></contentside>
 </div>
