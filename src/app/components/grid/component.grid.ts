@@ -32,6 +32,7 @@ import { DialogPasswordInputComponent } from '../dialog/component.dialogpassword
 import { GridItemModel } from 'src/app/models/model.gridItem';
 import { ContentService } from 'src/app/services/services.content';
 import { componentFactoryName } from '@angular/compiler';
+import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: "grid",
@@ -206,7 +207,27 @@ export class GridComponent implements OnInit {
         }
     }
 
-    public async setChecked(item: GridItemModel) {
+    private checkedAll: boolean = false;
+    
+    public setCheckedAll() {
+        this.content.folders.forEach(item => {
+            if (this.checkedAll) {
+                item.checked = false;
+            } else {
+                item.checked = true;
+            }
+        });
+        this.content.files.forEach(item => {
+            if (this.checkedAll) {
+                item.checked = false;
+            } else {
+                item.checked = true;
+            }
+        });
+        this.checkedAll = !this.checkedAll;
+    }
+
+    public setChecked(item: GridItemModel) {
         if (item.checked == null || item.checked == undefined) {
             item.checked = true;
         } else {
