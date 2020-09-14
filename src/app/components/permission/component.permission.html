@@ -1,64 +1,64 @@
-<div class="permissionsScreen" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+<div ngClass="permissionsScreen" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
     (mouseup)="mouseUp($event)">
-    <div class="permissionTitle" (mouseup)="mouseUp($event)">
-        <div class="permissionTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+    <div ngClass="permissionTitle" (mouseup)="mouseUp($event)">
+        <div ngClass="permissionTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
             (mouseup)="mouseUp($event)">
-            <span name="permissionTitle">{{title}}</span>
+            <span>{{title}}</span>
         </div>
-        <div class="permissionTitleClose" (click)="hide();">
+        <div ngClass="permissionTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
-    <div class="permissionContent">
-        <div class="permissionFrame">
-            <div class="permissionTitle">
-                <div class="permissionTitleText">
+    <div ngClass="permissionContent">
+        <div ngClass="permissionFrame">
+            <div ngClass="permissionTitle">
+                <div ngClass="permissionTitleText">
                     <span>Gruplar</span>
                 </div>
-                <div class="permissionTitleClose" (click)="showAddPermissionGroup();">
+                <div ngClass="permissionTitleClose" (click)="showAddPermissionGroup();">
                     <img src="/assets/images/plus.png">
                 </div>
             </div>
-            <div class="permissionFrameContent" name="permissionGroup">
-                <div class="permissionLine" *ngFor="let group of groups">
-                    <div class="permissionLineLogo"><img src="{{group.logo}}"></div>
-                    <div class="permissionLineText"><span>{{group.name}}</span></div>
-                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil"
+            <div ngClass="permissionFrameContent">
+                <div ngClass="permissionLine" *ngFor="let group of groups">
+                    <div ngClass="permissionLineLogo"><img src="{{group.logo}}"></div>
+                    <div ngClass="permissionLineText"><span>{{group.name}}</span></div>
+                    <div ngClass="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil"
                             (click)="deletePermissionGroupItem(group.id);"></div>
                 </div>
             </div>
         </div>
-        <div class="permissionFrame">
-            <div class="permissionTitle">
-                <div class="permissionTitleText">
+        <div ngClass="permissionFrame">
+            <div ngClass="permissionTitle">
+                <div ngClass="permissionTitleText">
                     <span>Kullanicilar</span>
                 </div>
-                <div class="permissionTitleClose" (click)="showAddPermissionUser();">
+                <div ngClass="permissionTitleClose" (click)="showAddPermissionUser();">
                     <img src="/assets/images/plus.png">
                 </div>
             </div>
-            <div class="permissionFrameContent" name="permissionUser">
-                <div class="permissionLine" *ngFor="let user of users">
-                    <div class="permissionLineLogo"><img src="{{user.logo}}"></div>
-                    <div class="permissionLineText"><span>{{user.name}}</span></div>
-                    <div class="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil"
+            <div ngClass="permissionFrameContent">
+                <div ngClass="permissionLine" *ngFor="let user of users">
+                    <div ngClass="permissionLineLogo"><img src="{{user.logo}}"></div>
+                    <div ngClass="permissionLineText"><span>{{user.name}}</span></div>
+                    <div ngClass="permissionLineFunctions"><img src="/assets/images/delete.png" title="Sil"
                             (click)="deletePermissionUserItem(user.userId);"></div>
                 </div>
             </div>
         </div>
-        <div class="permissionFrame">
-            <div class="permissionTitle">
-                <div class="permissionTitleText">
+        <div ngClass="permissionFrame">
+            <div ngClass="permissionTitle">
+                <div ngClass="permissionTitleText">
                     <span>Sabit Erisim Yetkililer</span>
                 </div>
-                <div class="permissionTitleClose">
+                <div ngClass="permissionTitleClose">
                 </div>
             </div>
-            <div class="permissionFrameContent" name="solidPermissionUserAndGroups">
-                <div class="permissionLine" *ngFor="let solid of solidPermissions">
-                    <div class="permissionLineLogo"><img src="{{solid.logo}}"></div>
-                    <div class="permissionLineText"><span>{{solid.text}}</span></div>
-                    <div class="permissionLineFunctions"></div>
+            <div ngClass="permissionFrameContent">
+                <div ngClass="permissionLine" *ngFor="let solid of solidPermissions">
+                    <div ngClass="permissionLineLogo"><img src="{{solid.logo}}"></div>
+                    <div ngClass="permissionLineText"><span>{{solid.text}}</span></div>
+                    <div ngClass="permissionLineFunctions"></div>
                 </div>
             </div>
         </div>

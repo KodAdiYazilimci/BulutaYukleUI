@@ -3,9 +3,7 @@
     <div ngClass="historyTitle" (mouseup)="mouseUp($event)">
         <div ngClass="historyTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
             (mouseup)="mouseUp($event)">
-            <span name="historyTitle">
-                {{title}}
-            </span>
+            <span>{{title}}</span>
         </div>
         <div ngClass="historyTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">

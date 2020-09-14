@@ -4,7 +4,11 @@
     </div>
     <div ngClass="{{item.splitBottom ? 'contextMenuLine splitterBottom' : 'contextMenuLine'}}"
         *ngFor="let item of items" (click)="onItemClicked(item);">
-        <div ngClass="contextMenuItemLogo"><img src="{{item.logo}}"></div>
-        <div ngClass="contextMenuItemText"><span>{{item.name}}</span></div>
+        <div ngClass="contextMenuItemLogo">
+            <img src="{{item.logo}}">
+        </div>
+        <div ngClass="contextMenuItemText">
+            <span>{{item.name}}</span>
+        </div>
     </div>
 </div>

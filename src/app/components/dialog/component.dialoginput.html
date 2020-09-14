@@ -1,28 +1,28 @@
-<div class="dialog" name="inputDialog" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+<div ngClass="dialog" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
     (mouseup)="mouseUp($event)">
-    <div class="dialogTop" (mouseup)="mouseUp($event)">
-        <div class="dialogTitle" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+    <div ngClass="dialogTop" (mouseup)="mouseUp($event)">
+        <div ngClass="dialogTitle" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
             (mouseup)="mouseUp($event)">
-            <span name="dialogTitle">{{title}}</span>
+            <span>{{title}}</span>
         </div>
-        <div class="dialogClose" (click)="hide();">
+        <div ngClass="dialogClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
-    <div class="dialogFrame">
-        <div class="dialogIcon">
+    <div ngClass="dialogFrame">
+        <div ngClass="dialogIcon">
             <img src="/assets/images/warning.ico">
         </div>
-        <div class="dialogContent">
+        <div ngClass="dialogContent">
             <div>
-                <p class="dialogText">{{message}}</p>
+                <p ngClass="dialogText">{{message}}</p>
             </div>
-            <div class="dialogInput" name="dialogInput">
+            <div ngClass="dialogInput">
                 <input type="text" [(ngModel)]="value" placeholder="{{placeholder}}">
             </div>
-            <div class="dialogControls" name="controls">
-                <div class="dialogSingleControl">
-                    <button name="dialogOk" (click)="onOk();">Tamam</button>
+            <div ngClass="dialogControls">
+                <div ngClass="dialogSingleControl">
+                    <button (click)="onOk();">Tamam</button>
                 </div>
             </div>
         </div>

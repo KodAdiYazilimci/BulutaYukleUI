@@ -1,29 +1,29 @@
-<div class="dialog" name="yesNoDialog" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+<div ngClass="dialog" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
     (mouseup)="mouseUp($event)">
-    <div class="dialogTop" (mouseup)="mouseUp($event)">
-        <div class="dialogTitle" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+    <div ngClass="dialogTop" (mouseup)="mouseUp($event)">
+        <div ngClass="dialogTitle" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
             (mouseup)="mouseUp($event)">
-            <span name="dialogTitle">{{title}}</span>
+            <span>{{title}}</span>
         </div>
-        <div class="dialogClose" (click)="hide();">
+        <div ngClass="dialogClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
-    <div class="dialogFrame">
-        <div class="dialogIcon">
+    <div ngClass="dialogFrame">
+        <div ngClass="dialogIcon">
             <img src="/assets/images/warning.ico">
         </div>
-        <div class="dialogContent">
+        <div ngClass="dialogContent">
             <div>
-                <p class="dialogText">{{message}}</p>
+                <p ngClass="dialogText">{{message}}</p>
             </div>
-            <div class="dialogControls" name="controls">
-                <div class="dialogYesNo">
-                    <div class="dialogYes">
-                        <button name="dialogYes" (click)="onYes();">Evet</button>
+            <div ngClass="dialogControls">
+                <div ngClass="dialogYesNo">
+                    <div ngClass="dialogYes">
+                        <button (click)="onYes();">Evet</button>
                     </div>
-                    <div class="dialogNo">
-                        <button name="dialogNo" (click)="onNo();">Hayir</button>
+                    <div ngClass="dialogNo">
+                        <button (click)="onNo();">Hayir</button>
                     </div>
                 </div>
             </div>

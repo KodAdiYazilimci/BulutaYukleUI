@@ -1,63 +1,63 @@
-<div class="permissionGroup" name="addPermissionGroup" *ngIf="visible"
-    [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}" (mouseup)="mouseUp($event)">
-    <div class="permissionGroupTitle" (mouseup)="mouseUp($event)">
-        <div class="permissionGroupTitle" (mouseup)="mouseUp($event)">
-            <div class="permissionGroupTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
+<div ngClass="permissionGroup" *ngIf="visible" [ngStyle]="{'margin-left':marginLeft,'margin-top':marginTop}"
+    (mouseup)="mouseUp($event)">
+    <div ngClass="permissionGroupTitle" (mouseup)="mouseUp($event)">
+        <div ngClass="permissionGroupTitle" (mouseup)="mouseUp($event)">
+            <div ngClass="permissionGroupTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
                 (mouseup)="mouseUp($event)">
-                <span name="permissionGroupTitle">Grup Yetkilendir</span>
+                <span>Grup Yetkilendir</span>
             </div>
-            <div class="permissionGroupTitleClose" (click)="hide();">
+            <div ngClass="permissionGroupTitleClose" (click)="hide();">
                 <img src="/assets/images/close.png">
             </div>
         </div>
     </div>
-    <div class="permissionGroupLine">
-        <div class="permissionGroupLineLeft">
+    <div ngClass="permissionGroupLine">
+        <div ngClass="permissionGroupLineLeft">
             <span>Grup:</span>
         </div>
-        <div class="permissionGroupLineRight">
-            <select name="addPermissionSelectedUser" [(ngModel)]="selectedGroupId">
+        <div ngClass="permissionGroupLineRight">
+            <select [(ngModel)]="selectedGroupId">
                 <option [ngValue]="group.id" *ngFor="let group of userGroups; let i =index;">{{group.name}}</option>
             </select>
         </div>
     </div>
-    <div class="permissionGroupLine">
-        <div class="permissionGroupLineLeft">
+    <div ngClass="permissionGroupLine">
+        <div ngClass="permissionGroupLineLeft">
             <span>Yetkiler:</span>
         </div>
-        <div class="permissionGroupLineRight">
-            <div class="permissionGroupLineRight">
-                <div class="permissionGroupLineMiddle">
+        <div ngClass="permissionGroupLineRight">
+            <div ngClass="permissionGroupLineRight">
+                <div ngClass="permissionGroupLineMiddle">
                     <input type="checkbox" [(ngModel)]="checkedRead" checked={{checkedRead}}><span>Okuma</span>
                 </div>
-                <div class="permissionGroupLineMiddle">
+                <div ngClass="permissionGroupLineMiddle">
                     <input type="checkbox" [(ngModel)]="checkedWrite" checked={{checkedWrite}}><span>Yazma</span>
                 </div>
             </div>
         </div>
     </div>
-    <div class="permissionGroupLine">
-        <div class="permissionGroupLineLeft">
+    <div ngClass="permissionGroupLine">
+        <div ngClass="permissionGroupLineLeft">
             <span>&nbsp;</span>
         </div>
-        <div class="permissionGroupLineRight">
-            <div class="permissionGroupLineMiddle">
+        <div ngClass="permissionGroupLineRight">
+            <div ngClass="permissionGroupLineMiddle">
                 <input type="checkbox" [(ngModel)]="checkedDelete" checked={{checkedDelete}}><span>Silme &nbsp;</span>
             </div>
-            <div class="permissionGroupLineMiddle">
+            <div ngClass="permissionGroupLineMiddle">
                 <input type="checkbox" [(ngModel)]="checkedFull" checked={{checkedFull}}><span>Tam Yetki</span>
             </div>
         </div>
     </div>
-    <div class="permissionGroupLine">
-        <div class="permissionGroupLineLeft">
+    <div ngClass="permissionGroupLine">
+        <div ngClass="permissionGroupLineLeft">
             <span>&nbsp;</span>
         </div>
-        <div class="permissionGroupLineRight">
-            <div class="permissionGroupLineMiddle">
-                <button name="addPermissionGroupOk">Tamam</button>
+        <div ngClass="permissionGroupLineRight">
+            <div ngClass="permissionGroupLineMiddle">
+                <button>Tamam</button>
             </div>
-            <div class="permissionGroupLineMiddle">
+            <div ngClass="permissionGroupLineMiddle">
                 <button (click)="hide();">Vazgeç</button>
             </div>
         </div>

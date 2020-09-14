@@ -3,25 +3,29 @@
     <div ngClass="commentsWindowTitle" (mouseup)="mouseUp($event)">
         <div ngClass="commentsWindowTitleText" (mousedown)="mouseDown($event);" (mousemove)="mouseMove($event)"
             (mouseup)="mouseUp($event)">
-            <span name="commentTitle">{{title}}</span>
+            <span>{{title}}</span>
         </div>
         <div ngClass="commentsWindowTitleClose" (click)="hide();">
             <img src="/assets/images/close.png">
         </div>
     </div>
-    <div ngClass="commentsWindowContent" name="itemComments">
-        <div class="commentsWindowLine" *ngFor="let comment of comments">
-            <div class="commentsWindowLineLeft">
-                <div class="commentsWindowImageField"><img src="{{comment.logo}}"></div>
-                <div class="commentsWindowNameField"><span>{{comment.name}}</span></div>
-                <div class="commentsWindowDateField">
+    <div ngClass="commentsWindowContent">
+        <div ngClass="commentsWindowLine" *ngFor="let comment of comments">
+            <div ngClass="commentsWindowLineLeft">
+                <div ngClass="commentsWindowImageField">
+                    <img src="{{comment.logo}}">
+                </div>
+                <div ngClass="commentsWindowNameField">
+                    <span>{{comment.name}}</span>
+                </div>
+                <div ngClass="commentsWindowDateField">
                     <p>{{comment.date}}</p>
                 </div>
-                <div class="commentsWindowHourField">
+                <div ngClass="commentsWindowHourField">
                     <p>{{comment.time}}</p>
                 </div>
             </div>
-            <div class="commentsWindowLineRight"><textarea readonly="" rows="5" cols="30">{{comment.text}}</textarea>
+            <div ngClass="commentsWindowLineRight"><textarea readonly="" rows="5" cols="30">{{comment.text}}</textarea>
             </div>
         </div>
     </div>
@@ -37,7 +41,7 @@
             </div>
             <div ngClass="commentsWindowLineRightUser">
                 <textarea rows="3" cols="32" [(ngModel)]="formText"></textarea>
-                <button name="btnSendComment" (click)="send();">Gönder</button>
+                <button (click)="send();">Gönder</button>
             </div>
         </div>
     </div>
