@@ -82,10 +82,10 @@ export class GridComponent implements OnInit {
     }
     private mouseDowned: boolean = false;
     private mouseDownedColumnIndex = -1;
-    public firstColumnWidth: string = "100px";
-    public secondColumnWidth: string = "100px";
-    public thirdColumnWidth: string = "100px";
-    public fourthColumnWidth: string = "100px";
+    public firstColumnWidth: string = "500px";
+    public secondColumnWidth: string = "150px";
+    public thirdColumnWidth: string = "150px";
+    public fourthColumnWidth: string = "150px";
 
     public mouseDownGridColumn(event: any, index: number, width: number) {
         this.mouseDowned = true;
@@ -208,7 +208,7 @@ export class GridComponent implements OnInit {
     }
 
     private checkedAll: boolean = false;
-    
+
     public setCheckedAll() {
         this.content.folders.forEach(item => {
             if (this.checkedAll) {
