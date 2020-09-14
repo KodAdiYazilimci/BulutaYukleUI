@@ -79,8 +79,37 @@ export class GridComponent implements OnInit {
     ngOnInit(): void {
         this.content = new ContentModel();
     }
+    private mouseDowned: boolean = false;
+    private mouseDownedColumnIndex = -1;
+    public firstColumnWidth: string = "100px";
+    public secondColumnWidth: string = "100px";
+    public thirdColumnWidth: string = "100px";
+    public fourthColumnWidth: string = "100px";
+
+    public mouseDownGridColumn(event: any, index: number, width: number) {
+        this.mouseDowned = true;
+        this.mouseDownedColumnIndex = index;
+        switch (index) {
+            case 0: this.firstColumnWidth = width + "px"; break;
+            case 1: this.secondColumnWidth = width + "px"; break;
+            case 2: this.thirdColumnWidth = width + "px"; break;
+            case 3: this.fourthColumnWidth = width + "px"; break;
+        }
+    }
 
     public mouseMove(event: any) {
+        if (this.mouseDowned) {
+            if (this.mouseDownedColumnIndex == 0) {
+                this.firstColumnWidth = (event.pageX - parseFloat(this.firstColumnWidth.replace("px", "")) + window.screenX) + "px";
+            } else if (this.mouseDownedColumnIndex == 1) {
+                this.secondColumnWidth = (event.pageX - parseFloat(this.secondColumnWidth.replace("px", "")) + window.screenX) + "px";
+            } else if (this.mouseDownedColumnIndex == 2) {
+                this.thirdColumnWidth = (event.pageX - parseFloat(this.thirdColumnWidth.replace("px", "")) + window.screenX) + "px";
+            } else if (this.mouseDownedColumnIndex == 3) {
+                this.fourthColumnWidth = (event.pageX - parseFloat(this.fourthColumnWidth.replace("px", "")) + window.screenX) + "px";
+            }
+        }
+
         if (this.commentsWindow != null) {
             this.commentsWindow.instance.mouseMove(event);
         }
@@ -116,6 +145,8 @@ export class GridComponent implements OnInit {
         }
     }
     public mouseUp(event: any) {
+        this.mouseDowned = false;
+
         if (this.commentsWindow != null) {
             this.commentsWindow.instance.mouseUp(event);
         }

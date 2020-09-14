@@ -1,4 +1,5 @@
-<div ngClass="grid" (contextmenu)="$event.preventDefault();" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)">
+<div ngClass="grid" (contextmenu)="$event.preventDefault();" (mousemove)="mouseMove($event)"
+    (mouseup)="mouseUp($event)">
     <div ngClass="gridHeader bottomBorder">
         <div ngClass="gridHeaderLine">
             <div ngClass="checkboxField">
@@ -7,39 +8,41 @@
             <div ngClass="gridLogo">
                 &nbsp;
             </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" orderway="true" ordername="Name" orderable="true"
-                style="width: 424.219px;">
+            <div #item ngClass="itemName wrappable" column="itemNameCol" orderway="true" ordername="Name"
+                orderable="true" [ngStyle]="{'width':firstColumnWidth}">
                 <span>İsim</span>
             </div>
-            <div ngClass="splitter draggableSplitter" draggable="true" name="isimSplitter" targetdrag="itemNameCol">
+            <div ngClass="splitter draggableSplitter" draggable="true" name="isimSplitter" targetdrag="itemNameCol"
+                (mousedown)="mouseDownGridColumn($event,0,item.offsetWidth)">
             </div>
             <div ngClass="gridLogo">
                 <img src="/assets/images/disksize.png">
             </div>
             <div ngClass="sizeCol wrappable" column="sizeCol" orderway="true" ordername="Size" orderable="true"
-                style="width: 50px;">
+                style="width: 50px;" [ngStyle]="{'width':secondColumnWidth}">
                 <span>Boyut</span>
             </div>
-            <div ngClass="splitter draggableSplitter" draggable="true" name="boyutSplitter" targetdrag="sizeCol">
+            <div ngClass="splitter draggableSplitter" draggable="true" name="boyutSplitter" targetdrag="sizeCol"
+                (mousedown)="mouseDownGridColumn($event,1,item.offsetWidth)">
             </div>
             <div ngClass="gridLogo">
                 <img src="/assets/images/date.png">
             </div>
             <div ngClass="dateColumn wrappable" column="createDateCol" orderway="true" ordername="CreateDate"
-                orderable="true" style="width: 100px;">
+                orderable="true" style="width: 100px;" [ngStyle]="{'width':thirdColumnWidth}">
                 <span>Oluşturulma Tarihi</span>
             </div>
             <div ngClass="splitter draggableSplitter" draggable="true" name="olusturulmaSplitter"
-                targetdrag="createDateCol"></div>
+                targetdrag="createDateCol" (mousedown)="mouseDownGridColumn($event,2,item.offsetWidth)"></div>
             <div ngClass="gridLogo">
                 <img src="/assets/images/date.png">
             </div>
             <div ngClass="dateColumn wrappable" column="changeDateCol" orderway="true" ordername="ModifyDate"
-                orderable="true" style="width: 150px;">
+                orderable="true" style="width: 150px;" [ngStyle]="{'width':fourthColumnWidth}">
                 <span>Değiştirilme Tarihi</span>
             </div>
             <div ngClass="splitter draggableSplitter" draggable="true" name="degistirilmeSplitter"
-                targetdrag="changeDateCol"></div>
+                targetdrag="changeDateCol" (mousedown)="mouseDownGridColumn($event,3,item.offsetWidth)"></div>
             <div ngClass="gridLogo">
                 <img src="/assets/images/person.png">
             </div>
@@ -56,26 +59,30 @@
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
                 <img src="{{item.logo}}">
             </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;">
+            <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;"
+                [ngStyle]="{'width':firstColumnWidth}">
                 <span>{{item.name}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="itemNameCol"></div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" style="width: 50px;">
+            <div ngClass="sizeCol wrappable" column="sizeCol" style="width: 50px;"
+                [ngStyle]="{'width':secondColumnWidth}">
                 <span>{{item.size}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="sizeCol">
             </div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" style="width: 100px;">
+            <div ngClass="dateColumn wrappable" column="createDateCol" style="width: 100px;"
+                [ngStyle]="{'width':thirdColumnWidth}">
                 <span>{{item.createDate}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="createDateCol"></div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;">
+            <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;"
+                [ngStyle]="{'width':fourthColumnWidth}">
                 <span>{{item.modifyDate}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
@@ -91,26 +98,30 @@
             <div ngClass="gridLogo" column="logo" grid style="width: 30px;">
                 <img src="{{item.logo}}">
             </div>
-            <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;">
+            <div ngClass="itemName wrappable" column="itemNameCol" grid style="width: 424.219px;"
+                [ngStyle]="{'width':firstColumnWidth}">
                 <span grid>{{item.name}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="itemNameCol"></div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="sizeCol wrappable" column="sizeCol" style="width: 50px;">
+            <div ngClass="sizeCol wrappable" column="sizeCol" style="width: 50px;"
+                [ngStyle]="{'width':secondColumnWidth}">
                 <span>{{item.size}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="sizeCol">
             </div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="dateColumn wrappable" column="createDateCol" style="width: 100px;">
+            <div ngClass="dateColumn wrappable" column="createDateCol" style="width: 100px;"
+                [ngStyle]="{'width':thirdColumnWidth}">
                 <span>{{item.createDate}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="createDateCol"></div>
             <div ngClass="gridLogo" column="logo" style="width: 30px;">
             </div>
-            <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;">
+            <div ngClass="dateColumn wrappable" column="changeDateCol" style="width: 150px;"
+                [ngStyle]="{'width':fourthColumnWidth}">
                 <span>{{item.modifyDate}}</span>
             </div>
             <div ngClass="splitter" draggable="true" targetdrag="changeDateCol"></div>
