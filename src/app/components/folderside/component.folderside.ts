@@ -1,7 +1,8 @@
-import { Component, OnInit, EventEmitter } from "@angular/core";
+import { Component, OnInit, EventEmitter, ViewContainerRef, ComponentFactoryResolver, ComponentRef } from "@angular/core";
 import { DiskService } from 'src/app/services/services.disk';
 import { DiskModel } from 'src/app/models/model.disk';
 import { Router } from '@angular/router';
+import { DialogInfoComponent } from "../dialog/component.dialoginfo";
 
 @Component({
     selector: "folderside",
@@ -10,6 +11,8 @@ import { Router } from '@angular/router';
     providers: [DiskService]
 })
 export class FolderSideComponent implements OnInit {
+    private infoDialog: ComponentRef<DialogInfoComponent> = null;
+
     public data: Array<DiskModel>;
 
     public onDiskOpened: EventEmitter<number> = new EventEmitter<number>();
@@ -21,6 +24,8 @@ export class FolderSideComponent implements OnInit {
 
     constructor(
         private _router: Router,
+        private _viewContainerRef: ViewContainerRef,
+        private _componentFactoryResolver: ComponentFactoryResolver,
         private _diskService: DiskService) {
     }
 
@@ -30,6 +35,12 @@ export class FolderSideComponent implements OnInit {
         } catch (ex) {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
+            } else if (ex.status == 400) {
+                if (this.infoDialog != null) {
+                    this.infoDialog.destroy();
+                }
+                this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                this.infoDialog.instance.show("Hata", ex.error.errorMessage);
             }
         }
     }

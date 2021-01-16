@@ -1,7 +1,8 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
+import { Component, ViewChild, OnInit, ComponentRef, ViewContainerRef, ComponentFactoryResolver } from "@angular/core";
 import { FolderSideComponent } from '../folderside/component.folderside';
 import { ContentSideComponent } from '../contentside/component.contentside';
 import { Router } from '@angular/router';
+import { DialogInfoComponent } from "../dialog/component.dialoginfo";
 
 @Component({
     selector: "index",
@@ -16,9 +17,13 @@ export class IndexComponent implements OnInit {
     @ViewChild(ContentSideComponent, { static: true })
     private contentSide: ContentSideComponent;
 
+    private infoDialog: ComponentRef<DialogInfoComponent> = null;
+
     private dragSideMouseDowned: boolean = false;
 
-    constructor(private _router: Router) { }
+    constructor(private _router: Router,
+        private _viewContainerRef: ViewContainerRef,
+        private _componentFactoryResolver: ComponentFactoryResolver) { }
 
     ngOnInit(): void {
         this.folderSide.onDiskOpened.subscribe(async event => await this.onDiskOpened(event));
@@ -43,6 +48,12 @@ export class IndexComponent implements OnInit {
         } catch (ex) {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
+            } else if (ex.status == 400) {
+                if (this.infoDialog != null) {
+                    this.infoDialog.destroy();
+                }
+                this.infoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogInfoComponent));
+                this.infoDialog.instance.show("Hata", ex.error.errorMessage);
             }
         }
     }
