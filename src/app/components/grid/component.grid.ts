@@ -31,8 +31,6 @@ import { asLiteral } from '@angular/compiler/src/render3/view/util';
 import { DialogPasswordInputComponent } from '../dialog/component.dialogpasswordinput';
 import { GridItemModel } from 'src/app/models/model.gridItem';
 import { ContentService } from 'src/app/services/services.content';
-import { componentFactoryName } from '@angular/compiler';
-import { areAllEquivalent } from '@angular/compiler/src/output/output_ast';
 
 @Component({
     selector: "grid",
