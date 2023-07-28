@@ -27,7 +27,6 @@ import { Router } from '@angular/router';
 import { FolderService } from 'src/app/services/services.folder';
 import { PropertyModel } from 'src/app/models/model.property';
 import { FileService } from 'src/app/services/services.file';
-import { asLiteral } from '@angular/compiler/src/render3/view/util';
 import { DialogPasswordInputComponent } from '../dialog/component.dialogpasswordinput';
 import { GridItemModel } from 'src/app/models/model.gridItem';
 import { ContentService } from 'src/app/services/services.content';
