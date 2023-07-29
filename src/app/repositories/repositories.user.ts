@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
-import { from } from "rxjs";
+import { Observable, from, lastValueFrom } from "rxjs";
 import { BaseRepository } from "../repositories/repositories._base";
 import { ServiceResult, ServiceResultData } from "../models/model.serviceresult";
 import { UserGroupModel } from '../models/model.usergroup';
@@ -16,12 +16,20 @@ export class UserRepository extends BaseRepository implements OnInit {
     ngOnInit(): void { }
 
     public async getGroups(): Promise<ServiceResultData<Array<UserGroupModel>>> {
-        return await this._http.get<ServiceResultData<Array<UserGroupModel>>>(
-            this.baseUrl + "User/GetGroups", { headers: this.getDefaultHeaders() }).toPromise();
+        let getResult: Observable<ServiceResultData<Array<UserGroupModel>>> = await this._http.get<ServiceResultData<Array<UserGroupModel>>>(
+            this.baseUrl + "User/GetGroups", { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResultData<Array<UserGroupModel>> = await lastValueFrom(getResult);
+
+        return result;
     }
 
     public async getUsers(): Promise<ServiceResultData<Array<UserModel>>> {
-        return await this._http.get<ServiceResultData<Array<UserModel>>>(
-            this.baseUrl + "User/GetUsers", { headers: this.getDefaultHeaders() }).toPromise();
+        let getResult: Observable<ServiceResultData<Array<UserModel>>> = await this._http.get<ServiceResultData<Array<UserModel>>>(
+            this.baseUrl + "User/GetUsers", { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResultData<Array<UserModel>> = await lastValueFrom(getResult);
+
+        return result;
     }
 }

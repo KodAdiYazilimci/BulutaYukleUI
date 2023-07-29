@@ -1,6 +1,6 @@
 import { Injectable, OnInit, EventEmitter } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from "@angular/common/http";
-import { from } from "rxjs";
+import { Observable, from, lastValueFrom } from "rxjs";
 
 import { ServiceResult, ServiceResultData } from "../models/model.serviceresult";
 import { FileUploadModel } from "../models/model.fileupload";
@@ -101,119 +101,179 @@ export class FileRepository extends BaseRepository implements OnInit {
         let params = new HttpParams();
         params = params.append("fileId", fileId.toString());
 
-        return await this._http.get<ServiceResultData<PropertyModel>>(
-            this.baseUrl + "File/GetFileProperty", { headers: this.getDefaultHeaders(), params: params }).toPromise();
+        let getResult: Observable<ServiceResultData<PropertyModel>> = await this._http.get<ServiceResultData<PropertyModel>>(
+            this.baseUrl + "File/GetFileProperty", { headers: this.getDefaultHeaders(), params: params });
+
+        let result: ServiceResultData<PropertyModel> = await lastValueFrom(getResult);
+
+        return result;
     }
 
     public async renameFile(fileId: number, name: string): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "File/RenameFile", {
             "id": fileId,
             "name": name
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async getFileComments(fileId: number): Promise<ServiceResultData<Array<CommentItemModel>>> {
         let params = new HttpParams();
         params = params.append("fileId", fileId.toString());
 
-        return await this._http.get<ServiceResultData<Array<CommentItemModel>>>(
-            this.baseUrl + "File/GetFileComments", { headers: this.getDefaultHeaders(), params: params }).toPromise();
+        let getResult: Observable<ServiceResultData<Array<CommentItemModel>>> = await this._http.get<ServiceResultData<Array<CommentItemModel>>>(
+            this.baseUrl + "File/GetFileComments", { headers: this.getDefaultHeaders(), params: params });
+
+        let result: ServiceResultData<Array<CommentItemModel>> = await lastValueFrom(getResult);
+
+        return result;
     }
 
     public async createFileComment(fileId: number, text: string): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "File/CreateComment", {
             "fileId": fileId,
             "text": text
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async getFileHistories(fileId: number): Promise<ServiceResultData<Array<HistoryItemModel>>> {
         let params = new HttpParams();
         params = params.append("fileId", fileId.toString());
 
-        return await this._http.get<ServiceResultData<Array<HistoryItemModel>>>(
-            this.baseUrl + "History/GetFileHistory", { headers: this.getDefaultHeaders(), params: params }).toPromise();
+        let getResult: Observable<ServiceResultData<Array<HistoryItemModel>>> = await this._http.get<ServiceResultData<Array<HistoryItemModel>>>(
+            this.baseUrl + "History/GetFileHistory", { headers: this.getDefaultHeaders(), params: params });
+
+        let result: ServiceResultData<Array<HistoryItemModel>> = await lastValueFrom(getResult);
+
+        return result;
     }
 
     public async hideFile(fileId: number): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "File/HideFile", {
             "id": fileId.toString()
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async showFile(fileId: number): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "File/ShowFile", {
             "id": fileId.toString()
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async getFilePermissions(fileId: number): Promise<ServiceResultData<PermissionModel>> {
         let params = new HttpParams();
         params = params.append("fileId", fileId.toString());
 
-        return await this._http.get<ServiceResultData<PermissionModel>>(
-            this.baseUrl + "Permission/GetFilePermissions", { headers: this.getDefaultHeaders(), params: params }).toPromise();
+        let getResult: Observable<ServiceResultData<PermissionModel>> = await this._http.get<ServiceResultData<PermissionModel>>(
+            this.baseUrl + "Permission/GetFilePermissions", { headers: this.getDefaultHeaders(), params: params });
+
+        let result: ServiceResultData<PermissionModel> = await lastValueFrom(getResult);
+
+        return result;
     }
 
     public async removeFilePermissionForUser(fileId: number, userId: number): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/RemovePermission", {
             "fileId": fileId.toString(),
             "userId": userId.toString()
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async removeFilePermissionForGroup(fileId: number, groupId: number): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/RemovePermission", {
             "fileId": fileId.toString(),
             "groupId": groupId.toString()
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async appendFilePermissionForGroup(fileId: number, groupId: number, permissions: Array<PermissionTypeModel>): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/AppendPermission", {
             "fileId": fileId,
             "groupId": groupId,
             "permissionTypes": permissions
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async appendFilePermissionForUser(fileId: number, userId: number, permissions: Array<PermissionTypeModel>): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "Permission/AppendPermission", {
             "fileId": fileId,
             "userId": userId,
             "permissionTypes": permissions
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async lockFile(fileId: number, password: string): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "File/LockFile", {
             "id": fileId,
             "password": password
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async unLockFile(fileId: number, password: string): Promise<ServiceResult> {
-        return await this._http.post<ServiceResult>(
+        let postResult: Observable<ServiceResult> = await this._http.post<ServiceResult>(
             this.baseUrl + "File/UnLockFile", {
             "id": fileId,
             "password": password
-        }, { headers: this.getDefaultHeaders() }).toPromise();
+        }, { headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(postResult);
+
+        return result;
     }
 
     public async deleteFile(fileId: number): Promise<ServiceResult> {
         let params = new HttpParams();
         params = params.append("fileId", fileId.toString());
 
-        return await this._http.get<ServiceResult>(
-            this.baseUrl + "File/DeleteFile", { params: params, headers: this.getDefaultHeaders() }).toPromise();
+        let getResult: Observable<ServiceResult> = await this._http.get<ServiceResult>(
+            this.baseUrl + "File/DeleteFile", { params: params, headers: this.getDefaultHeaders() });
+
+        let result: ServiceResult = await lastValueFrom(getResult);
+
+        return result;
     }
 }
