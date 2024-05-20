@@ -51,6 +51,8 @@ export class GridComponent implements OnInit {
     public currentFolderId: number = 0;
     public content: ContentModel;
 
+    private checkedItems: Array<GridItemModel> = new Array<GridItemModel>();
+
     public onChangedPath: EventEmitter<Array<GridItemModel>> = new EventEmitter<Array<GridItemModel>>();
 
     private contextMenu: ComponentRef<ContextMenuComponent> = null;
@@ -184,6 +186,7 @@ export class GridComponent implements OnInit {
         this.currentDiskId = diskId;
         this.currentFolderId = folderId;
         this.content = content;
+        this.checkedItems = new Array<GridItemModel>();
     }
 
     private async refreshGrid(): Promise<void> {
@@ -197,6 +200,7 @@ export class GridComponent implements OnInit {
                 this.selectedItemType = ItemTypes.folder();
                 this.selectedItemId = this.currentFolderId;
             }
+            this.checkedItems = new Array<GridItemModel>();
         } catch (ex) {
             if (ex.status == 401) {
                 this._router.navigate(["/OturumAc"]);
@@ -207,18 +211,29 @@ export class GridComponent implements OnInit {
     private checkedAll: boolean = false;
 
     public setCheckedAll() {
+        this.checkedItems = new Array<GridItemModel>();
         this.content.folders.forEach(item => {
             if (this.checkedAll) {
                 item.checked = false;
+                const index = this.checkedItems.indexOf(item);
+                if (index > -1) {
+                    this.checkedItems.splice(index, 1);
+                }
             } else {
                 item.checked = true;
+                this.checkedItems.push(item);
             }
         });
         this.content.files.forEach(item => {
             if (this.checkedAll) {
                 item.checked = false;
+                const index = this.checkedItems.indexOf(item);
+                if (index > -1) {
+                    this.checkedItems.splice(index, 1);
+                }
             } else {
                 item.checked = true;
+                this.checkedItems.push(item);
             }
         });
         this.checkedAll = !this.checkedAll;
@@ -227,12 +242,23 @@ export class GridComponent implements OnInit {
     public setChecked(item: GridItemModel) {
         if (item.checked == null || item.checked == undefined) {
             item.checked = true;
+            this.checkedItems.push(item);
         } else {
             item.checked = !item.checked;
+
+            if (!item.checked) {
+                const index = this.checkedItems.indexOf(item);
+                if (index > -1) {
+                    this.checkedItems.splice(index, 1);
+                }
+            } else {
+                this.checkedItems.push(item);
+            }
         }
     }
 
     public async showContextMenu(event: any, type: number, id: number, inside: boolean) {
+        console.log(this.checkedItems);
         this.selectedItemType = type;
         this.selectedItemId = id;
         if (type == null) {
@@ -292,6 +318,7 @@ export class GridComponent implements OnInit {
         this.currentDiskId = null;
         this.selectedItemId = folderId;
         this.selectedItemType = ItemTypes.folder();
+        this.checkedItems = new Array<GridItemModel>();
         this.onChangedPath.emit(this.content.location);
     }
 
@@ -394,10 +421,21 @@ export class GridComponent implements OnInit {
                 }
                 this.yesNoDialog = this._viewContainerRef.createComponent(this._componentFactoryResolver.resolveComponentFactory(DialogYesNoComponent));
                 this.yesNoDialog.instance.onYesClicked.subscribe(async event => {
-                    if (this.selectedItemType == ItemTypes.folder()) {
-                        await this._folderService.deleteFolder(this.selectedItemId);
-                    } else if (this.selectedItemType == ItemTypes.file()) {
-                        await this._fileService.deleteFile(this.selectedItemId);
+                    if (this.checkedItems.length > 0) {
+                        for (var item of this.checkedItems) {
+                            if (item.type == ItemTypes.folder()) {
+                                await this._folderService.deleteFolder(item.id);
+                            } else if (item.type == ItemTypes.file()) {
+                                await this._fileService.deleteFile(item.id);
+                            }
+                        }
+                    } else {
+                        if (this.selectedItemType == ItemTypes.folder()) {
+                            await this._folderService.deleteFolder(this.selectedItemId);
+                        }
+                        if (this.selectedItemType == ItemTypes.file()) {
+                            await this._fileService.deleteFile(this.selectedItemId);
+                        }
                     }
                     await this.refreshGrid();
                 });
